@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>交通頁面</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="./css/交通資訊.css">
-    <link rel="stylesheet" href="./js/交通資訊.js">
 </head>
+
 <body>
     <div id="app">
         <div class="container">
@@ -16,10 +17,13 @@
                     <div class="logo-bar"></div>
                     <div class="title">下一站，蛻變</div>
                 </div>
-                
+
                 <nav class="nav-section">
-                    <button class="nav-button" @click="handleNavClick('import')">
-                        回前頁
+                    <button class="nav-button" @click="handleNavClick('previous')">
+                        回到前頁
+                    </button>
+                    <button class="nav-button" @click="handleNavClick('home')">
+                        回到首頁
                     </button>
                 </nav>
             </header>
@@ -32,7 +36,8 @@
             </main>
         </div>
     </div>
+    <script type="module" src="./js/交通資訊.js"></script>
 
-    
 </body>
+
 </html>
