@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
+    <video autoplay muted loop id="bg-video">
+        <source src="./img/開場測試動畫微風版本-20250703.mp4" type="video/mp4">
+    </video>
     <div id="app">
         <div class="container">
             <header class="header">
@@ -18,8 +21,11 @@
                 <nav class="nav-section">
                     <button class="nav-button" @click="handleNavClick('import')">
                         進入專案
+                    </button> <button class="nav-button" @click="handleNavClick('traffic')">
+                        交通資訊
                     </button>
-                    <button 
+                    <!-- 漢堡條留著備用 -->
+                    <!-- <button 
                         class="menu-button" 
                         :class="{ active: isMenuOpen }"
                         @click="toggleMenu"
@@ -29,22 +35,16 @@
                         <div class="menu-line"></div>
                         <div class="menu-line"></div>
                         <div class="menu-line"></div>
-                    </button>
+                    </button> -->
                 </nav>
             </header>
-
-            <main class="main-content">
-                <div class="content-placeholder">
-                    <p v-if="!selectedAction">請選擇一個動作開始</p>
-                    <p v-else>{{ actionMessage }}</p>
-                </div>
-            </main>
         </div>
 
-        <div class="sidebar-menu" :class="{ 'is-open': isMenuOpen }">
+        <!-- 漢堡條留著備用 -->
+        <!-- <div class="sidebar-menu" :class="{ 'is-open': isMenuOpen }">
             <button class="menu-item-button" @click="handleNavClick('introduction')">簡 介</button>
             <button class="menu-item-button" @click="handleNavClick('traffic')">交通資訊</button>
-        </div>
+        </div> -->
 
     </div>
 
