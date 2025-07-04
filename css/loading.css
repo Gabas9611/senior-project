@@ -1,6 +1,15 @@
 body {
     margin: 0;
-    background: linear-gradient(to right, #1e90ff, #00bfff);
+                /* 背景圖片設定 - 請將 'your-image.jpg' 替換為您的圖片路徑 */
+            background: url(/img/index.jpg) center/cover no-repeat;
+            
+            
+           
+            /* 確保背景圖片固定不滾動 */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +74,7 @@ body {
 
 .loader::before {
     content: "Loading...";
-    color: #0000;
+    color: #e5c40a00;
     padding: 0 5px;
     background: inherit;
     background-image: linear-gradient(90deg, #fff 50%, #3f2fcf 0);
