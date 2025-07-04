@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交通頁面</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="./css/交通資訊.css">
+    <link rel="stylesheet" href="./js/交通資訊.js">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <header class="header">
+                <div class="logo-section">
+                    <div class="logo-bar"></div>
+                    <div class="title">下一站，蛻變</div>
+                </div>
+                
+                <nav class="nav-section">
+                    <button class="nav-button" @click="handleNavClick('import')">
+                        回前頁
+                    </button>
+                </nav>
+            </header>
+
+            <main class="main-content">
+                <div class="content-placeholder">
+                    <p v-if="!selectedAction">請選擇一個動作開始</p>
+                    <p v-else>{{ actionMessage }}</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    
+</body>
+</html>
