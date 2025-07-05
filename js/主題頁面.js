@@ -50,11 +50,9 @@ createApp({
             if (action === 'import') {
                 window.location.href = 'loading畫面.html?target=交通資訊.html';
                 this.actionMessage = '進入專案已點擊';
-            } else if (action === 'navigation') {
-                this.actionMessage = '進入導覽已點擊';
-            } else if (action === 'introduction') {
+            }  else if (action === 'introduction') {
                 window.location.href = 'loading畫面.html?target=index.html';
-                this.actionMessage = '簡介已點擊';
+                this.actionMessage = '首頁已點擊';
             } else if (action === 'traffic') {
                 this.actionMessage = '交通資訊已點擊';
             }

@@ -45,7 +45,7 @@ createApp({
         handleNavClick(action) {
             this.selectedAction = action;
             if (action === 'import') {
-                window.location.href = 'loading畫面.html';
+                window.location.href = 'loading畫面.html?target=主題頁面.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
