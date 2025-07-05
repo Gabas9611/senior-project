@@ -640,6 +640,7 @@ createApp({
                 loadedModel = gltf.scene; // 賦值給全域變數 loadedModel
                 scene.add(loadedModel);
                 console.log('--- 模型已成功載入並添加到場景中 ---');
+                console.log(loadedModel);
 
                 // 將模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
