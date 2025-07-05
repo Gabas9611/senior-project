@@ -7,6 +7,7 @@
     <title>交通頁面</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="./css/交通資訊.css">
+   
 </head>
 
 <body>
@@ -28,9 +29,13 @@
                 </nav>
             </header>
 
-            <main class="main-content">
+             <main class="main-content">
                 <div class="content-block">
-                   
+                    <div v-for="(box, index) in boxes" :key="index" class="box"
+                         :class="getSizeClass(index)" :style="getStyle(index)"
+                         @mouseenter="updateLayout(index)">
+                        {{ box.text }}
+                    </div> 
                 </div>
                 <div class="content-block">
                     <div class="inner-rectangle">
@@ -38,11 +43,34 @@
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3356.330570781723!2d120.72991547534814!3d24.144876878403352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346923aa5dc7fe5f%3A0xb4165c433f9df76b!2z5ZyL56uL5Yuk55uK56eR5oqA5aSn5a24IOWLpOWJteWfuuWcsA!5e1!3m2!1szh-TW!2stw!4v1750922315175!5m2!1szh-TW!2stw"
                         width="90%" height="90%" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
     <script type="module" src="./js/交通資訊.js"></script>
+    <script>
+        const boxes = ['', '', '', '', '']; // 可換成任意內容
+const centerIndex = ref(2);
+
+const updateLayout = (index) => {
+  centerIndex.value = index;
+};
+
+const getSizeClass = (i) => {
+  const diff = Math.abs(i - centerIndex.value);
+  if (diff === 0) return 'large';
+  else if (diff === 1) return 'medium';
+  return 'small';
+};
+
+const getStyle = (i) => {
+  const offset = (i - centerIndex.value) * 150;
+  return {
+    transform: `translate(-50%, -50%) translateX(${offset}px)`
+  };
+};
+    </script>
 
 </body>
 

@@ -75,7 +75,7 @@
 
         .content-block {
             width: 95%;
-            height: 500px;
+            height: 700px;
             background-color: #ffffff;
             border-radius: 8px;
             padding: 20px;
@@ -86,6 +86,7 @@
             text-align: center;
             color: #333;
             font-size: 18px;
+            position: relative;
         }
 
         .inner-rectangle {
@@ -105,6 +106,46 @@
             text-align: center;
             color: #666;
             font-size: 18px;
+        }
+
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transition: all 0.3s ease;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .small {
+            width: 240px;
+            height: 240px;
+            background-color: #90caf9;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .medium {
+            width: 320px;
+            height: 320px;
+            background-color: #64b5f6;
+            font-size: 14px;
+            z-index: 2;
+        }
+
+        .large {
+            width: 400px;
+            height: 400px;
+            background-color: #42a5f5;
+            font-size: 16px;
+            z-index: 3;
         }
 
         /* Mobile Styles */
