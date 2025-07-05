@@ -112,7 +112,7 @@ body {
     /* 這裡需要動態計算 header 的實際高度 */
     /* 20px (上 padding) + 20px (下 padding) + 內容高度 (假設40px) = 80px */
     /* 為了確保不被擋住，可以稍微增加一點距離，例如 80px + 5px = 85px */
-    top: calc(var(--header-height) + 5px); /* 初始設定，會根據 media query 調整 */
+    top: calc(80px + 5px); /* 初始設定，會根據 media query 調整 */
     right: 40px;
     background-color: #b8b8b8;
     width: auto;
