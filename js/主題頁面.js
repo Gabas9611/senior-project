@@ -661,9 +661,9 @@ createApp({
                 });
 
                 // 尋找攝影機標點以設定初始第一人稱視角
-                const cameraMarker = loadedModel.getObjectByName("我是導覽點01");
+                const cameraMarker = loadedModel.getObjectByName("我是導覽點06");
                 if (cameraMarker) {
-                    console.log('抓到物件：我是導覽點01');
+                    console.log('抓到物件：我是導覽點06');
                     const markerPosition = new THREE.Vector3();
                     cameraMarker.getWorldPosition(markerPosition);
 
@@ -672,16 +672,16 @@ createApp({
                     // cameraNav1.lookAt(new THREE.Vector3(0, 0, 0)); // Removed lookAt for first-person camera
 
                     // 將計算好的初始旋轉值存儲起來，供後續點擊使用
-                    navCameras["我是導覽點01"].initialRotationX = cameraNav1.rotation.x;
-                    navCameras["我是導覽點01"].initialRotationY = cameraNav1.rotation.y;
-                    console.log('已設定 NavCamera1 的座標為:', cameraNav1.position);
+                    navCameras["我是導覽點06"].initialRotationX = cameraNav6.rotation.x;
+                    navCameras["我是導覽點06"].initialRotationY = cameraNav6.rotation.y;
+                    console.log('已設定 NavCamera6 的座標為:', cameraNav6.position);
 
                     // 將 NavCamera1 設為當前攝影機並進入第一人稱模式
-                    currentCamera = cameraNav1;
+                    currentCamera = cameraNav6;
                     isFirstPersonMode = true;
                     controls.enabled = false; // 禁用 OrbitControls
-                    console.log('--- 找到攝影機標點，已設定初始視角為 "NavCamera1" (第一人稱) ---');
-                    console.log('NavCamera1 座標為: ', cameraNav1.position);
+                    console.log('--- 找到攝影機標點，已設定初始視角為 "NavCamera6" (第一人稱) ---');
+                    console.log('NavCamera6 座標為: ', cameraNav6.position);
 
                 } else {
                     // 如果找不到標點，則使用預設的第三人稱視角
