@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // 宣告全域變數以供所有相關函式存取
 let scene, renderer, defaultCamera, currentCamera, controls, raycaster, mouse;
@@ -136,7 +136,7 @@ createApp({
             // 重新啟用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = true;
-                controls.update(1);
+                controls.update();
                 console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
@@ -624,7 +624,7 @@ createApp({
                                     controls.minPolarAngle = 0; // 解除垂直旋轉限制
                                     controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                                     controls.enabled = true; // 啟用 OrbitControls
-                                    controls.update(1); // 強制更新 controls
+                                    controls.update(); // 強制更新 controls
                                     console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
                                 }
                                 console.log('Controls enabled at end of position animation:', controls.enabled); // Debug log
@@ -737,6 +737,69 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+const sensitivity = 0.005;
+const maxVerticalAngle = Math.PI / 2.5;
+
+function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+
+function onMouseDown(e) {
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+}
+
+function onMouseMove(e) {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePosition.x;
+    const deltaY = e.clientY - previousMousePosition.y;
+
+    currentCamera.rotation.y -= deltaX * sensitivity;
+    currentCamera.rotation.x -= deltaY * sensitivity;
+    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+}
+
+function onMouseUp() {
+    isDragging = false;
+}
+
+renderer.domElement.addEventListener('mousedown', onMouseDown);
+renderer.domElement.addEventListener('mousemove', onMouseMove);
+renderer.domElement.addEventListener('mouseup', onMouseUp);
+
+// ✅ 手機觸控事件
+renderer.domElement.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+    currentCamera.rotation.y -= deltaX * sensitivity;
+    currentCamera.rotation.x -= deltaY * sensitivity;
+    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
@@ -747,11 +810,20 @@ createApp({
         scene.add(directionalLight);
 
         // 3. 初始化 OrbitControls (賦值給全域變數)
-        controls = new FirstPersonControls(currentCamera, renderer.domElement);
-controls.lookSpeed = 0.1;
-controls.movementSpeed = 0;
-controls.lookVertical = true;
-controls.activeLook = true;
+        controls = new OrbitControls(currentCamera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 1;
+        controls.maxDistance = 50;
+        controls.enableZoom = false; // 禁用縮放功能
+        controls.enableRotate = true;
+
+        // ✅ 加這段以支援手機手勢操作
+        controls.touches = {
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN
+        };
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
@@ -847,7 +919,7 @@ controls.activeLook = true;
                         controls.enablePan = true;
                         controls.minPolarAngle = 0;
                         controls.maxPolarAngle = Math.PI;
-                        controls.update(1);
+                        controls.update();
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
                     console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
@@ -857,7 +929,7 @@ controls.activeLook = true;
                 }
 
                 // 確保控制器更新其內部狀態
-                controls.update(1);
+                controls.update();
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
@@ -1054,7 +1126,7 @@ controls.activeLook = true;
                             controls.enablePan = true; // 啟用平移
                             controls.minPolarAngle = 0; // 解除垂直旋轉限制
                             controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
-                            controls.update(1); // 強制更新 controls
+                            controls.update(); // 強制更新 controls
                             console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
                         }
                     }
@@ -1087,7 +1159,7 @@ controls.activeLook = true;
 
             // 只有當不在第一人稱模式時，才更新 OrbitControls
             if (!isFirstPersonMode && controls) { // 檢查 controls 是否已定義
-                controls.update(1);
+                controls.update();
             }
 
             if (renderer && scene && currentCamera) { // 檢查核心 Three.js 物件是否已定義
