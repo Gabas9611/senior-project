@@ -14,6 +14,7 @@ html, body {
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f5f5f5;
+    --header-height: 80px; /* Default header height */
 }
 
 .container {
@@ -23,7 +24,6 @@ body {
     height: 100vh; /* 確保容器佔滿整個視窗高度 */
     position: relative;
     overflow: hidden; /* 隱藏容器內的滾動條 */
-    --header-height: 80px; /* Default header height */
 }
 
 .header {
@@ -108,17 +108,17 @@ body {
 .sidebar-menu {
     display: flex;
     flex-direction: column;
-    position: absolute;
+    position: fixed;
     /* 這裡需要動態計算 header 的實際高度 */
     /* 20px (上 padding) + 20px (下 padding) + 內容高度 (假設40px) = 80px */
     /* 為了確保不被擋住，可以稍微增加一點距離，例如 80px + 5px = 85px */
-    top: calc(80px + 5px); /* 初始設定，會根據 media query 調整 */
+    top: calc(var(--header-height) + 5px); /* 初始設定，會根據 media query 調整 */
     right: 40px;
     background-color: #b8b8b8;
     width: auto;
     max-width: calc(100vw - 80px);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 99; /* 將 z-index 提高，確保選單在 header 之上 */
+    z-index: 101; /* 將 z-index 提高，確保選單在 header 之上 */
     border-radius: 5px;
     overflow: hidden;
     max-height: 0;
@@ -196,7 +196,7 @@ body {
 }
 
 .info-modal {
-    background-color: #fff;
+    background: linear-gradient(to right, #e6ffe6, #ccffcc);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -227,10 +227,20 @@ body {
     color: #333;
 }
 
-.modal-content {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #666;
+.modal-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
 }
 
 /* Mobile Styles */
@@ -323,7 +333,7 @@ body {
 
 /* Animation for menu button */
 .menu-button.active .menu-line:nth-child(1) {
-    transform: rotate(45deg) translate(4px, 4px);
+    transform: rotate(45deg) translate(0px, 6px);
 }
 
 .menu-button.active .menu-line:nth-child(2) {
@@ -331,7 +341,7 @@ body {
 }
 
 .menu-button.active .menu-line:nth-child(3) {
-    transform: rotate(-45deg) translate(4px, -4px);
+    transform: rotate(-45deg) translate(0px, -6px);
 }
 
 /* Tooltip Styles */
