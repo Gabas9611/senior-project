@@ -754,6 +754,7 @@ createApp({
         controls.minDistance = 1;
         controls.maxDistance = 50;
         controls.enableZoom = false; // 禁用縮放功能
+        controls.enableRotate = true;
 
         // ✅ 加這段以支援手機手勢操作
         controls.touches = {
