@@ -684,7 +684,7 @@ createApp({
         cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav6.name = "NavCamera6";
         cameraNav6.position.set(5.36, -0.9, -0.17);
-        
+
 
         cameraNav7 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav7.name = "NavCamera7";
@@ -709,7 +709,7 @@ createApp({
         cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav11.name = "NavCamera11";
         cameraNav11.position.set(5.37, -0.9, -0.17);
-        
+
 
 
         // 導覽點與攝影機的對應關係 (保持不變)
@@ -724,7 +724,7 @@ createApp({
             "我是導覽點08": { camera: cameraNav8, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }, // 对应介紹欄2
             "我是導覽點09": { camera: cameraNav9, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },  // 对应介紹欄3
             "我是導覽點10": { camera: cameraNav10, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 }, // 对应介紹
-            "我是導覽點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2} // 对应出口
+            "我是導覽點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 } // 对应出口
         };
 
         // 1. 初始化場景、攝影機和渲染器 (賦值給全域變數)
@@ -737,6 +737,22 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// ✅ 顯示觸控事件提示框（適用於 iOS 手機除錯）
+renderer.domElement.addEventListener('touchstart', function () {
+  const debugBox = document.createElement('div');
+  debugBox.style.position = 'fixed';
+  debugBox.style.top = '10px';
+  debugBox.style.right = '10px';
+  debugBox.style.zIndex = 9999;
+  debugBox.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  debugBox.style.color = 'white';
+  debugBox.style.padding = '10px';
+  debugBox.style.borderRadius = '10px';
+  debugBox.style.fontSize = '16px';
+  debugBox.innerText = '📱 已偵測到觸控事件';
+  document.body.appendChild(debugBox);
+});
+
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
