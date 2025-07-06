@@ -342,7 +342,7 @@ body {
 }
 
 .menu-button.active .menu-line:nth-child(3) {
-     transform-origin: center;
+    transform-origin: center;
     transform: translate(0, -5px) rotate(-45deg);
 }
 
