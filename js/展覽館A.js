@@ -14,9 +14,12 @@ let previousMouseY = 0;
 let isDragging = false;
 let navCameras = {}; // 宣告為全域變數，並在 mounted 中填充
 
+// 導覽攝影機的設定 (Moved to global scope)
+let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6, cameraNav7, cameraNav8, cameraNav9, cameraNav10, cameraNav11, cameraNav12;
+
 // 宣告互動物件相關的全域變數
-const targetObjectNames = ["我是標示點1", "我是標示點2", "我是標示點3"]; // 宣告為全域常數
-const highlightableNames = ["我是標示點1", "我是標示點2", "我是標示點3", "畫框01", "畫框02", "畫框03", "畫框04", "畫框05", "大門", "桌子"]; // 宣告為全域常數
+const targetObjectNames = ["我是標示點1", "我是標示點2"]; // 宣告為全域常數
+const highlightableNames = ["我是標示點1", "我是標示點2", "畫框01", "畫框02", "畫框03", "畫框04", "畫框05", "畫框06", "畫框07", "畫框08", "桌子", "大門"]; // 宣告為全域常數
 const frameNames = ["畫框01", "畫框02", "畫框03", "畫框04"]; // 宣告為全域常數
 const highlightableObjects = []; // 宣告為全域變數
 let currentHoveredObject = null; // 宣告為全域變數
@@ -31,12 +34,32 @@ createApp({
             showInfoModal: false, // 控制資訊彈出視窗的顯示
             infoModalTitle: '',   // 資訊彈出視窗的標題
             infoModalContent: '',  // 資訊彈出視窗的內容
-            isInitialized: false // 新增：追蹤應用程式是否已初始化
+            infoModalButtonText: '進入參觀', // 新增：資訊彈出視窗按鈕文字
+            modalAction: '', // 新增：彈出視窗按鈕的動作類型
+            showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
+            isInitialized: false, // 新增：追蹤應用程式是否已初始化
+            showImageCarousel: false, // 控制是否顯示圖片輪播
+            carouselImages: [],       // 輪播圖片的陣列
+            currentImageIndex: 0      // 當前顯示圖片的索引
         }
     },
     methods: {
+        nextImage() {
+            this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+        },
+        prevImage() {
+            this.currentImageIndex = (this.currentImageIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
+        },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
+            if (controls) {
+                controls.enabled = !this.isMenuOpen; // 選單開啟時禁用 controls，關閉時啟用
+                if (this.isMenuOpen) {
+                    console.log('選單已開啟，OrbitControls 已禁用。');
+                } else {
+                    console.log('選單已關閉，OrbitControls 已重新啟用。');
+                }
+            }
             if (this.isMenuOpen) {
                 this.selectedAction = 'menu';
                 this.actionMessage = '選單已開啟';
@@ -44,18 +67,80 @@ createApp({
         },
         handleNavClick(action) {
             this.selectedAction = action;
-            if (action === 'import') {
+            if (action === 'backToMain') {
                 window.location.href = 'loading畫面.html?target=主題頁面.html';
+                this.actionMessage = '回到前頁已點擊';
+            } else if (action === 'import') {
+                window.location.href = 'loading畫面.html?target=交通資訊.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
             } else if (action === 'introduction') {
+                window.location.href = 'loading畫面.html?target=index.html';
                 this.actionMessage = '簡介已點擊';
             } else if (action === 'traffic') {
                 this.actionMessage = '交通資訊已點擊';
+            } else if (action === 'showExhibitionA') {
+                this.switchToCamera('NavCamera7');
+                this.actionMessage = '展覽館A已點擊';
+            } else if (action === 'showExhibitionB') {
+                this.switchToCamera('NavCamera8');
+                this.actionMessage = '展覽館B已點擊';
+            } else if (action === 'showExhibitionC') {
+                this.switchToCamera('NavCamera9');
+                this.actionMessage = '展覽館C已點擊';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
+            }
+        },
+        switchToCamera(cameraName) {
+            const targetCameraConfig = navCameras[Object.keys(navCameras).find(key => navCameras[key].camera.name === cameraName)];
+
+            if (targetCameraConfig && targetCameraConfig.camera) {
+                const targetCamera = targetCameraConfig.camera;
+                const targetIsFirstPersonMode = targetCameraConfig.isFirstPerson;
+
+                currentCamera = targetCamera;
+
+                console.log(`切換目標攝影機 ${cameraName} 的宣告位置:`, targetCamera.position);
+
+                controls.enabled = false;
+                isFirstPersonMode = targetIsFirstPersonMode;
+
+                gsap.to(currentCamera.position, {
+                    duration: 1.5,
+                    x: targetCamera.position.x,
+                    y: targetCamera.position.y,
+                    z: targetCamera.position.z,
+                    ease: "power2.inOut",
+                    onComplete: function () {
+                        console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
+                        console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
+                    }
+                });
+
+                const targetRotationX = targetIsFirstPersonMode ? targetCameraConfig.initialRotationX : targetCamera.rotation.x;
+                const targetRotationY = targetIsFirstPersonMode ? targetCameraConfig.initialRotationY : targetCamera.rotation.y;
+                const targetRotationZ = targetIsFirstPersonMode ? 0 : targetCamera.rotation.z;
+
+                gsap.to(currentCamera.rotation, {
+                    duration: 1.5,
+                    x: targetRotationX,
+                    y: targetRotationY,
+                    z: targetRotationZ,
+                    ease: "power2.inOut",
+                    onComplete: function () {
+                        if (isFirstPersonMode) {
+                            firstPersonRotationX = targetRotationX;
+                            firstPersonRotationY = targetRotationY;
+                        }
+                        console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
+                        console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
+                    }
+                });
+            } else {
+                console.warn(`無法找到名為 ${cameraName} 的攝影機配置。`);
             }
         },
         closeInfoModal() {
@@ -67,42 +152,297 @@ createApp({
                 console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
-        showFrameInfo(itemName) {
+        // *** 修改開始：showFrameInfo 方法新增 clickedObject 參數 ***
+        showFrameInfo(itemName, clickedObject = null) {
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = false;
                 console.log('OrbitControls 已禁用。');
             }
 
-            this.infoModalTitle = `${itemName} 介紹`;
-            // 根據物件名稱設定不同的內容
+            let displayTitle = itemName; // 預設使用傳入的 itemName
+            let displayContent = '沒有找到該物件的介紹資訊。';
+
+            // 向上找尋 customDisplayName
+            if (clickedObject) {
+                let parent = clickedObject;
+                while (parent) {
+                    if (parent.userData && parent.userData.customDisplayName) {
+                        displayTitle = parent.userData.customDisplayName;
+                        break;
+                    }
+                    parent = parent.parent;
+                }
+            }
+
+
+
+
+            // 根據原始物件名稱設定不同的內容 (這裡保持您現有的邏輯，用 itemName 來判斷)
+            // 重置圖片輪播狀態
+            this.showImageCarousel = false;
+            this.carouselImages = [];
+            this.currentImageIndex = 0;
+
             switch (itemName) {
                 case '畫框01':
-                    this.infoModalContent = '這是畫框01的詳細介紹內容。它展示了歷史的痕跡。';
+                    displayContent = [
+                        "<br>松山文創園區坐落於台北市信義區，前身為台灣總督府專賣局松山菸草工場，興建於1937年日治時期，是台灣現代化工業廠房的先驅，在菸酒專賣時代對國庫貢獻良多。1998年因市場開放與公賣制度改革而停止生產。2001年，台北市政府將其指定為第99處市定古蹟，自此開啟了老建築再利用的嶄新篇章。",
+                        "<br><br>老建築再利用與當下使用：\n松山菸廠的建築群以「日本初現代主義」風格建造，結合簡潔俐落的結構與典雅的細節，廠區規劃時即導入「工業村」概念，附設完整的員工福利設施。如今，這些富有歷史底蘊的老建築已獲得活化新生，成為推動文化創意產業的重要基地：",
+                        "<br><br>製菸工廠 (Tobacco Factory)：園區內最大主體建築，原為捲菸作業場，現已轉型為文創產業的展示與創意平台，承載各式展覽與活動。",
+                        "<br>倉庫群 (Warehouses 1-5)：這些曾用於儲存菸草成品的倉庫，現在是重要的跨界展演空間，舉辦多元的藝文活動。",
+                        "<br>鍋爐房 (Boiler Room)：過去提供菸廠動力的鍋爐房，其高聳的煙囪曾是台北東區的地標，見證著產業發展的歷程。",
+                        "<br>不只是圖書館 (Not Just Library)：由昔日的育嬰室與澡堂活化而成，提供獨特的閱讀與文化體驗，被譽為「書浴」的創新空間。",
+                        "<br>多功能展演廳 (Auditorium)：原為員工用餐、集會及籃球活動的大禮堂，現已改建為寬敞的多功能展演空間，適合舉辦各類藝文演出。",
+                        "<br>生態景觀池 (Ecological Landscape Pond)：園區內的大型水池原為消防蓄水池，現已整頓為生態濕地，保留多樣的保育植物，是城市中難得的綠色空間。",
+                        "<br>巴洛克花園：位居園區中央，增添了整體環境的浪漫與綠意。",
+                        "<br><br>松山文創園區成功地將歷史工業遺產轉化為兼具文化、藝術、設計與休憩功能的複合式園區，不僅保留了舊時代的風貌，更注入了當代的創意活力，成為台北市重要的文化地標。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '查看更多畫作';
+                    this.modalAction = 'viewArtwork';
+                    this.showModalButton = false;
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/松山文創-舊照片.jpg',
+                        './img/松山文創-畫框01.jpg'
+                        
+                    ];
+                    this.currentImageIndex = 0;
                     break;
                 case '畫框02':
-                    this.infoModalContent = '畫框02描繪了當地的風土人情，充滿了生命力。';
+                    displayContent = [
+                        "<br>華山1914文化創意園區位於台北市中正區，前身為台灣總督府專賣局台北酒工場，其歷史可追溯至日治時期大正3年（西元1914年），由日人創辦的『芳釀社』釀酒工場。該園區不僅是台灣現代化製酒產業的重要見證，更在1999年後，透過老建築再利用，蛻變為台灣文化創意產業的旗艦基地，成為藝文展演、餐飲休憩與文創商品的匯聚之地。",
+                        "<br><br>歷史沿革\n華山園區的歷史橫跨百年，大致可分為以下階段：",
+                        "<br>造酒製腦時期（1914-1987）：園區最早於1914年由民營的『芳釀社』創辦，主要生產清酒。1922年因日本政府實施專賣制度而被收購，改稱為『台灣總督府專賣局台北酒工場』，主要製造米酒及再製酒。園區內還曾設有『日本樟腦株式會社台北支店』，從事精製樟腦的生產。在專賣局接收後，現今園區內大部分的廠房建築，皆是在1931年至1933年間『新工場建設時期』所興建。1987年，因酒廠遷至桃園龜山，華山園區的製酒產業歷史正式劃下句點。",
+                        "<br>空間蛻變與藝文特區時期（1987-2003）：酒廠遷出後，園區一度閒置。1999年，台灣藝術界積極爭取將其轉型為藝術中心，後由『中華民國藝術文化環境改造協會』接手經營，正式進入『華山藝文特區』時期，提供藝文界作為展演場地。",
+                        "<br>文創園區時期（2003至今）：為推動文化創意產業發展，行政院於2002年規劃運用舊酒廠閒置空間，並將華山藝文特區轉型為『創意文化園區』，旨在展現文創成果、培育未來人才及提供文創資訊，成為台灣文化創意產業的重要指標。",
+                        "<br><br>老建築再利用與當下使用\n華山1914文創園區成功地將這些承載歷史記憶的老建築注入了新的生命，遵循『以舊領新』、『新舊共榮』的整建原則，使其成為多元文化活動的場域：",
+                        "<br>製酒廠房：園區內完整保存了日治時期的製酒產業建築群，如高塔區、烏梅劇院（原貯酒庫）、四連棟（原紅酒貯藏庫）等，這些建築展現了1930年代台灣工業建築的技術水平。斑駁的牆面、鑄鐵欄杆、挑高的空間感，如今已轉化為各具特色的展演空間、藝廊、文創商店和主題餐廳。",
+                        "<br>煙囪：園區內高聳的煙囪是三大市定古蹟之一，曾是台北的地標，見證了酒廠的輝煌歲月，如今依然矗立，訴說著歷史的故事。",
+                        "<br>其他附屬建築：許多小型建築和空間也經過巧思活化，進駐了設計工坊、咖啡廳、電影館（如光點華山電影館，原為再製酒包裝室）等，讓老建築與當代創意完美融合。",
+                        "<br>戶外空間：廣闊的戶外綠地和紅磚步道，成為市民休憩散步、舉辦創意市集、戶外表演的熱門場所。園區旁的華山大草原更是假日野餐、遛小孩的絕佳去處。",
+                        "<br><br>華山1914文化創意園區不僅是台北市的熱門景點，更是一個活生生的歷史博物館，透過對老建築的再利用，它持續展現著新活力，讓歷史與創意在此交會，為人們提供豐富的藝文體驗。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '進入導覽';
+                    this.modalAction = 'enterExhibitionA';
+                    this.showModalButton = false;
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/華山1914文化創意園區-舊照片.png',
+                        './img/華山1914文化創意園區-畫框02.jpg'
+                        
+                    ];
+                    this.currentImageIndex = 0;
                     break;
                 case '畫框03':
-                    this.infoModalContent = '畫框03是一幅抽象藝術作品，引人深思。';
+                    displayContent = [
+                        "<br>駁二藝術特區位於高雄市鹽埕區，前身為高雄港的老舊港口倉庫。這些倉庫建於1973年，原本是儲存貨物的普通港口倉庫。隨著高雄港產業轉型，貨運模式改變，這些倉庫逐漸閒置。",
+                        "<br>歷史與老建築再利用\n2000年，為配合國慶煙火首次在高雄施放，政府人員偶然發現了這片閒置的駁二倉庫。一群熱心藝文界人士於2001年成立「駁二藝術發展協會」，積極推動將此地轉化為南部藝文發展基地。在文化部閒置空間再利用政策的協助下，駁二藝術特區於2002年正式開放，並於2006年由高雄市政府文化局接手經營。",
+                        "<br><br>駁二藝術特區成功將這些老舊倉庫活化，其再利用方式多元：",
+                        "<br>倉庫群：原本用來裝卸貨物的港口倉庫，現在已搖身一變為各式展覽空間、文創商店、特色餐廳、設計工坊和表演場地。園區分為大勇、蓬萊、大義三大區域，每個區域都有其獨特的藝術氛圍與進駐店家。",
+                        "<br>棧貳庫：這是另一個成功的再利用案例，過去用於儲存和輸運砂糖的倉庫，現已成為結合購物、展覽、餐飲的多功能複合空間，甚至引入了歷史建築倉庫旅宿的體驗。",
+                        "<br>鐵道與裝置藝術：園區內保留了舊鐵道，並利用閒置空間設置了許多大型公共藝術裝置，例如「工人與漁婦」、「巨人的積木」等，這些作品與港口歷史和城市文化緊密結合，成為熱門的打卡景點。",
+                        "<br>月光劇場：過去的倉庫空間被改造為音樂展演場地，定期舉辦流行及獨立樂團演唱會。",
+                        "<br>電影院與數位產業：部分倉庫也引入了現代化的功能，例如「in89駁二電影院」的進駐，以及曾有索尼電腦娛樂等數位產業公司在此設立研發中心。",
+                        "<br><br>當下使用\n如今的駁二藝術特區是高雄最具代表性的文化地標之一，更是台灣舊建築活化再利用的成功典範。它不僅舉辦高雄設計節、鋼雕藝術節、貨櫃藝術節等大型藝文活動，也吸引了各式文創市集、街頭藝人在此聚集。透過水岸輕軌的串聯，遊客可以便利地穿梭於各個倉庫群與哈瑪星鐵道文化園區之間，感受港都特有的藝術氛圍與城市美學。",
+                        "<br>駁二藝術特區以其獨特的歷史背景和創新的再利用模式，成功地將老舊港區轉變為一個充滿活力、創意和歷史記憶的藝術聚落。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '參觀室內';
+                    this.modalAction = 'enterDesignDept';
+                    this.showModalButton = false;
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/駁二藝術特區-畫框03.jpg',
+                        './img/駁二藝術特區-舊照片.jpg'
+                    ];
+                    this.currentImageIndex = 0;
                     break;
                 case '畫框04':
-                    this.infoModalContent = '畫框04記錄了某個重要事件，具有紀念意義。';
+                    displayContent = [
+                        "<br>林百貨，俗稱『五層樓仔』，位於台南市中西區，是台灣歷史上極具代表性的百貨公司。它於1932年12月5日開幕，不僅是全台第二間、南台灣第一間百貨公司，更因其現代化設施和獨特風格，成為日治時期台南『末廣町』（今中正路一帶，當時被稱為『台南銀座』）繁榮與摩登的象徵。",
+                        "<br><br>歷史沿革\n林百貨由日本山口縣商人林方一投資興建，開幕僅五天後林方一不幸病逝，隨後由其妻子林年子繼續經營。當時的林百貨，以鋼筋混凝土興建的『折衷樣式』建築，在物資缺乏的年代堪稱豪華。它配備了南台灣第一部電梯（俗稱『流籠』）、手搖式鐵捲門、避雷針、抽水馬桶等先進設備，讓搭乘電梯成為當時台南最時髦的活動。頂樓更設有全台唯一的百貨公司內神社——『末廣社』，彰顯了當時日本商家的信仰文化。",
+                        "<br>第二次世界大戰後，林百貨結束營業，建築曾被挪作製鹽總廠、派出所、空軍單位等用途，也曾長期閒置荒廢。直到1998年被公告為台南市定古蹟，才為其重獲新生埋下伏筆。",
+                        "<br><br>老建築再利用與當下使用\n經過台南市政府文化局的悉心修復，林百貨於2014年6月14日以『文創百貨』的形式重新開幕。這次的活化再利用，不僅保留了老建築的原汁原味，更融入了台南在地文化與文創元素：",
+                        "<br>建築本體：建築外觀維持日治時期的棕色溝面磚立面、簡潔幾何圖形與圓形窗戶。修復團隊甚至保留了二戰末期美軍掃射留下的彈孔牆面與機槍砲座，讓歷史的痕跡清晰可見。",
+                        "<br>指針式電梯：曾是台南人引以為傲的『流籠』，修復後仍保留其獨特的指針式樓層顯示器，讓遊客能親身體驗昔日的時髦。雖然為安全考量載客數有所調整，但仍能透過電梯井觀察到舊時的建築結構。",
+                        "<br>頂樓神社：位於六樓的末廣社遺址，其水泥基座與鳥居依然存在，是台灣現存少數店舖內部的空中神社，也是許多遊客必訪的特色。",
+                        "<br>內部空間：各樓層的規劃融合了懷舊與現代。一樓多販售台南特色伴手禮；二樓則匯聚台南在地設計與文創商品；樓上設有咖啡廳、藝文空間，甚至提供旗袍試穿體驗等。整體營造出復古溫馨的氛圍，讓逛百貨彷彿一場穿越時空的歷史之旅。",
+                        "<br><br>如今，林百貨已不只是一間百貨公司，它更是台南的一張文化名片，是舊建築活化再利用的成功典範。它承載著老台南人的共同記憶，也向國內外遊客展現台南豐富的歷史底蘊與獨特的文化創意，成為體驗台南慢活風格的必訪景點。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '進入導覽';
+                    this.modalAction = 'enterHRDept';
+                    this.showModalButton = false;
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/林百貨-畫框04.jpg',
+                        './img/林百貨-舊照片.jpg'
+                    ];
+                    this.currentImageIndex = 0;
                     break;
                 case '畫框05':
-                    this.infoModalContent = '畫框05記錄了某個重要事件，具有紀念意義。';
+                    displayContent = [
+                        "<br>文化部文化資產園區位於台中市南區，前身為台灣總督府專賣局台中酒工場，創建於1916年，是日治時期台灣四大酒廠之一。這座承載百年歷史的舊酒廠，不僅是台灣製酒產業的重要見證，更在近年透過完善的老建築再利用計畫，蛻變為台灣推動文化資產保存與活化的重要基地。",
+                        "<br><br>歷史沿革\n台中酒廠的歷史可追溯至日治大正5年（1916年），最初由日人創立，生產清酒、醬油及味噌。1922年，日本政府實施專賣制度後，酒廠被收歸為『台灣總督府專賣局台中酒工場』，主要生產燒酒、米酒、福祿壽酒等，並引入西方製酒技術。戰後，酒廠由台灣省專賣局接管，改名『台灣省菸酒公賣局台中酒廠』，持續營運至2002年，因台灣加入WTO、公賣局改制為台灣菸酒公司而停止生產，正式走入歷史。",
+                        "<br><br>老建築再利用與當下使用\n台中酒廠的建築群涵蓋了日治時期至今的多元風格，包括製酒廠房、儲酒庫、鍋爐室、包裝工廠、辦公廳舍等，其特殊的紅磚牆、木屋架、高聳煙囪，都見證了台灣工業發展的軌跡。在文化部與各方努力下，這些深具歷史價值的建築得以活化再生：",
+                        "<br>展覽空間：廣闊的舊廠房和倉庫，經過修復後轉變為多元的展覽廳，定期舉辦主題特展、藝術展覽、文創展銷會等，提供藝術家和設計師展現創意的平台。",
+                        "<br>文資保存與教育：園區內設有文化資產保存研究中心，致力於文物修復、保存技術研發及人才培育。透過導覽、工作坊等方式，推廣文化資產保存的知識與理念。",
+                        "<br>文創商店與餐飲：部分歷史建築被改造為文創商品店、特色餐廳、咖啡廳等，讓遊客在享受歷史氛圍的同時，也能體驗台灣的設計能量與美食文化。",
+                        "<br>表演藝術空間：園區內有規劃表演場地，不定期舉辦音樂、舞蹈、戲劇等藝文活動，豐富了台中的藝文生活。",
+                        "<br>戶外空間：寬闊的戶外區域則成為民眾散步、休憩、舉辦市集或戶外活動的理想場所，讓這座百年酒廠成為與市民生活緊密連結的公共空間。",
+                        "<br><br>文化部文化資產園區透過對老建築的修復、活化與再利用，不僅保留了珍貴的歷史記憶，也將其轉型為兼具文化、教育、創意與觀光功能的複合式園區，成為台灣文化資產保存與創新的重要示範。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/文化部文化資產園區-舊照片.jpg',
+                        './img/文化部文化資產園區-畫框05.jpg'
+                    ];
+                    this.currentImageIndex = 0;
                     break;
-                case '大門':
-                    this.infoModalContent = '這是大門的介紹。它是通往建築的入口。';
+                case '畫框06':
+                    displayContent = [
+                        "<br>台中刑務所演武場，又稱道禾六藝文化館，位於台中市西區林森路，是一座興建於日治時期昭和12年（西元1937年）的歷史建築。它最初是作為台中刑務所（今台中監獄）司獄官及警察修習柔道與劍道的武道館舍，也是台中市目前僅存的日治時期武道館建築，具有重要的歷史與建築研究價值。",
+                        "<br><br>歷史沿革\n這座演武場在日治時期扮演著獄政人員訓練的重要角色。戰後，它曾轉為法務部台中監獄的一部分，週邊也興建了眷村。2004年，台中市文化局將其登錄為歷史建築。然而，在2006年曾不幸遭遇火災，部分木造建築被焚毀。經過多年的修復工程，主體及附屬建築於2010年修復完成。",
+                        "2012年3月，台中市政府委託財團法人道禾教育基金會經營管理，並將其定名為『道禾六藝文化館』，於隔年5月正式開館啟用。道禾教育基金會以推廣『新六藝文化』為目標，將儒家傳統六藝（禮、樂、射、御、書、數）重新詮釋，並融入現代生活。",
+                        "<br>值得注意的是，自2023年11月1日起，道禾六藝文化館已終止營運，台中市政府已將此歷史建築整區點交給文化部，納入國家漫畫博物館園區，並啟動全區整體規劃整建工程。因此，目前園區的開放時程及活動詳情，建議至文化部國家漫畫博物館台中籌備處臉書或致電館方確認。",
+                        "<br><br>建築特色與再利用\n台中刑務所演武場的建築風格屬於日治時期典型的演武場形式，其特色包括：",
+                        "<br>主體建築（惟和館）：採和洋折衷的磚造日式建築，屋頂為『入母屋造』（歇山式屋頂），並有大型鬼瓦及博風板裝飾，基座抬高，顯得莊嚴氣派。過去是柔道、劍道的練習空間。",
+                        "<br>心行館（附屬建築）：位於主館左側，為傳統日式木構建築，過去是休憩區，現曾作為茶道、古琴、圍棋等文化推廣課程空間，並附設『小書房』。",
+                        "<br>傳習館（附屬建築）：位於主館後方，原為宿舍，現曾作為弓道、書法、紙藝推廣課程及藝文展覽空間。",
+                        "<br>大樹下劇場：園區內有一棵百年老榕樹，曾歷經火災卻奇蹟般地存活下來，象徵著文化的傳承與生命力。樹下設有戶外舞台，過去不定期舉辦藝文表演和市集活動。",
+                        "<br><br>在道禾六藝文化館營運期間，園區透過舉辦茶道、弓道、劍道、書法、圍棋等課程與體驗活動，以及各式藝文展覽和主題市集，成功地將這座歷史建築轉化為一個結合傳統文化、藝術與教育的多元空間，也成為台中市區獨具日式風情、被譽為『台中小京都』的熱門景點。",
+                        "<br>儘管經營單位已轉換，但台中刑務所演武場作為歷史建築的價值與其獨特的日式氛圍依然存在，未來將以國家漫畫博物館園區的一部分繼續承載新的文化使命。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/台中刑務所演武場-舊照片.jpg',
+                        './img/台中刑務所演武場-畫框06.jpg'
+                    ];
+                    this.currentImageIndex = 0;
+                    break;
+                case '畫框07':
+                    displayContent = [
+                        "<br>四四南村位於臺北市信義區，緊鄰台北101，是臺北地區的第一個眷村，也是國共內戰時期的產物。它承載著特殊的歷史意義，見證了臺灣眷村文化的發展與變遷，如今已轉型為結合歷史、文化、創意與休閒的熱門景點。",
+                        "<br><br>歷史沿革\n四四南村的名稱源自於聯勤第四十四兵工廠。1948年，國共內戰告急，大陸青島的聯勤四十四兵工廠員工及眷屬匆匆遷臺，被安置在日治時期日軍陸軍庫房的聯勤第四十四兵工廠南側，因此得名『四四南村』。起初，眷戶們抱持著『暫住』的心態，居住環境簡陋，多以木材、竹籬、石灰及瓦片搭建而成，並採連棟式的平房，以『魚骨狀』的架構排列。",
+                        "<br>隨著時間推移，這些『暫住』的居民在此地生根，一待就是數十年。然而，隨著信義計畫區的土地開發及眷村改建政策的推動，四四南村的住戶於1999年全部遷出，面臨拆除的命運。在社區居民和文化界人士的努力下，發起了眷村文化保存運動，最終於2001年拍板定案，決定保留部分具代表性的建築。2003年10月25日，四四南村以信義公民會館暨眷村文化公園的新風貌重新對外開放。",
+                        "<br><br>建築特色與再利用\n四四南村保留了四棟相連的眷村房舍，並將其活化再利用，賦予不同的功能：",
+                        "<br>A館－信義親子館：提供親子互動的溫馨遊戲空間，融入眷村的復古氛圍，讓親子在創意中共同成長。",
+                        "<br>B館－眷村文物展示館：透過靜態展示，呈現四四南村的歷史軌跡、眷村藝文、眷村媽媽的生活、眷村美食、手工藝等，讓參觀者深入了解眷村文化。",
+                        "<br>C館－好丘文創餐飲生活空間：由『好，丘』進駐，提供以臺灣本土物產製作的創意貝果餐點、輕食、咖啡飲料等，並結合文創選物店，為園區增添了香氣與生活溫度。",
+                        "<br>D館－南村劇場·青鳥·有·設計：融合了劇場、閱讀、設計、餐飲等多種創意能量。白天是擁有上千本主題藏書和設計商品的有機書店，夜晚則轉變為推廣臺灣新劇團、新文本、新製作的新秀劇場。",
+                        "<br><br>此外，園區內還保留了防空洞和碉堡，作為歷史的見證。四四南村的戶外廣場也經常舉辦文創市集（如簡單市集、二手市集等），吸引許多遊客前來尋寶、感受悠閒的假日氛圍，也成為許多人像外拍、婚紗攝影的熱門地點。",
+                        "<br>四四南村以其低矮的眷村建築，與周圍高聳的台北101等現代化商業大樓形成強烈對比，展現了信義區過去與現在的時空交錯，也成為臺北城市發展中一個獨特的文化地標。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/四四南村-舊照片.jpeg',
+                        './img/四四南村-畫框07.jpg'
+                    ];
+                    this.currentImageIndex = 0;
+                    break;
+                case '畫框08':
+                    displayContent = [
+                        "<br>嘉義檜意森活村位於嘉義市東區，是台灣第一個以森林為主題的文創園區。其前身為日治時期阿里山林業開發所建立的官方宿舍群，俗稱『檜町』。這些建築主要以阿里山檜木為建材，歷經百年歲月，見證了嘉義身為『木都』及台灣林業發展的輝煌歷史。",
+                        "<br><br>歷史沿革\n檜意森活村的歷史始於日治大正年間（約1914年），隨著阿里山林業的蓬勃發展，日本人在此興建了大量官舍，作為林業相關人員的宿舍，因此整個區域充滿了檜木香氣，得名『檜町』。這個區域擁有從高級主管的『一戶建』（獨棟住宅）到基層職員的連棟宿舍，以及招待官員的『營林俱樂部』等多樣化的建築形式。",
+                        "<br>國民政府來台後，這些宿舍由林務機關接管繼續使用。然而，隨著林業政策的改變，天然林木停止採伐，部分建築逐漸閒置。2005年，嘉義市政府意識到這些日式建築群的歷史價值，將其登錄為市定古蹟及歷史建築。此後，透過『檜意森活村計畫』，遵循『原材料、原工法』的原則，對園區內多達29棟的木構造歷史建築進行了長達四年的修復與整建，使其風華再現。",
+                        "<br><br>老建築再利用與當下使用\n檜意森活村的活化再利用是台灣舊建築保存與文創結合的成功典範。這些承載歷史記憶的日式木造建築，如今被賦予了新的生命：",
+                        "<br>日式宿舍群：大部分被修復的木造宿舍，轉型為各式文創商店、特色藝品店、伴手禮店、輕食咖啡館等。遊客可以在古色古香的日式房舍中，體驗手作DIY、品嚐嘉義特色小吃，或選購充滿地方風情的文創商品。",
+                        "<br>營林俱樂部：這棟具有都鐸式半木構造風格的市定古蹟，曾是招待官員的場所，後也曾作為幼稚園使用，現則透過不同的藝文展覽，展現其過往的風華。",
+                        "<br>一心二葉館（農業精品館）：位於園區北邊的新建建築，特色是利用回收舊木料整建而成的綠建築，與全台多間農會合作，展售雲嘉南地區在地農產精品和特色伴手禮。",
+                        "<br>阿里山林業史館：專門展示嘉義市百年林業歷史及文物，透過圖文和實物，傳承阿里山林業的文化記憶。",
+                        "<br>其他特色體驗：園區內還有提供和服租借服務，讓遊客能穿上和服在日式建築群中拍照留念，彷彿置身日本京都。此外，亦有炭雕藝術博物館、主題館等，提供多元的文化體驗。",
+                        "<br>戶外景觀區：園區內有景觀水池、日式庭園，以及保留的舊鐵道等，不僅是拍照美景，也是市民休憩散步的好去處。",
+                        "<br><br>檜意森活村不僅是嘉義市重要的觀光景點，更是將林業文化資產轉化為兼具歷史教育、文化創意與休閒娛樂功能的複合式園區，讓遊客在充滿檜木香氣的日式氛圍中，感受嘉義獨特的城市魅力。"
+                    ].join('\n\n');
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/嘉義檜意森活村-畫框08.jpg',
+                        './img/嘉義檜意森活村-畫框08-2.jpg'
+                    ];
+                    this.currentImageIndex = 0;
                     break;
                 case '桌子':
-                    this.infoModalContent = '這是一張桌子。它可以用來放置物品或進行工作。';
+                    displayContent = [
+                        '<br>臺北機廠鐵道博物館位於臺北市信義區，前身是臺灣鐵路管理局臺北機廠，俗稱「火車醫院」。這座具有近百年歷史的工廠，曾是臺灣鐵道車輛的製造、維修與保養基地，更是臺灣工業現代化的重要見證。目前，它正積極轉型為國家級的臺北機廠鐵道博物館，預計將成為亞洲重要的鐵道文化中心。',
+                        '<br><br>歷史沿革\n臺北機廠的歷史可追溯至日治時期。為配合臺灣總督府推動的鐵道擴建計畫，原設於臺北車站附近的臺北工場不敷使用，因此選定現址於1930年動工興建，並於1935年正式啟用。當時的臺北機廠是亞洲最大的鐵路修理工廠之一，從蒸汽火車到柴油、電力機車，幾乎所有鐵路車輛的維修、組裝乃至部分製造都在此進行，是臺灣鐵道工業的心臟。',
+                        '<br>戰後，臺北機廠由臺灣鐵路管理局接管，繼續承擔鐵路車輛維修重任。然而，隨著時代變遷，臺北機廠的產能與土地利用逐漸面臨轉型。2012年，臺北機廠正式遷往桃園富岡，舊廠區面臨閒置與開發的危機。在各界奔走下，文化部於2015年將臺北機廠全區指定為國定古蹟，確立了其保存與轉型的方向，並規劃將其改造為國家級鐵道博物館。',
+                        '<br><br>老建築再利用與博物館籌備\n臺北機廠佔地廣闊，擁有豐富的歷史建築群和機具設備，這些都是未來博物館的核心展示內容。目前園區仍在籌備與修復中，但已可預見其活化再利用的潛力：',
+                        '<br>修復工場：這是臺北機廠的核心，巨大的鋼骨結構廠房，過去是火車解體、組裝、修理的心臟地帶。未來將成為主要展示區，呈現火車維修的工藝與歷史，甚至可能開放部分車輛進行動態展示。其獨特的「天車」（吊車）軌道也是重要特色。',
+                        '<br>組立工場：負責火車車體組裝的空間，其高聳的廠房將提供展示大型火車頭和車廂的理想場所。',
+                        '<br>鍛冶工場：過去處理金屬鍛造的場所，保有獨特的工業氛圍，未來有望展示傳統金屬工藝和蒸汽火車的動力系統。',
+                        '<br>總辦公室：採日式辦公建築風格，將作為博物館的行政與研究中心，也可能部分開放展示機廠的行政運作歷史。',
+                        '<br>大澡堂：這座羅馬式浴場風格的澡堂是當年員工下班後休憩的重要場所，其獨特的拱形屋頂和採光設計，未來有望成為特色展覽空間或休憩區。',
+                        '<br>員工宿舍區：這些不同等級的日式宿舍，將呈現鐵道員工的生活樣貌，也可能改造成文創商店、餐飲或特展空間。',
+                        '<br>廠區鐵道與機具：園區內縱橫交錯的鐵道、扇形車庫以及各種大型機具，本身就是重要的展品，將透過動線規劃，讓參觀者沉浸式體驗鐵道工業的氛圍。',
+                        '<br><br>臺北機廠鐵道博物館的願景是打造一個融合歷史文化、產業技術、教育研究與休閒觀光的國家級博物館，不僅保存了臺灣的鐵道記憶，也將成為推動鐵道文化與工業遺產保存的重要基地。'
+                    ].join('\n\n');
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
+                    this.showImageCarousel = true;
+                    this.carouselImages = [
+                        './img/臺北機廠鐵道博物館-桌子-1.jpg',
+                        './img/臺北機廠鐵道博物館-桌子-2.png'
+                    ];
+                    this.currentImageIndex = 0;
+                    break;
+                case '大門':
+                    displayContent = '';
+                    this.infoModalButtonText = '離開';
+                    this.modalAction = 'exit';
+                    this.showModalButton = true;
                     break;
                 default:
-                    this.infoModalContent = '沒有找到該物件的介紹資訊。';
+                    displayContent = '沒有找到該物件的介紹資訊。';
+                    this.infoModalButtonText = '關閉';
+                    this.modalAction = 'close';
+                    this.showModalButton = true;
             }
+            this.infoModalTitle = displayTitle;   // 設定彈出視窗標題
+            this.infoModalContent = displayContent;  // 資訊彈出視窗的內容
             this.showInfoModal = true;
         },
+        enterExhibition() {
+            this.closeInfoModal(); // 先關閉彈出視窗
+            switch (this.modalAction) {
+                case 'enterExhibitionA':
+                    window.location.href = 'loading畫面.html?target=台灣歷史.html';
+                    break;
+                case 'exit':
+                    window.location.href = 'loading畫面.html?target=主題頁面.html';
+                    break;
+                case 'viewArtwork':
+                    // 這裡可以添加跳轉到畫作詳細頁面或執行其他操作的邏輯
+                    console.log('查看更多畫作');
+                    break;
+                case 'enterDesignDept':
+                    window.location.href = 'loading畫面.html?target=展覽館A.html';
+                    break;
+                case 'enterHRDept':
+                    window.location.href = 'loading畫面.html?target=彈藥庫歷史.html';
+                    break;
+                case 'learnMore':
+                    console.log('了解更多');
+                    break;
+                case 'close':
+                default:
+                    // 預設行為，例如只關閉彈出視窗
+                    break;
+            }
+        },
+        // *** 修改結束：showFrameInfo 方法 ***
+
         // 新增：滑鼠點擊事件，用於切換攝影機和偵測物件點擊
         onMouseClick(event) {
             // 確保應用程式已初始化，避免在載入時觸發
@@ -129,10 +469,14 @@ createApp({
             const intersects = raycaster.intersectObjects([loadedModel], true);
 
             if (intersects.length > 0) {
-                const clickedObject = intersects[0].object;
+                const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
+                console.log('Clicked object:', clickedObject);
+                console.log('Clicked object userData:', clickedObject.userData);
+
+
 
                 // clickableFramesAndDoor 和 frameNames 現在是全域變數
-                const clickableObjects = ["畫框01", "畫框02", "畫框03", "畫框04", "畫框05", "大門", "桌子"];
+                const clickableObjects = ["畫框01", "畫框02", "畫框03", "畫框04", "畫框05", "畫框06", "畫框07", "畫框08", "桌子", "大門"];
                 let targetNavPointName = null;
                 let clickedItemName = null;
 
@@ -156,7 +500,522 @@ createApp({
 
                 // 如果找到了可點擊的物件，就顯示資訊彈出視窗
                 if (clickedItemName) {
-                    this.showFrameInfo(clickedItemName);
+                    // *** 修改：傳遞 clickedObject ***
+                    this.showFrameInfo(clickedItemName, clickedObject);
+
+                    // 如果點擊的是「介紹欄1」，則切換攝影機並將視角向後看
+                    if (clickedItemName === '畫框01') {
+                        // 直接使用全域的 cameraNav7
+                        const targetCamera = cameraNav3;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框01". Target Camera (NavCamera3) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera3 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera3，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框01', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera3Config = navCameras["我是標示點3"];
+                            if (navCamera3Config) {
+                                currentCamera.rotation.set(navCamera3Config.initialRotationX, navCamera3Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera3Config.initialRotationX;
+                                firstPersonRotationY = navCamera3Config.initialRotationY;
+                                console.log('NavCamera3 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera3 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav3。');
+                        }
+                    } else if (clickedItemName === '畫框02') {
+
+                        const targetCamera = cameraNav4;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框02". Target Camera (NavCamera4) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera4，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框02', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera4Config = navCameras["我是標示點4"];
+                            if (navCamera4Config) {
+                                currentCamera.rotation.set(navCamera4Config.initialRotationX, navCamera4Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera4Config.initialRotationX;
+                                firstPersonRotationY = navCamera4Config.initialRotationY;
+                                console.log('NavCamera4 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera4 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav4。');
+                        }
+                    } else if (clickedItemName === '畫框03') {
+                        // 直接使用全域的 cameraNav9
+                        const targetCamera = cameraNav5;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框03". Target Camera (NavCamera5) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera5，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框03', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera5Config = navCameras["我是標示點5"];
+                            if (navCamera5Config) {
+                                currentCamera.rotation.set(navCamera5Config.initialRotationX, navCamera5Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera5Config.initialRotationX;
+                                firstPersonRotationY = navCamera5Config.initialRotationY;
+                                console.log('NavCamera5 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera5 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav5。');
+                        }
+                    } else if (clickedItemName === '畫框04') {
+                        // 直接使用全域的 cameraNav10
+                        const targetCamera = cameraNav6;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框04". Target Camera (NavCamera6) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera10 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera6，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框04', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera6Config = navCameras["我是標示點6"];
+                            if (navCamera6Config) {
+                                currentCamera.rotation.set(navCamera6Config.initialRotationX, navCamera6Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera6Config.initialRotationX;
+                                firstPersonRotationY = navCamera6Config.initialRotationY;
+                                console.log('NavCamera6 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera6 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav6。');
+                        }
+                    } else if (clickedItemName === '畫框05') {
+                        // 直接使用全域的 cameraNav8
+                        const targetCamera = cameraNav7;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框05". Target Camera (NavCamera7) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera7，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框05', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera7Config = navCameras["我是標示點7"];
+                            if (navCamera7Config) {
+                                currentCamera.rotation.set(navCamera7Config.initialRotationX, navCamera7Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera7Config.initialRotationX;
+                                firstPersonRotationY = navCamera7Config.initialRotationY;
+                                console.log('NavCamera7 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera7 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav7。');
+                        }
+                    } else if (clickedItemName === '畫框06') {
+                        // 直接使用全域的 cameraNav8
+                        const targetCamera = cameraNav8;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框06". Target Camera (NavCamera8) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera8，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框06', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera8Config = navCameras["我是標示點8"];
+                            if (navCamera8Config) {
+                                currentCamera.rotation.set(navCamera8Config.initialRotationX, navCamera8Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera8Config.initialRotationX;
+                                firstPersonRotationY = navCamera8Config.initialRotationY;
+                                console.log('NavCamera8 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera8 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav8。');
+                        }
+                    } else if (clickedItemName === '畫框07') {
+                        // 直接使用全域的 cameraNav8
+                        const targetCamera = cameraNav9;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框07". Target Camera (NavCamera9) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera9，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框07', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera9Config = navCameras["我是標示點9"];
+                            if (navCamera9Config) {
+                                currentCamera.rotation.set(navCamera9Config.initialRotationX, navCamera9Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera9Config.initialRotationX;
+                                firstPersonRotationY = navCamera9Config.initialRotationY;
+                                console.log('NavCamera9 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera9 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav9。');
+                        }
+                    } else if (clickedItemName === '畫框08') {
+                        // 直接使用全域的 cameraNav8
+                        const targetCamera = cameraNav10;
+
+                        if (targetCamera) {
+                            console.log('Clicked "畫框08". Target Camera (NavCamera10) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera10，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('畫框08', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera10Config = navCameras["我是標示點10"];
+                            if (navCamera10Config) {
+                                currentCamera.rotation.set(navCamera10Config.initialRotationX, navCamera10Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera10Config.initialRotationX;
+                                firstPersonRotationY = navCamera10Config.initialRotationY;
+                                console.log('NavCamera10 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera10 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav10。');
+                        }
+                    } else if (clickedItemName === '桌子') {
+                        // 直接使用全域的 cameraNav8
+                        const targetCamera = cameraNav11;
+
+                        if (targetCamera) {
+                            console.log('Clicked "桌子". Target Camera (NavCamera11) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera11，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('桌子', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera11Config = navCameras["我是標示點11"];
+                            if (navCamera11Config) {
+                                currentCamera.rotation.set(navCamera11Config.initialRotationX, navCamera11Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera11Config.initialRotationX;
+                                firstPersonRotationY = navCamera11Config.initialRotationY;
+                                console.log('NavCamera11 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera11 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNavra11。');
+                        }
+
+                    } else if (clickedItemName === '大門') {
+                        // 直接使用全域的 cameraNav11
+                        const targetCamera = cameraNav12;
+
+                        if (targetCamera) {
+                            console.log('Clicked "大門". Target Camera (NavCamera12) position:', targetCamera.position);
+                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+
+                            // 立即切換 currentCamera
+                            currentCamera = targetCamera;
+
+                            // 禁用 OrbitControls
+                            controls.enabled = false;
+                            isFirstPersonMode = true; // 設定為第一人稱模式
+
+                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera11 的位置
+                            gsap.to(currentCamera.position, {
+                                duration: 1.5,
+                                x: targetCamera.position.x,
+                                y: targetCamera.position.y,
+                                z: targetCamera.position.z,
+                                ease: "power2.inOut",
+                                onComplete: function () {
+                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    console.log('攝影機已切換到 NavCamera12，並進入第一人稱模式。');
+                                    // 在第一人稱模式下，OrbitControls 應保持禁用
+                                    // 並且不需要設定 controls.object 或 controls.target
+                                    // 視角控制將由 handleMouseMove 處理
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('大門', clickedObject); // 在動畫完成後顯示資訊彈出視窗
+                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
+                            });
+
+                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
+                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
+                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
+                            // 這樣滑鼠拖曳可以從這個點開始
+                            const navCamera12Config = navCameras["我是標示點12"];
+                            if (navCamera12Config) {
+                                currentCamera.rotation.set(navCamera12Config.initialRotationX, navCamera12Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera12Config.initialRotationX;
+                                firstPersonRotationY = navCamera12Config.initialRotationY;
+                                console.log('NavCamera12 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            } else {
+                                console.warn('NavCamera12 config not found in navCameras.');
+                            }
+
+                        } else {
+                            console.warn('無法找到 cameraNav12。');
+                        }
+                    }
                 }
 
                 // 如果點擊的是導覽點，執行攝影機切換
@@ -270,35 +1129,87 @@ createApp({
             return;
         }
 
-        // 導覽攝影機的設定
-        const cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // 導覽攝影機的設定 (保持不變)
+        cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(3.16, 0.1, -0.05);
+        cameraNav1.position.set(3.13, -0.3, -0.21);
 
-        const cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
-        cameraNav2.position.set(0.00, 0.1, 0.34);
+        cameraNav2.position.set(-2.49, -0.3, -0.21);
 
-        const cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav3.name = "NavCamera3";
-        cameraNav3.position.set(-3.56, 0.1, 0.34);
+        cameraNav3.position.set(3.38, -0.3, -0.21);
 
-        // 導覽點與攝影機的對應關係
+        cameraNav4 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav4.name = "NavCamera4";
+        cameraNav4.position.set(1.50, -0.3, -0.21);
+
+        cameraNav5 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav5.name = "NavCamera5";
+        cameraNav5.position.set(-1.9, -0.3, -0.21);
+
+        cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav6.name = "NavCamera6";
+        cameraNav6.position.set(-2.8, -0.3, -0.21);
+
+
+        cameraNav7 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav7.name = "NavCamera7";
+        cameraNav7.position.set(3.13, -0.3, -0.21);
+        cameraNav7.rotation.y = Math.PI; // 將攝影機繞 Y 軸旋轉 180 度 (π 弧度)
+
+        cameraNav8 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav8.name = "NavCamera8";
+        cameraNav8.position.set(-2.49, -0.3, -0.21); // 調整位置
+
+
+        cameraNav9 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav9.name = "NavCamera9";
+        cameraNav9.position.set(-2.49, -0.3, -0.21); // 調整位置
+        cameraNav9.rotation.y = Math.PI;
+
+        cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav10.name = "NavCamera10";
+        cameraNav10.position.set(-1.1, -0.3, -0.21);
+        cameraNav10.rotation.y = -Math.PI / 2;
+
+        cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav11.name = "NavCamera11";
+        cameraNav11.position.set(-2.49, -0.3, -0.21);
+
+        cameraNav12 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraNav12.name = "NavCamera12";
+        cameraNav12.position.set(3.13, -0.3, -0.21);
+
+
+
+        // 導覽點與攝影機的對應關係 (保持不變)
         navCameras = {
-            "我是標示點1": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
+            "我是標示點1": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 },
             "我是標示點2": { camera: cameraNav2, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
-            "我是標示點3": { camera: cameraNav3, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }
+            "我是標示點3": { camera: cameraNav3, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },
+            "我是標示點4": { camera: cameraNav4, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },
+            "我是標示點5": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },
+            "我是標示點6": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },
+            "我是標示點7": { camera: cameraNav7, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 }, // 对应介紹欄1
+            "我是標示點8": { camera: cameraNav8, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 }, // 对应介紹欄2
+            "我是標示點9": { camera: cameraNav9, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },  // 对应介紹欄3
+            "我是標示點10": { camera: cameraNav10, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }, // 对应介紹
+            "我是標示點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 }, // 对应出口
+            "我是標示點12": { camera: cameraNav12, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }
         };
 
         // 1. 初始化場景、攝影機和渲染器 (賦值給全域變數)
-        scene = new THREE.Scene(); // 這裡使用 = 賦值，因為 scene 已經在外部宣告
-        scene.background = new THREE.Color(0xcccccc);
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87CEEB);
 
-        defaultCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000); // 這裡使用 = 賦值
-        defaultCamera.position.set(0, 0, 5); // 恢復一個合理的預設攝影機位置
-        currentCamera = defaultCamera; // 初始攝影機為預設攝影機 (這裡使用 = 賦值)
+        defaultCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        defaultCamera.position.set(0, 0, 5);
+        currentCamera = defaultCamera;
 
-        renderer = new THREE.WebGLRenderer({ antialias: true }); // 這裡使用 = 賦值
+        renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
 
@@ -310,7 +1221,7 @@ createApp({
         scene.add(directionalLight);
 
         // 3. 初始化 OrbitControls (賦值給全域變數)
-        controls = new OrbitControls(currentCamera, renderer.domElement); // 這裡使用 = 賦值
+        controls = new OrbitControls(currentCamera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.screenSpacePanning = false;
@@ -320,21 +1231,17 @@ createApp({
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
-        raycaster = new THREE.Raycaster(); // 這裡使用 = 賦值
-        mouse = new THREE.Vector2(); // 這裡使用 = 賦值
-        // loadedModel 已經在文件頂部聲明並初始化為 null
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
 
         const modelCenter = new THREE.Vector3();
         const modelSize = new THREE.Vector3();
 
-        // --- 互動物件相關變數 ---
-        // targetObjectNames, highlightableNames, frameNames 已經是全域常數，不需要在這裡重新宣告
-
         // 5. 載入模型
         loader.load(
-            './model/06月團體專案-20250702-02-01版.glb',
+            './model/06月團體專題-老建築改建-20250706-01版.glb',
             function (gltf) {
-                loadedModel = gltf.scene; // 賦值給全域變數 loadedModel
+                loadedModel = gltf.scene;
                 scene.add(loadedModel);
                 console.log('--- 模型已成功載入並添加到場景中 ---');
 
@@ -344,6 +1251,56 @@ createApp({
                 box.getSize(modelSize);
                 loadedModel.position.sub(modelCenter);
                 console.log('模型已移到世界中心。');
+
+                // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
+                loadedModel.traverse((child) => {
+                    // Check if the child has a name that matches our target names
+                    // We are being more general here, not just checking for isMesh
+                    switch (child.name) {
+                        case '畫框01':
+                            child.userData.customDisplayName = '松山文創園區';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框02':
+                            child.userData.customDisplayName = '華山1914文化創意園區';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框03':
+                            child.userData.customDisplayName = '駁二藝術特區';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框04':
+                            child.userData.customDisplayName = '林百貨';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框05':
+                            child.userData.customDisplayName = '文化部文化資產園區';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框06':
+                            child.userData.customDisplayName = '台中刑務所演武場';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框07':
+                            child.userData.customDisplayName = '四四南村';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '畫框08':
+                            child.userData.customDisplayName = '嘉義檜意森活村';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '桌子':
+                            child.userData.customDisplayName = '台北機廠鐵道博物館';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '大門':
+                            child.userData.customDisplayName = '出口';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        // 如果有其他物件需要自訂名稱，可以在這裡添加
+                    }
+                });
+                // *** 新增結束：為特定物件添加自訂顯示名稱到 userData ***
 
                 // --- 尋找所有可高亮的物件並存儲 (填充到全域變數 highlightableObjects) ---
                 highlightableObjects.length = 0; // 清空舊數據，確保每次載入都正確
@@ -358,31 +1315,45 @@ createApp({
                 });
 
                 // 尋找攝影機標點以設定初始第一人稱視角
-                const cameraMarker = loadedModel.getObjectByName("我是標示點1");
-                if (cameraMarker) {
-                    console.log('抓到物件：我是標示點1');
-                    const markerPosition = new THREE.Vector3();
-                    cameraMarker.getWorldPosition(markerPosition);
+                const urlParams = new URLSearchParams(window.location.search);
+                const initialCameraName = urlParams.get('camera');
 
-                    // --- 設定 NavCamera1 的初始旋轉 ---
-                    // NavCamera1 的位置已在 mounted() 函式開頭設定
-                    // cameraNav1.lookAt(new THREE.Vector3(0, 0, 0)); // Removed lookAt for first-person camera
+                let initialCameraConfig = navCameras["我是標示點1"]; // Default to NavCamera1
+                if (initialCameraName) {
+                    // Find the corresponding navCamera based on the name passed from the URL
+                    const foundConfig = Object.values(navCameras).find(config => config.camera.name === initialCameraName);
+                    if (foundConfig) {
+                        initialCameraConfig = foundConfig;
+                        console.log(`從 URL 參數讀取到初始攝影機：${initialCameraName}`);
+                    } else {
+                        console.warn(`URL 參數指定的攝影機 "${initialCameraName}" 未找到，使用預設攝影機。`);
+                    }
+                }
 
-                    // 將計算好的初始旋轉值存儲起來，供後續點擊使用
-                    navCameras["我是標示點1"].initialRotationX = cameraNav1.rotation.x;
-                    navCameras["我是標示點1"].initialRotationY = cameraNav1.rotation.y;
-                    console.log('已設定 NavCamera1 的座標為:', cameraNav1.position);
+                if (initialCameraConfig) {
+                    const targetCamera = initialCameraConfig.camera;
+                    currentCamera = targetCamera;
+                    isFirstPersonMode = initialCameraConfig.isFirstPerson;
+                    controls.enabled = !isFirstPersonMode; // Disable controls if in first-person mode
 
-                    // 將 NavCamera1 設為當前攝影機並進入第一人稱模式
-                    currentCamera = cameraNav1;
-                    isFirstPersonMode = true;
-                    controls.enabled = false; // 禁用 OrbitControls
-                    console.log('--- 找到攝影機標點，已設定初始視角為 "NavCamera1" (第一人稱) ---');
-                    console.log('NavCamera1 座標為: ', cameraNav1.position);
-
+                    if (isFirstPersonMode) {
+                        currentCamera.rotation.set(initialCameraConfig.initialRotationX, initialCameraConfig.initialRotationY, 0, 'YXZ');
+                        firstPersonRotationX = initialCameraConfig.initialRotationX;
+                        firstPersonRotationY = initialCameraConfig.initialRotationY;
+                        console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
+                    } else {
+                        controls.object = currentCamera;
+                        controls.target.copy(initialCameraConfig.initialLookAt || new THREE.Vector3(0, 0, 0));
+                        controls.enableZoom = true;
+                        controls.enablePan = true;
+                        controls.minPolarAngle = 0;
+                        controls.maxPolarAngle = Math.PI;
+                        controls.update();
+                        console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
+                    }
+                    console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
                 } else {
-                    // 如果找不到標點，則使用預設的第三人稱視角
-                    console.warn('在模型中找不到名為 "我是攝影機標點" 的物件。將使用預設的第三人稱視角。');
+                    console.warn('未找到初始攝影機配置。將使用預設的第三人稱視角。');
                     updateCameraForModel();
                 }
 
@@ -477,19 +1448,32 @@ createApp({
             if (intersects.length > 0) {
                 const intersectedMesh = intersects[0].object; // The actual mesh hit by the raycaster
 
-                // Traverse up the hierarchy to find the named highlightable object (使用全域變數 highlightableNames)
-                let parent = intersectedMesh;
-                while (parent) {
-                    if (highlightableNames.includes(parent.name)) {
-                        objectToHighlight = parent;
-                        tooltipText = parent.name; // Set tooltip text to object's name
-                        break;
+                let currentObject = intersectedMesh;
+                while (currentObject) {
+                    // Prioritize customDisplayName if it exists on the current object
+                    if (currentObject.userData && currentObject.userData.customDisplayName) {
+                        objectToHighlight = currentObject;
+                        tooltipText = currentObject.userData.customDisplayName;
+                        break; // Found the most specific custom name, stop traversing up
                     }
-                    parent = parent.parent;
+
+                    // If no customDisplayName, but the object's name is in highlightableNames,
+                    // use its original name as a fallback.
+                    // We don't break here because a child might have a customDisplayName.
+                    if (highlightableNames.includes(currentObject.name)) {
+                        // Only set if we haven't found a more specific object with customDisplayName yet
+                        if (!objectToHighlight || !objectToHighlight.userData.customDisplayName) {
+                            objectToHighlight = currentObject;
+                            tooltipText = currentObject.name;
+                        }
+                    }
+                    currentObject = currentObject.parent;
                 }
             }
 
             if (objectToHighlight) {
+                console.log("Hovered object name:", objectToHighlight.name);
+                console.log("Hovered object userData:", objectToHighlight.userData);
                 // Highlight single object (whether it's a frame or not)
                 objectToHighlight.traverse(child => {
                     if (child.isMesh && child.material) {
@@ -605,11 +1589,11 @@ createApp({
             }
         }
 
-        // Attach Event Listeners
+        // Attach Event Listeners (這段重複了，但為了整合完整性保留，實際部署時可刪除重複的)
         renderer.domElement.addEventListener('mousemove', handleMouseMove);
         renderer.domElement.addEventListener('mousedown', handleMouseDown);
         renderer.domElement.addEventListener('mouseup', handleMouseUp);
-        renderer.domElement.addEventListener('click', this.onMouseClick); // Add click listener
+        renderer.domElement.addEventListener('click', this.onMouseClick);
         window.addEventListener('keydown', handleKeyDown, false);
 
         function animate() {
