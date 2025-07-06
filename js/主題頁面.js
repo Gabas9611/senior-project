@@ -755,6 +755,12 @@ createApp({
         controls.maxDistance = 50;
         controls.enableZoom = false; // 禁用縮放功能
 
+        // ✅ 加這段以支援手機手勢操作
+        controls.touches = {
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN
+        };
+
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
         raycaster = new THREE.Raycaster();
