@@ -101,6 +101,38 @@
             color: #666;
             font-size: 16px;
         }
+        /* 平板樣式的白色圓形按鈕 */
+        .tablet-button {
+            position: absolute;
+            left: 12%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tablet-button:hover {
+            background-color: #f8f8f88c;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .tablet-button::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+
 
         .content-placeholder {
             text-align: center;
@@ -148,7 +180,7 @@
             z-index: 3;
         }
 
-        /* Mobile Styles */
+       /* Mobile Styles */
         @media (max-width: 768px) {
             .header {
                 padding: 12px 15px;
@@ -188,6 +220,18 @@
                 height: 80px;
                 font-size: 14px;
             }
+
+            /* tablet-button 平板樣式 */
+            .tablet-button {
+                width: 40px;
+                height: 40px;
+                left: 8%;
+            }
+
+            .tablet-button::before {
+                width: 6px;
+                height: 6px;
+            }
         }
 
         /* Small Mobile Styles */
@@ -223,5 +267,17 @@
                 width: 95%;
                 height: 60px;
                 font-size: 12px;
+            }
+
+            /* tablet-button 小螢幕手機樣式 */
+            .tablet-button {
+                width: 35px;
+                height: 35px;
+                left: 6%;
+            }
+
+            .tablet-button::before {
+                width: 5px;
+                height: 5px;
             }
         }
