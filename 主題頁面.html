@@ -47,24 +47,24 @@
         </div>
 
         <div class="sidebar-menu" :class="{ 'is-open': isMenuOpen }">
-            <button class="menu-item-button" @click="handleNavClick('introduction')">首  頁</button>
-            <button class="menu-item-button" @click="handleNavClick('HallA')">展覽館A</button>
-            <button class="menu-item-button" @click="handleNavClick('HallB')">展覽館B</button>
-            <button class="menu-item-button" @click="handleNavClick('HallC')">展覽館C</button>
+            <button class="menu-item-button" @click="handleNavClick('introduction')">首 頁</button>
+            <button class="menu-item-button" @click="handleNavClick('showExhibitionA')">台灣歷史館</button>
+            <button class="menu-item-button" @click="handleNavClick('showExhibitionB')">老建築再生館</button>
+            <button class="menu-item-button" @click="handleNavClick('showExhibitionC')">彈藥庫歷史館</button>
         </div>
 
-    <div v-if="showInfoModal" class="info-modal-overlay">
+        <div v-if="showInfoModal" class="info-modal-overlay">
             <div class="info-modal">
                 <button class="close-button" @click="closeInfoModal">×</button>
                 <h2 class="modal-title">{{ infoModalTitle }}</h2>
-                <p class="modal-content">{{ infoModalContent }}</p>
+                <p v-if="!showModalButton" class="modal-content" v-html="infoModalContent"></p> <button v-else
+                    class="modal-button" @click="enterExhibition">{{ infoModalButtonText }}</button>
             </div>
         </div>
-    </div>
 
-   
 
-    <script type="module" src="./js/主題頁面.js"></script>
+
+        <script type="module" src="./js/主題頁面.js"></script>
 </body>
 
 </html>
