@@ -104,3 +104,7 @@ body {
         transform: rotateY(360deg);
     }
 }
+
+.progress-percentage {
+    color: white;
+}
