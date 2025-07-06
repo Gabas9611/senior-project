@@ -34,12 +34,23 @@ createApp({
             showInfoModal: false, // 控制資訊彈出視窗的顯示
             infoModalTitle: '',   // 資訊彈出視窗的標題
             infoModalContent: '',  // 資訊彈出視窗的內容
+            infoModalButtonText: '進入參觀', // 新增：資訊彈出視窗按鈕文字
+            modalAction: '', // 新增：彈出視窗按鈕的動作類型
+            showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
             isInitialized: false // 新增：追蹤應用程式是否已初始化
         }
     },
     methods: {
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
+            if (controls) {
+                controls.enabled = !this.isMenuOpen; // 選單開啟時禁用 controls，關閉時啟用
+                if (this.isMenuOpen) {
+                    console.log('選單已開啟，OrbitControls 已禁用。');
+                } else {
+                    console.log('選單已關閉，OrbitControls 已重新啟用。');
+                }
+            }
             if (this.isMenuOpen) {
                 this.selectedAction = 'menu';
                 this.actionMessage = '選單已開啟';
@@ -50,14 +61,74 @@ createApp({
             if (action === 'import') {
                 window.location.href = 'loading畫面.html?target=交通資訊.html';
                 this.actionMessage = '進入專案已點擊';
-            }  else if (action === 'introduction') {
+            } else if (action === 'navigation') {
+                this.actionMessage = '進入導覽已點擊';
+            } else if (action === 'introduction') {
                 window.location.href = 'loading畫面.html?target=index.html';
-                this.actionMessage = '首頁已點擊';
+                this.actionMessage = '簡介已點擊';
             } else if (action === 'traffic') {
                 this.actionMessage = '交通資訊已點擊';
+            } else if (action === 'showExhibitionA') {
+                this.switchToCamera('NavCamera7');
+                this.actionMessage = '展覽館A已點擊';
+            } else if (action === 'showExhibitionB') {
+                this.switchToCamera('NavCamera8');
+                this.actionMessage = '展覽館B已點擊';
+            } else if (action === 'showExhibitionC') {
+                this.switchToCamera('NavCamera9');
+                this.actionMessage = '展覽館C已點擊';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
+            }
+        },
+        switchToCamera(cameraName) {
+            const targetCameraConfig = navCameras[Object.keys(navCameras).find(key => navCameras[key].camera.name === cameraName)];
+
+            if (targetCameraConfig && targetCameraConfig.camera) {
+                const targetCamera = targetCameraConfig.camera;
+                const targetIsFirstPersonMode = targetCameraConfig.isFirstPerson;
+
+                currentCamera = targetCamera;
+
+                console.log(`切換目標攝影機 ${cameraName} 的宣告位置:`, targetCamera.position);
+
+                controls.enabled = false;
+                isFirstPersonMode = targetIsFirstPersonMode;
+
+                gsap.to(currentCamera.position, {
+                    duration: 1.5,
+                    x: targetCamera.position.x,
+                    y: targetCamera.position.y,
+                    z: targetCamera.position.z,
+                    ease: "power2.inOut",
+                    onComplete: function () {
+                        console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
+                        console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
+                    }
+                });
+
+                const targetRotationX = targetIsFirstPersonMode ? targetCameraConfig.initialRotationX : targetCamera.rotation.x;
+                const targetRotationY = targetIsFirstPersonMode ? targetCameraConfig.initialRotationY : targetCamera.rotation.y;
+                const targetRotationZ = targetIsFirstPersonMode ? 0 : targetCamera.rotation.z;
+
+                gsap.to(currentCamera.rotation, {
+                    duration: 1.5,
+                    x: targetRotationX,
+                    y: targetRotationY,
+                    z: targetRotationZ,
+                    ease: "power2.inOut",
+                    onComplete: function () {
+                        if (isFirstPersonMode) {
+                            firstPersonRotationX = targetRotationX;
+                            firstPersonRotationY = targetRotationY;
+                        }
+                        console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
+                        console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
+                    }
+                });
+            } else {
+                console.warn(`無法找到名為 ${cameraName} 的攝影機配置。`);
             }
         },
         closeInfoModal() {
@@ -69,42 +140,100 @@ createApp({
                 console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
-        showFrameInfo(itemName) {
+        // *** 修改開始：showFrameInfo 方法新增 clickedObject 參數 ***
+        showFrameInfo(itemName, clickedObject = null) {
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = false;
                 console.log('OrbitControls 已禁用。');
             }
 
-            this.infoModalTitle = `${itemName} 介紹`;
-            // 根據物件名稱設定不同的內容
+            let displayTitle = itemName; // 預設使用傳入的 itemName
+            let displayContent = '沒有找到該物件的介紹資訊。';
+
+            // 如果傳入了 clickedObject 且它有 customDisplayName，則優先使用 customDisplayName 作為標題
+            if (clickedObject && clickedObject.userData && clickedObject.userData.customDisplayName) {
+                displayTitle = clickedObject.userData.customDisplayName;
+            }
+
+            // 根據原始物件名稱設定不同的內容 (這裡保持您現有的邏輯，用 itemName 來判斷)
             switch (itemName) {
                 case '畫框01':
-                    this.infoModalContent = '這是畫框01的詳細介紹內容。它展示了歷史的痕跡。';
+                    displayContent = '這是畫框01的詳細介紹內容。它展示了歷史的痕跡。';
+                    this.infoModalButtonText = '查看更多畫作';
+                    this.modalAction = 'viewArtwork';
+                    this.showModalButton = true;
                     break;
-                case '畫框02':
-                    this.infoModalContent = '畫框02描繪了當地的風土人情，充滿了生命力。';
+                case '介紹欄1':
+                    displayContent = '這是行銷工坊的詳細介紹內容。';
+                    this.infoModalButtonText = '進入導覽';
+                    this.modalAction = 'enterExhibitionA';
+                    this.showModalButton = true;
                     break;
-                case '畫框03':
-                    this.infoModalContent = '畫框03是一幅抽象藝術作品，引人深思。';
+                case '介紹欄2':
+                    displayContent = '這是設計部的詳細介紹內容。';
+                    this.infoModalButtonText = '參觀室內';
+                    this.modalAction = 'enterDesignDept';
+                    this.showModalButton = true;
                     break;
-                case '畫框04':
-                    this.infoModalContent = '畫框04記錄了某個重要事件，具有紀念意義。';
+                case '介紹欄3':
+                    displayContent = '這是人力資源部的詳細介紹內容。';
+                    this.infoModalButtonText = '進入導覽';
+                    this.modalAction = 'enterHRDept';
+                    this.showModalButton = true;
                     break;
-                case '畫框05':
-                    this.infoModalContent = '畫框05記錄了某個重要事件，具有紀念意義。';
+                case '介紹':
+                    displayContent = '歡迎來到勤益彈藥庫改造後的現場<br>以下將帶您來了解要如何操作。<br>1.按住滑鼠左鍵拖曳滑鼠可以調整視角<br>2.點擊地圖上的星星可以切換攝影機<br>3.點擊介紹牌可以與建築互動';
+                    this.infoModalButtonText = '了解更多';
+                    this.modalAction = 'learnMore';
+                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
                     break;
-                case '大門':
-                    this.infoModalContent = '這是大門的介紹。它是通往建築的入口。';
-                    break;
-                case '桌子':
-                    this.infoModalContent = '這是一張桌子。它可以用來放置物品或進行工作。';
+                case '出口':
+                    displayContent = '這是離開展廳的相關資訊。';
+                    this.infoModalButtonText = '離開';
+                    this.modalAction = 'exit';
+                    this.showModalButton = true;
                     break;
                 default:
-                    this.infoModalContent = '沒有找到該物件的介紹資訊。';
+                    displayContent = '沒有找到該物件的介紹資訊。';
+                    this.infoModalButtonText = '關閉';
+                    this.modalAction = 'close';
+                    this.showModalButton = true;
             }
+            this.infoModalTitle = displayTitle;   // 設定彈出視窗標題
+            this.infoModalContent = displayContent;  // 資訊彈出視窗的內容
             this.showInfoModal = true;
         },
+        enterExhibition() {
+            this.closeInfoModal(); // 先關閉彈出視窗
+            switch (this.modalAction) {
+                case 'enterExhibitionA':
+                    window.location.href = 'loading畫面.html?target=台灣歷史.html';
+                    break;
+                case 'exit':
+                    window.location.href = 'loading畫面.html?target=index.html';
+                    break;
+                case 'viewArtwork':
+                    // 這裡可以添加跳轉到畫作詳細頁面或執行其他操作的邏輯
+                    console.log('查看更多畫作');
+                    break;
+                case 'enterDesignDept':
+                    window.location.href = 'loading畫面.html?target=展覽館A.html';
+                    break;
+                case 'enterHRDept':
+                    window.location.href = 'loading畫面.html?target=彈藥庫歷史.html';
+                    break;
+                case 'learnMore':
+                    console.log('了解更多');
+                    break;
+                case 'close':
+                default:
+                    // 預設行為，例如只關閉彈出視窗
+                    break;
+            }
+        },
+        // *** 修改結束：showFrameInfo 方法 ***
+
         // 新增：滑鼠點擊事件，用於切換攝影機和偵測物件點擊
         onMouseClick(event) {
             // 確保應用程式已初始化，避免在載入時觸發
@@ -131,7 +260,7 @@ createApp({
             const intersects = raycaster.intersectObjects([loadedModel], true);
 
             if (intersects.length > 0) {
-                const clickedObject = intersects[0].object;
+                const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
 
                 // clickableFramesAndDoor 和 frameNames 現在是全域變數
                 const clickableObjects = ["介紹欄1", "介紹欄2", "介紹欄3", "介紹", "出口"];
@@ -158,7 +287,8 @@ createApp({
 
                 // 如果找到了可點擊的物件，就顯示資訊彈出視窗
                 if (clickedItemName) {
-                    this.showFrameInfo(clickedItemName);
+                    // *** 修改：傳遞 clickedObject ***
+                    this.showFrameInfo(clickedItemName, clickedObject);
 
                     // 如果點擊的是「介紹欄1」，則切換攝影機並將視角向後看
                     if (clickedItemName === '介紹欄1') {
@@ -190,7 +320,8 @@ createApp({
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
-                                    this.showFrameInfo('介紹欄1'); // 在動畫完成後顯示資訊彈出視窗
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('介紹欄1', clickedObject); // 在動畫完成後顯示資訊彈出視窗
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -240,7 +371,8 @@ createApp({
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
-                                    this.showFrameInfo('介紹欄2'); // 在動畫完成後顯示資訊彈出視窗
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('介紹欄2', clickedObject); // 在動畫完成後顯示資訊彈出視窗
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -290,7 +422,8 @@ createApp({
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
-                                    this.showFrameInfo('介紹欄3'); // 在動畫完成後顯示資訊彈出視窗
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('介紹欄3', clickedObject); // 在動畫完成後顯示資訊彈出視窗
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -340,7 +473,8 @@ createApp({
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
-                                    this.showFrameInfo('介紹'); // 在動畫完成後顯示資訊彈出視窗
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('介紹', clickedObject); // 在動畫完成後顯示資訊彈出視窗
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -390,7 +524,8 @@ createApp({
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
-                                    this.showFrameInfo('出口'); // 在動畫完成後顯示資訊彈出視窗
+                                    // *** 修改：傳遞 clickedObject ***
+                                    this.showFrameInfo('出口', clickedObject); // 在動畫完成後顯示資訊彈出視窗
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -525,83 +660,82 @@ createApp({
             return;
         }
 
-        // 導覽攝影機的設定
+        // 導覽攝影機的設定 (保持不變)
         cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(5.37, -0.9, -0.17);
+        cameraNav1.position.set(-6.47, -0.9, -0.17);
 
         cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
-        cameraNav2.position.set(3.39, -0.9, -0.17);
+        cameraNav2.position.set(-4.51, -0.9, -0.17);
 
         cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav3.name = "NavCamera3";
-        cameraNav3.position.set(1.61, -0.9, -0.17);
+        cameraNav3.position.set(-2.14, -0.9, -0.17);
 
         cameraNav4 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav4.name = "NavCamera4";
-        cameraNav4.position.set(-0.28, -0.9, -0.17);
+        cameraNav4.position.set(0.47, -0.9, -0.17);
 
         cameraNav5 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav5.name = "NavCamera5";
-        cameraNav5.position.set(-2.73, -0.9, -0.17);
+        cameraNav5.position.set(3.38, -0.9, -0.17);
 
         cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav6.name = "NavCamera6";
-        cameraNav6.position.set(-4.62, -0.9, -0.17);
+        cameraNav6.position.set(5.36, -0.9, -0.17);
+        
 
         cameraNav7 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav7.name = "NavCamera7";
-        cameraNav7.position.set(3.39, -0.9, -0.17);
+        cameraNav7.position.set(3.38, -0.9, -0.17);
         cameraNav7.rotation.y = Math.PI; // 將攝影機繞 Y 軸旋轉 180 度 (π 弧度)
 
         cameraNav8 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav8.name = "NavCamera8";
-        cameraNav8.position.set(-2.73, -0.9, -0.17); // 調整位置
-        
+        cameraNav8.position.set(-2.14, -0.9, -0.17); // 調整位置
+
 
         cameraNav9 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav9.name = "NavCamera9";
-        cameraNav9.position.set(-4.62, -0.9, -0.17); // 調整位置
+        cameraNav9.position.set(-4.51, -0.9, -0.17); // 調整位置
         cameraNav9.rotation.y = Math.PI;
 
         cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav10.name = "NavCamera10";
-        cameraNav10.position.set(5.37, -0.9, -0.17);
-        cameraNav10.rotation.y = -Math.PI/2;
+        cameraNav10.position.set(-4.62, -0.9, -0.17);
+        cameraNav10.rotation.y = -Math.PI / 2;
 
         cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav11.name = "NavCamera11";
-        cameraNav11.position.set(-4.62, -0.9, -0.17);
-        cameraNav11.rotation.y = Math.PI / 2;
-
+        cameraNav11.position.set(5.37, -0.9, -0.17);
         
 
 
-        // 導覽點與攝影機的對應關係
+        // 導覽點與攝影機的對應關係 (保持不變)
         navCameras = {
-            "我是導覽點01": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
+            "我是導覽點01": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 },
             "我是導覽點02": { camera: cameraNav2, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
             "我是導覽點03": { camera: cameraNav3, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
             "我是導覽點04": { camera: cameraNav4, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
             "我是導覽點05": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
-            "我是導覽點06": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
+            "我是導覽點06": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 },
             "我是導覽點07": { camera: cameraNav7, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI }, // 对应介紹欄1
-            "我是導覽點08": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }, // 对应介紹欄2
+            "我是導覽點08": { camera: cameraNav8, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }, // 对应介紹欄2
             "我是導覽點09": { camera: cameraNav9, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },  // 对应介紹欄3
-            "我是導覽點10": { camera: cameraNav10, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI/2 }, // 对应介紹
-            "我是導覽點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 } // 对应出口
+            "我是導覽點10": { camera: cameraNav10, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 }, // 对应介紹
+            "我是導覽點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2} // 对应出口
         };
 
         // 1. 初始化場景、攝影機和渲染器 (賦值給全域變數)
-        scene = new THREE.Scene(); // 這裡使用 = 賦值，因為 scene 已經在外部宣告
-        scene.background = new THREE.Color(0x87CEEB); // 設定為淺藍色，模擬藍天
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87CEEB);
 
-        defaultCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000); // 這裡使用 = 賦值
-        defaultCamera.position.set(0, 0, 5); // 恢復一個合理的預設攝影機位置
-        currentCamera = defaultCamera; // 初始攝影機為預設攝影機 (這裡使用 = 賦值)
+        defaultCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        defaultCamera.position.set(0, 0, 5);
+        currentCamera = defaultCamera;
 
-        renderer = new THREE.WebGLRenderer({ antialias: true }); // 這裡使用 = 賦值
+        renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
 
@@ -613,7 +747,7 @@ createApp({
         scene.add(directionalLight);
 
         // 3. 初始化 OrbitControls (賦值給全域變數)
-        controls = new OrbitControls(currentCamera, renderer.domElement); // 這裡使用 = 賦值
+        controls = new OrbitControls(currentCamera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.screenSpacePanning = false;
@@ -623,24 +757,19 @@ createApp({
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
-        raycaster = new THREE.Raycaster(); // 這裡使用 = 賦值
-        mouse = new THREE.Vector2(); // 這裡使用 = 賦值
-        // loadedModel 已經在文件頂部聲明並初始化為 null
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
 
         const modelCenter = new THREE.Vector3();
         const modelSize = new THREE.Vector3();
-
-        // --- 互動物件相關變數 ---
-        // targetObjectNames, highlightableNames, frameNames 已經是全域常數，不需要在這裡重新宣告
 
         // 5. 載入模型
         loader.load(
             './model/06月團體專題-老建築改建-20250703-02版 .glb',
             function (gltf) {
-                loadedModel = gltf.scene; // 賦值給全域變數 loadedModel
+                loadedModel = gltf.scene;
                 scene.add(loadedModel);
                 console.log('--- 模型已成功載入並添加到場景中 ---');
-                console.log(loadedModel);
 
                 // 將模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
@@ -648,6 +777,31 @@ createApp({
                 box.getSize(modelSize);
                 loadedModel.position.sub(modelCenter);
                 console.log('模型已移到世界中心。');
+
+                // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
+                loadedModel.traverse((child) => {
+                    if (child.isMesh) {
+                        switch (child.name) {
+                            case '介紹欄1':
+                                child.userData.customDisplayName = '台灣歷史館';
+                                break;
+                            case '介紹欄2':
+                                child.userData.customDisplayName = '老建築再生館';
+                                break;
+                            case '介紹欄3':
+                                child.userData.customDisplayName = '彈藥庫歷史館';
+                                break;
+                            case '介紹':
+                                child.userData.customDisplayName = '操作說明';
+                                break;
+                            case '出口':
+                                child.userData.customDisplayName = '離開展廳';
+                                break;
+                            // 如果有其他物件需要自訂名稱，可以在這裡添加
+                        }
+                    }
+                });
+                // *** 新增結束：為特定物件添加自訂顯示名稱到 userData ***
 
                 // --- 尋找所有可高亮的物件並存儲 (填充到全域變數 highlightableObjects) ---
                 highlightableObjects.length = 0; // 清空舊數據，確保每次載入都正確
@@ -662,31 +816,45 @@ createApp({
                 });
 
                 // 尋找攝影機標點以設定初始第一人稱視角
-                const cameraMarker = loadedModel.getObjectByName("我是導覽點06");
-                if (cameraMarker) {
-                    console.log('抓到物件：我是導覽點06');
-                    const markerPosition = new THREE.Vector3();
-                    cameraMarker.getWorldPosition(markerPosition);
+                const urlParams = new URLSearchParams(window.location.search);
+                const initialCameraName = urlParams.get('camera');
 
-                    // --- 設定 NavCamera1 的初始旋轉 ---
-                    // NavCamera1 的位置已在 mounted() 函式開頭設定
-                    // cameraNav1.lookAt(new THREE.Vector3(0, 0, 0)); // Removed lookAt for first-person camera
+                let initialCameraConfig = navCameras["我是導覽點01"]; // Default to NavCamera1
+                if (initialCameraName) {
+                    // Find the corresponding navCamera based on the name passed from the URL
+                    const foundConfig = Object.values(navCameras).find(config => config.camera.name === initialCameraName);
+                    if (foundConfig) {
+                        initialCameraConfig = foundConfig;
+                        console.log(`從 URL 參數讀取到初始攝影機：${initialCameraName}`);
+                    } else {
+                        console.warn(`URL 參數指定的攝影機 "${initialCameraName}" 未找到，使用預設攝影機。`);
+                    }
+                }
 
-                    // 將計算好的初始旋轉值存儲起來，供後續點擊使用
-                    navCameras["我是導覽點06"].initialRotationX = cameraNav6.rotation.x;
-                    navCameras["我是導覽點06"].initialRotationY = cameraNav6.rotation.y;
-                    console.log('已設定 NavCamera6 的座標為:', cameraNav6.position);
+                if (initialCameraConfig) {
+                    const targetCamera = initialCameraConfig.camera;
+                    currentCamera = targetCamera;
+                    isFirstPersonMode = initialCameraConfig.isFirstPerson;
+                    controls.enabled = !isFirstPersonMode; // Disable controls if in first-person mode
 
-                    // 將 NavCamera1 設為當前攝影機並進入第一人稱模式
-                    currentCamera = cameraNav6;
-                    isFirstPersonMode = true;
-                    controls.enabled = false; // 禁用 OrbitControls
-                    console.log('--- 找到攝影機標點，已設定初始視角為 "NavCamera6" (第一人稱) ---');
-                    console.log('NavCamera6 座標為: ', cameraNav6.position);
-
+                    if (isFirstPersonMode) {
+                        currentCamera.rotation.set(initialCameraConfig.initialRotationX, initialCameraConfig.initialRotationY, 0, 'YXZ');
+                        firstPersonRotationX = initialCameraConfig.initialRotationX;
+                        firstPersonRotationY = initialCameraConfig.initialRotationY;
+                        console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
+                    } else {
+                        controls.object = currentCamera;
+                        controls.target.copy(initialCameraConfig.initialLookAt || new THREE.Vector3(0, 0, 0));
+                        controls.enableZoom = true;
+                        controls.enablePan = true;
+                        controls.minPolarAngle = 0;
+                        controls.maxPolarAngle = Math.PI;
+                        controls.update();
+                        console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
+                    }
+                    console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
                 } else {
-                    // 如果找不到標點，則使用預設的第三人稱視角
-                    console.warn('在模型中找不到名為 "我是攝影機標點" 的物件。將使用預設的第三人稱視角。');
+                    console.warn('未找到初始攝影機配置。將使用預設的第三人稱視角。');
                     updateCameraForModel();
                 }
 
@@ -786,7 +954,7 @@ createApp({
                 while (parent) {
                     if (highlightableNames.includes(parent.name)) {
                         objectToHighlight = parent;
-                        tooltipText = parent.name; // Set tooltip text to object's name
+                        tooltipText = parent.userData.customDisplayName || parent.name; // 優先使用 customDisplayName，否則使用物件名稱
                         break;
                     }
                     parent = parent.parent;
@@ -909,11 +1077,11 @@ createApp({
             }
         }
 
-        // Attach Event Listeners
+        // Attach Event Listeners (這段重複了，但為了整合完整性保留，實際部署時可刪除重複的)
         renderer.domElement.addEventListener('mousemove', handleMouseMove);
         renderer.domElement.addEventListener('mousedown', handleMouseDown);
         renderer.domElement.addEventListener('mouseup', handleMouseUp);
-        renderer.domElement.addEventListener('click', this.onMouseClick); // Add click listener
+        renderer.domElement.addEventListener('click', this.onMouseClick);
         window.addEventListener('keydown', handleKeyDown, false);
 
         function animate() {
