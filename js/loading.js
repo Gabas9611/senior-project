@@ -1,5 +1,11 @@
 const urlParams = new URLSearchParams(window.location.search);
 const targetPage = urlParams.get('target') || 'index.html';
+const cameraParam = urlParams.get('camera');
+
+let redirectUrl = targetPage;
+if (cameraParam) {
+    redirectUrl += `?camera=${cameraParam}`;
+}
 
 const colors = [
     ['#8e24aa', '#43a047'],
@@ -31,6 +37,6 @@ const interval = setInterval(() => {
         progressBar.style.width = '100%';
         progressPercentage.textContent = '100%';
         clearInterval(interval);
-        window.location.href = targetPage;
+        window.location.href = redirectUrl;
     }
 }, 100); // Update every 100ms
