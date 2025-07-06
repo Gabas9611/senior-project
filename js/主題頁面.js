@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 
 // 宣告全域變數以供所有相關函式存取
 let scene, renderer, defaultCamera, currentCamera, controls, raycaster, mouse;
@@ -136,7 +136,7 @@ createApp({
             // 重新啟用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = true;
-                controls.update();
+                controls.update(1);
                 console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
@@ -624,7 +624,7 @@ createApp({
                                     controls.minPolarAngle = 0; // 解除垂直旋轉限制
                                     controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                                     controls.enabled = true; // 啟用 OrbitControls
-                                    controls.update(); // 強制更新 controls
+                                    controls.update(1); // 強制更新 controls
                                     console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
                                 }
                                 console.log('Controls enabled at end of position animation:', controls.enabled); // Debug log
@@ -737,22 +737,6 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
-// ✅ 顯示觸控事件提示框（適用於 iOS 手機除錯）
-renderer.domElement.addEventListener('touchstart', function () {
-  const debugBox = document.createElement('div');
-  debugBox.style.position = 'fixed';
-  debugBox.style.top = '10px';
-  debugBox.style.right = '10px';
-  debugBox.style.zIndex = 9999;
-  debugBox.style.backgroundColor = 'rgba(0,0,0,0.7)';
-  debugBox.style.color = 'white';
-  debugBox.style.padding = '10px';
-  debugBox.style.borderRadius = '10px';
-  debugBox.style.fontSize = '16px';
-  debugBox.innerText = '📱 已偵測到觸控事件';
-  document.body.appendChild(debugBox);
-});
-
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
@@ -763,20 +747,11 @@ renderer.domElement.addEventListener('touchstart', function () {
         scene.add(directionalLight);
 
         // 3. 初始化 OrbitControls (賦值給全域變數)
-        controls = new OrbitControls(currentCamera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false;
-        controls.minDistance = 1;
-        controls.maxDistance = 50;
-        controls.enableZoom = false; // 禁用縮放功能
-        controls.enableRotate = true;
-
-        // ✅ 加這段以支援手機手勢操作
-        controls.touches = {
-            ONE: THREE.TOUCH.ROTATE,
-            TWO: THREE.TOUCH.DOLLY_PAN
-        };
+        controls = new FirstPersonControls(currentCamera, renderer.domElement);
+controls.lookSpeed = 0.1;
+controls.movementSpeed = 0;
+controls.lookVertical = true;
+controls.activeLook = true;
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
@@ -872,7 +847,7 @@ renderer.domElement.addEventListener('touchstart', function () {
                         controls.enablePan = true;
                         controls.minPolarAngle = 0;
                         controls.maxPolarAngle = Math.PI;
-                        controls.update();
+                        controls.update(1);
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
                     console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
@@ -882,7 +857,7 @@ renderer.domElement.addEventListener('touchstart', function () {
                 }
 
                 // 確保控制器更新其內部狀態
-                controls.update();
+                controls.update(1);
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
@@ -1079,7 +1054,7 @@ renderer.domElement.addEventListener('touchstart', function () {
                             controls.enablePan = true; // 啟用平移
                             controls.minPolarAngle = 0; // 解除垂直旋轉限制
                             controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
-                            controls.update(); // 強制更新 controls
+                            controls.update(1); // 強制更新 controls
                             console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
                         }
                     }
@@ -1112,7 +1087,7 @@ renderer.domElement.addEventListener('touchstart', function () {
 
             // 只有當不在第一人稱模式時，才更新 OrbitControls
             if (!isFirstPersonMode && controls) { // 檢查 controls 是否已定義
-                controls.update();
+                controls.update(1);
             }
 
             if (renderer && scene && currentCamera) { // 檢查核心 Three.js 物件是否已定義
