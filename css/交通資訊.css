@@ -13,7 +13,7 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
-            background-color: #b8b8b8;
+            
             min-height: 100vh;
             position: relative;
         }
@@ -23,7 +23,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 40px;
-            background-color: #b8b8b8;
+            background-color: #87cbb0;
         }
 
         .logo-section {
