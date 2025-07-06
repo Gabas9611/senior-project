@@ -108,3 +108,8 @@ body {
 .progress-percentage {
     color: white;
 }
+
+canvas {
+    touch-action: none;
+    z-index: 0;
+}
