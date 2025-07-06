@@ -333,7 +333,8 @@ body {
 
 /* Animation for menu button */
 .menu-button.active .menu-line:nth-child(1) {
-    transform: rotate(45deg) translate(0px, 6px);
+    transform-origin: center;
+    transform: translate(0, 5px) rotate(45deg);
 }
 
 .menu-button.active .menu-line:nth-child(2) {
@@ -341,7 +342,8 @@ body {
 }
 
 .menu-button.active .menu-line:nth-child(3) {
-    transform: rotate(-45deg) translate(0px, -6px);
+     transform-origin: center;
+    transform: translate(0, -5px) rotate(-45deg);
 }
 
 /* Tooltip Styles */
