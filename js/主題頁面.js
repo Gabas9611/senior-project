@@ -737,6 +737,22 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// ✅ 顯示觸控事件提示框（適用於 iOS 手機除錯）
+renderer.domElement.addEventListener('touchstart', function () {
+  const debugBox = document.createElement('div');
+  debugBox.style.position = 'fixed';
+  debugBox.style.top = '10px';
+  debugBox.style.right = '10px';
+  debugBox.style.zIndex = 9999;
+  debugBox.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  debugBox.style.color = 'white';
+  debugBox.style.padding = '10px';
+  debugBox.style.borderRadius = '10px';
+  debugBox.style.fontSize = '16px';
+  debugBox.innerText = '📱 已偵測到觸控事件';
+  document.body.appendChild(debugBox);
+});
+
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
