@@ -1254,8 +1254,7 @@ function setupCustomControls() {
 setupCustomControls();
 
 // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
+
 const sensitivity = 0.005;
 const maxVerticalAngle = Math.PI / 2.5;
 
