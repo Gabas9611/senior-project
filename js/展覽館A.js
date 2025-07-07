@@ -1,12 +1,3 @@
-
-function updateDebug(msg) {
-    const el = document.getElementById('debug');
-    if (el) {
-        el.innerText = msg;
-    }
-}
-
-
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -46,19 +37,10 @@ createApp({
             infoModalButtonText: '進入參觀', // 新增：資訊彈出視窗按鈕文字
             modalAction: '', // 新增：彈出視窗按鈕的動作類型
             showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
-            isInitialized: false, // 新增：追蹤應用程式是否已初始化
-            showImageCarousel: false, // 控制是否顯示圖片輪播
-            carouselImages: [],       // 輪播圖片的陣列
-            currentImageIndex: 0      // 當前顯示圖片的索引
+            isInitialized: false // 新增：追蹤應用程式是否已初始化
         }
     },
     methods: {
-        nextImage() {
-            this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
-        },
-        prevImage() {
-            this.currentImageIndex = (this.currentImageIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
-        },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
@@ -76,10 +58,7 @@ createApp({
         },
         handleNavClick(action) {
             this.selectedAction = action;
-            if (action === 'backToMain') {
-                window.location.href = 'loading畫面.html?target=主題頁面.html';
-                this.actionMessage = '回到前頁已點擊';
-            } else if (action === 'import') {
+            if (action === 'import') {
                 window.location.href = 'loading畫面.html?target=交通資訊.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
@@ -172,7 +151,7 @@ createApp({
             let displayTitle = itemName; // 預設使用傳入的 itemName
             let displayContent = '沒有找到該物件的介紹資訊。';
 
-            // 向上找尋 customDisplayName
+            // 如果傳入了 clickedObject 且它有 customDisplayName，則優先使用 customDisplayName 作為標題
             if (clickedObject) {
                 let parent = clickedObject;
                 while (parent) {
@@ -184,11 +163,7 @@ createApp({
                 }
             }
 
-
-
-
             // 根據原始物件名稱設定不同的內容 (這裡保持您現有的邏輯，用 itemName 來判斷)
-            // 重置圖片輪播狀態
             this.showImageCarousel = false;
             this.carouselImages = [];
             this.currentImageIndex = 0;
@@ -214,7 +189,7 @@ createApp({
                     this.carouselImages = [
                         './img/松山文創-舊照片.jpg',
                         './img/松山文創-畫框01.jpg'
-                        
+
                     ];
                     this.currentImageIndex = 0;
                     break;
@@ -239,7 +214,7 @@ createApp({
                     this.carouselImages = [
                         './img/華山1914文化創意園區-舊照片.png',
                         './img/華山1914文化創意園區-畫框02.jpg'
-                        
+
                     ];
                     this.currentImageIndex = 0;
                     break;
@@ -429,7 +404,7 @@ createApp({
                     window.location.href = 'loading畫面.html?target=台灣歷史.html';
                     break;
                 case 'exit':
-                    window.location.href = 'loading畫面.html?target=主題頁面.html';
+                    window.location.href = 'loading畫面.html?target=index.html';
                     break;
                 case 'viewArtwork':
                     // 這裡可以添加跳轉到畫作詳細頁面或執行其他操作的邏輯
@@ -475,15 +450,12 @@ createApp({
             raycaster.setFromCamera(mouse, currentCamera);
 
             // *** 關鍵修正：偵測整個模型，而不只是導覽點 ***
-            const intersects = raycaster.intersectObjects(scene.children, true);
-    updateDebug('🔵 intersects: ' + intersects.length);
+            const intersects = raycaster.intersectObjects([loadedModel], true);
 
             if (intersects.length > 0) {
                 const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
                 console.log('Clicked object:', clickedObject);
                 console.log('Clicked object userData:', clickedObject.userData);
-
-
 
                 // clickableFramesAndDoor 和 frameNames 現在是全域變數
                 const clickableObjects = ["畫框01", "畫框02", "畫框03", "畫框04", "畫框05", "畫框06", "畫框07", "畫框08", "桌子", "大門"];
@@ -1222,6 +1194,70 @@ createApp({
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
+        // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        const sensitivity = 0.005;
+        const maxVerticalAngle = Math.PI / 2.5;
+
+        function clamp(val, min, max) {
+            return Math.max(min, Math.min(max, val));
+        }
+
+        function onMouseDown(e) {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+        }
+
+        renderer.domElement.addEventListener('mousedown', onMouseDown);
+        renderer.domElement.addEventListener('mousemove', onMouseMove);
+        renderer.domElement.addEventListener('mouseup', onMouseUp);
+
+        // ✅ 手機觸控事件
+        renderer.domElement.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+        }, { passive: true });
+
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+        }, { passive: true });
+
+        renderer.domElement.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
         const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
@@ -1238,6 +1274,13 @@ createApp({
         controls.minDistance = 1;
         controls.maxDistance = 50;
         controls.enableZoom = false; // 禁用縮放功能
+        controls.enableRotate = true;
+
+        // ✅ 加這段以支援手機手勢操作
+        controls.touches = {
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN
+        };
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
@@ -1264,8 +1307,6 @@ createApp({
 
                 // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
                 loadedModel.traverse((child) => {
-                    // Check if the child has a name that matches our target names
-                    // We are being more general here, not just checking for isMesh
                     switch (child.name) {
                         case '畫框01':
                             child.userData.customDisplayName = '松山文創園區';
@@ -1309,6 +1350,7 @@ createApp({
                             break;
                         // 如果有其他物件需要自訂名稱，可以在這裡添加
                     }
+
                 });
                 // *** 新增結束：為特定物件添加自訂顯示名稱到 userData ***
 
@@ -1450,8 +1492,7 @@ createApp({
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
             raycaster.setFromCamera(mouse, currentCamera);
-            const intersects = raycaster.intersectObjects(scene.children, true);
-    updateDebug('🔵 intersects: ' + intersects.length); // Intersect with the entire model
+            const intersects = raycaster.intersectObjects([loadedModel], true); // Intersect with the entire model
 
             let objectToHighlight = null;
             let tooltipText = '';
@@ -1459,32 +1500,19 @@ createApp({
             if (intersects.length > 0) {
                 const intersectedMesh = intersects[0].object; // The actual mesh hit by the raycaster
 
-                let currentObject = intersectedMesh;
-                while (currentObject) {
-                    // Prioritize customDisplayName if it exists on the current object
-                    if (currentObject.userData && currentObject.userData.customDisplayName) {
-                        objectToHighlight = currentObject;
-                        tooltipText = currentObject.userData.customDisplayName;
-                        break; // Found the most specific custom name, stop traversing up
+                // Traverse up the hierarchy to find the named highlightable object (使用全域變數 highlightableNames)
+                let parent = intersectedMesh;
+                while (parent) {
+                    if (highlightableNames.includes(parent.name)) {
+                        objectToHighlight = parent;
+                        tooltipText = parent.userData.customDisplayName || parent.name; // 優先使用 customDisplayName，否則使用物件名稱
+                        break;
                     }
-
-                    // If no customDisplayName, but the object's name is in highlightableNames,
-                    // use its original name as a fallback.
-                    // We don't break here because a child might have a customDisplayName.
-                    if (highlightableNames.includes(currentObject.name)) {
-                        // Only set if we haven't found a more specific object with customDisplayName yet
-                        if (!objectToHighlight || !objectToHighlight.userData.customDisplayName) {
-                            objectToHighlight = currentObject;
-                            tooltipText = currentObject.name;
-                        }
-                    }
-                    currentObject = currentObject.parent;
+                    parent = parent.parent;
                 }
             }
 
             if (objectToHighlight) {
-                console.log("Hovered object name:", objectToHighlight.name);
-                console.log("Hovered object userData:", objectToHighlight.userData);
                 // Highlight single object (whether it's a frame or not)
                 objectToHighlight.traverse(child => {
                     if (child.isMesh && child.material) {
