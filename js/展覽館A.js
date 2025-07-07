@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 
 // 宣告全域變數以供所有相關函式存取
 let scene, renderer, defaultCamera, currentCamera, controls, raycaster, mouse;
@@ -1211,6 +1211,69 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+const sensitivity = 0.005;
+const maxVerticalAngle = Math.PI / 2.5;
+
+function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+
+function onMouseDown(e) {
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+}
+
+function onMouseMove(e) {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePosition.x;
+    const deltaY = e.clientY - previousMousePosition.y;
+
+    camera.rotation.y -= deltaX * sensitivity;
+    camera.rotation.x -= deltaY * sensitivity;
+    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+}
+
+function onMouseUp() {
+    isDragging = false;
+}
+
+renderer.domElement.addEventListener('mousedown', onMouseDown);
+renderer.domElement.addEventListener('mousemove', onMouseMove);
+renderer.domElement.addEventListener('mouseup', onMouseUp);
+
+// ✅ 手機觸控事件
+renderer.domElement.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+    camera.rotation.y -= deltaX * sensitivity;
+    camera.rotation.x -= deltaY * sensitivity;
+    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
