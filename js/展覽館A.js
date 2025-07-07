@@ -1192,7 +1192,7 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
-// 📱 手機觸控事件 + debug
+// 📱 改良 touch 控制與 debug log
 renderer.domElement.addEventListener('touchstart', (e) => {
     isDragging = true;
     previousMousePosition = {
@@ -1205,18 +1205,20 @@ renderer.domElement.addEventListener('touchstart', (e) => {
 
 renderer.domElement.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
+
     const deltaX = e.touches[0].clientX - previousMousePosition.x;
     const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-    camera.rotation.y -= deltaX * 0.005;
-    camera.rotation.x -= deltaY * 0.005;
+    camera.rotation.y -= deltaX * 0.02;
+    camera.rotation.x -= deltaY * 0.02;
     camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+
+    console.log("📱 touchmove | rotX:", camera.rotation.x.toFixed(2), "| rotY:", camera.rotation.y.toFixed(2));
 
     previousMousePosition = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY
     };
-    console.log("📱 touchmove", previousMousePosition);
 }, { passive: false });
 
 renderer.domElement.addEventListener('touchend', () => {
