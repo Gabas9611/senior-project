@@ -835,7 +835,7 @@ renderer.domElement.addEventListener('touchend', () => {
 
         // 5. 載入模型
         loader.load(
-            './model/06月團體專題-老建築改建-20250703-02版.glb',
+            './model/06月團體專題-老建築改建-20250703-02版 .glb',
             function (gltf) {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
