@@ -34,6 +34,7 @@
                     <div v-for="(box, index) in boxes" :key="index" class="box"
                          :class="getSizeClass(index)" :style="getStyle(index)"
                          @mouseenter="updateLayout(index)">
+                         {{box.title}}
                         {{ box.text }}
                     </div> 
                 </div>

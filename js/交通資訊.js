@@ -7,11 +7,11 @@ const { createApp, ref } = Vue;
                 const centerIndex = ref(2);
                 
                 const boxes = ref([
-                    { text: '高鐵' },
-                    { text: '台鐵' },
-                    { text: '客運' },
-                    { text: '公車' },
-                    { text: '自行開車' }
+                    { title:'高鐵',text: '123' },
+                    {  title:'台鐵',text: '745' },
+                    { title:'客運',text: '789' },
+                    {  title:'公車',text: '217' },
+                    {  title:'自行開車',text: '684' }
                 ]);
 
                 const handleNavClick = (action) => {
