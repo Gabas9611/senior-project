@@ -1192,6 +1192,38 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// 📱 手機觸控事件 + debug
+renderer.domElement.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+    console.log("📱 touchstart", previousMousePosition);
+    alert("📱 偵測到觸控事件");
+}, { passive: false });
+
+renderer.domElement.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+    camera.rotation.y -= deltaX * 0.005;
+    camera.rotation.x -= deltaY * 0.005;
+    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+    console.log("📱 touchmove", previousMousePosition);
+}, { passive: false });
+
+renderer.domElement.addEventListener('touchend', () => {
+    isDragging = false;
+    console.log("📱 touchend");
+});
+
 // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
