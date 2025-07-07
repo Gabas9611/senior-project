@@ -1210,9 +1210,9 @@ renderer.domElement.addEventListener('mousemove', (e) => {
   const deltaX = e.clientX - previousMousePosition.x;
   const deltaY = e.clientY - previousMousePosition.y;
 
-  camera.rotation.y -= deltaX * sensitivity;
-  camera.rotation.x -= deltaY * sensitivity;
-  camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+  if (typeof camera !== 'undefined') camera.rotation.y -= deltaX * sensitivity;
+  if (typeof camera !== 'undefined') camera.rotation.x -= deltaY * sensitivity;
+  if (typeof camera !== 'undefined') camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
   previousMousePosition = { x: e.clientX, y: e.clientY };
 });
@@ -1235,9 +1235,9 @@ renderer.domElement.addEventListener('touchmove', (e) => {
   const deltaX = e.touches[0].clientX - previousMousePosition.x;
   const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-  camera.rotation.y -= deltaX * sensitivity;
-  camera.rotation.x -= deltaY * sensitivity;
-  camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+  if (typeof camera !== 'undefined') camera.rotation.y -= deltaX * sensitivity;
+  if (typeof camera !== 'undefined') camera.rotation.x -= deltaY * sensitivity;
+  if (typeof camera !== 'undefined') camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
   previousMousePosition = {
     x: e.touches[0].clientX,
@@ -1265,9 +1265,9 @@ function onMouseMove(e) {
     const deltaX = e.clientX - previousMousePosition.x;
     const deltaY = e.clientY - previousMousePosition.y;
 
-    camera.rotation.y -= deltaX * sensitivity;
-    camera.rotation.x -= deltaY * sensitivity;
-    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+    if (typeof camera !== 'undefined') camera.rotation.y -= deltaX * sensitivity;
+    if (typeof camera !== 'undefined') camera.rotation.x -= deltaY * sensitivity;
+    if (typeof camera !== 'undefined') camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
     previousMousePosition = { x: e.clientX, y: e.clientY };
 }
@@ -1294,9 +1294,9 @@ renderer.domElement.addEventListener('touchmove', (e) => {
     const deltaX = e.touches[0].clientX - previousMousePosition.x;
     const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-    camera.rotation.y -= deltaX * sensitivity;
-    camera.rotation.x -= deltaY * sensitivity;
-    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+    if (typeof camera !== 'undefined') camera.rotation.y -= deltaX * sensitivity;
+    if (typeof camera !== 'undefined') camera.rotation.x -= deltaY * sensitivity;
+    if (typeof camera !== 'undefined') camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
     previousMousePosition = {
         x: e.touches[0].clientX,
