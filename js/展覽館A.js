@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // 宣告全域變數以供所有相關函式存取
 let scene, renderer, defaultCamera, currentCamera, controls, raycaster, mouse;
@@ -53,7 +53,7 @@ createApp({
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
-                // 選單開啟時禁用 controls，關閉時啟用
+                controls.enabled = !this.isMenuOpen; // 選單開啟時禁用 controls，關閉時啟用
                 if (this.isMenuOpen) {
                     console.log('選單已開啟，OrbitControls 已禁用。');
                 } else {
@@ -105,6 +105,7 @@ createApp({
 
                 console.log(`切換目標攝影機 ${cameraName} 的宣告位置:`, targetCamera.position);
 
+                controls.enabled = false;
                 isFirstPersonMode = targetIsFirstPersonMode;
 
                 gsap.to(currentCamera.position, {
@@ -146,6 +147,8 @@ createApp({
             this.showInfoModal = false;
             // 重新啟用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
+                controls.enabled = true;
+                controls.update();
                 console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
@@ -153,6 +156,7 @@ createApp({
         showFrameInfo(itemName, clickedObject = null) {
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
+                controls.enabled = false;
                 console.log('OrbitControls 已禁用。');
             }
 
@@ -513,6 +517,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera3 的位置
@@ -563,6 +568,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
@@ -613,6 +619,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
@@ -663,6 +670,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera10 的位置
@@ -713,6 +721,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
@@ -763,6 +772,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
@@ -813,6 +823,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
@@ -863,6 +874,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
@@ -913,6 +925,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
@@ -964,6 +977,7 @@ createApp({
                             currentCamera = targetCamera;
 
                             // 禁用 OrbitControls
+                            controls.enabled = false;
                             isFirstPersonMode = true; // 設定為第一人稱模式
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera11 的位置
@@ -1018,10 +1032,13 @@ createApp({
 
                         console.log(`點擊了 "${targetNavPointName}"，準備切換到攝影機 "${currentCamera.name}"`);
                         console.log('Current isFirstPersonMode:', isFirstPersonMode); // Debug log
-                        console.log('Controls enabled before disable:'), // Debug log
+                        console.log('Controls enabled before disable:', controls.enabled); // Debug log
 
                         // 禁用 OrbitControls
-                        console.log('Controls enabled after disable:'), // 判斷是否為第一人稱模式 (這個是全域變數，會在動畫開始時設定)
+                        controls.enabled = false;
+                        console.log('Controls enabled after disable:', controls.enabled);
+
+                        // 判斷是否為第一人稱模式 (這個是全域變數，會在動畫開始時設定)
                         isFirstPersonMode = targetIsFirstPersonMode; // 現在直接使用儲存的目標模式
                         console.log('New isFirstPersonMode:', isFirstPersonMode);
 
@@ -1068,16 +1085,18 @@ createApp({
 
                                 } else {
                                     // 恢復 OrbitControls 設置，並啟用
-                                    // 更新 OrbitControls 所控制的攝影機
+                                    controls.object = currentCamera; // 更新 OrbitControls 所控制的攝影機
                                     // *** 修正：使用 currentTargetCameraObj 確保正確的 initialLookAt ***
-                                    // 設定為導覽攝影機的初始目標點，實現軌道旋轉
-                                    // 解除垂直旋轉限制
-                                    // 解除垂直旋轉限制
-                                    // 啟用 OrbitControls
-                                    // 強制更新 controls
+                                    controls.target.copy(currentTargetCameraObj.initialLookAt || new THREE.Vector3(0, 0, 0)); // 設定為導覽攝影機的初始目標點，實現軌道旋轉
+                                    controls.enableZoom = true;
+                                    controls.enablePan = true;
+                                    controls.minPolarAngle = 0; // 解除垂直旋轉限制
+                                    controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
+                                    controls.enabled = true; // 啟用 OrbitControls
+                                    controls.update(); // 強制更新 controls
                                     console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
                                 }
-                               
+                                console.log('Controls enabled at end of position animation:', controls.enabled); // Debug log
                             }
                         });
 
@@ -1192,129 +1211,6 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
-// ✅ 滑鼠與觸控自訂旋轉控制器（替代 FirstPersonControls）
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-
-function setupCustomControls() {
-  // 滑鼠拖曳
-  renderer.domElement.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-  });
-
-  renderer.domElement.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const deltaX = e.clientX - previousMousePosition.x;
-    const deltaY = e.clientY - previousMousePosition.y;
-
-    camera.rotation.y -= deltaX * 0.01;
-    camera.rotation.x -= deltaY * 0.01;
-    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
-
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-  });
-
-  renderer.domElement.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
-
-  // 觸控拖曳
-  renderer.domElement.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    previousMousePosition = {
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    };
-    alert("📱 偵測到觸控事件");
-  }, { passive: false });
-
-  renderer.domElement.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-
-    const deltaX = e.touches[0].clientX - previousMousePosition.x;
-    const deltaY = e.touches[0].clientY - previousMousePosition.y;
-
-    camera.rotation.y -= deltaX * 0.02;
-    camera.rotation.x -= deltaY * 0.02;
-    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
-
-    previousMousePosition = {
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    };
-  }, { passive: false });
-
-  renderer.domElement.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-}
-
-// 呼叫一次即可啟用
-setupCustomControls();
-
-// ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
-
-const sensitivity = 0.005;
-const maxVerticalAngle = Math.PI / 2.5;
-
-function clamp(val, min, max) {
-    return Math.max(min, Math.min(max, val));
-}
-
-function onMouseDown(e) {
-    isDragging = true;
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-}
-
-function onMouseMove(e) {
-    if (!isDragging) return;
-    const deltaX = e.clientX - previousMousePosition.x;
-    const deltaY = e.clientY - previousMousePosition.y;
-
-    camera.rotation.y -= deltaX * sensitivity;
-    camera.rotation.x -= deltaY * sensitivity;
-    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-}
-
-function onMouseUp() {
-    isDragging = false;
-}
-
-renderer.domElement.addEventListener('mousedown', onMouseDown);
-renderer.domElement.addEventListener('mousemove', onMouseMove);
-renderer.domElement.addEventListener('mouseup', onMouseUp);
-
-// ✅ 手機觸控事件
-renderer.domElement.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    previousMousePosition = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-    };
-}, { passive: true });
-
-renderer.domElement.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const deltaX = e.touches[0].clientX - previousMousePosition.x;
-    const deltaY = e.touches[0].clientY - previousMousePosition.y;
-
-    camera.rotation.y -= deltaX * sensitivity;
-    camera.rotation.x -= deltaY * sensitivity;
-    camera.rotation.x = clamp(camera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-
-    previousMousePosition = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-    };
-}, { passive: true });
-
-renderer.domElement.addEventListener('touchend', () => {
-    isDragging = false;
-});
-
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
@@ -1325,7 +1221,13 @@ renderer.domElement.addEventListener('touchend', () => {
         scene.add(directionalLight);
 
         // 3. 初始化 OrbitControls (賦值給全域變數)
-        // 禁用縮放功能
+        controls = new OrbitControls(currentCamera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 1;
+        controls.maxDistance = 50;
+        controls.enableZoom = false; // 禁用縮放功能
 
         // 4. 初始化變數 (賦值給全域變數)
         const loader = new GLTFLoader();
@@ -1432,7 +1334,7 @@ renderer.domElement.addEventListener('touchend', () => {
                     const targetCamera = initialCameraConfig.camera;
                     currentCamera = targetCamera;
                     isFirstPersonMode = initialCameraConfig.isFirstPerson;
-                    // Disable controls if in first-person mode
+                    controls.enabled = !isFirstPersonMode; // Disable controls if in first-person mode
 
                     if (isFirstPersonMode) {
                         currentCamera.rotation.set(initialCameraConfig.initialRotationX, initialCameraConfig.initialRotationY, 0, 'YXZ');
@@ -1440,6 +1342,13 @@ renderer.domElement.addEventListener('touchend', () => {
                         firstPersonRotationY = initialCameraConfig.initialRotationY;
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
                     } else {
+                        controls.object = currentCamera;
+                        controls.target.copy(initialCameraConfig.initialLookAt || new THREE.Vector3(0, 0, 0));
+                        controls.enableZoom = true;
+                        controls.enablePan = true;
+                        controls.minPolarAngle = 0;
+                        controls.maxPolarAngle = Math.PI;
+                        controls.update();
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
                     console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
@@ -1449,6 +1358,8 @@ renderer.domElement.addEventListener('touchend', () => {
                 }
 
                 // 確保控制器更新其內部狀態
+                controls.update();
+
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
                     const marker = loadedModel.getObjectByName(name);
@@ -1481,7 +1392,8 @@ renderer.domElement.addEventListener('touchend', () => {
             cameraZ *= 1.5; // 攝影機距離模型的乘數
 
             defaultCamera.position.set(modelCenter.x, modelCenter.y, modelCenter.z + cameraZ);
-            }
+            controls.target.copy(modelCenter);
+        }
 
         function onWindowResize() {
             const aspect = container.clientWidth / container.clientHeight;
@@ -1620,7 +1532,7 @@ renderer.domElement.addEventListener('touchend', () => {
             if (event.key === 'Escape') {
                 console.log('按下 ESC 鍵，切換回預設攝影機');
                 console.log('Current isFirstPersonMode before ESC:', isFirstPersonMode); // Debug log
-                console.log('Controls enabled before ESC:'), // Debug log
+                console.log('Controls enabled before ESC:', controls.enabled); // Debug log
 
                 // 停止第一人稱模式
                 isFirstPersonMode = false;
@@ -1629,9 +1541,9 @@ renderer.domElement.addEventListener('touchend', () => {
 
                 // 啟用 OrbitControls (會自動接管 currentCamera)
                 if (controls) { // 檢查 controls 是否已定義
-                    
+                    controls.enabled = true;
+                    console.log('Controls enabled after ESC re-enable:', controls.enabled); // Debug log
                 }
-            
 
 
                 // 使用 GSAP 動畫平滑移動攝影機
@@ -1643,21 +1555,21 @@ renderer.domElement.addEventListener('touchend', () => {
                     ease: "power2.inOut",
                     onUpdate: function () {
                         if (controls && controls.target) { // 確保 controls 和 controls.target 已定義
-                            currentCamera.lookAt()// 確保在動畫過程中攝影機看向目標
+                            currentCamera.lookAt(controls.target); // 確保在動畫過程中攝影機看向目標
                         }
                     },
                     onComplete: function () {
                         console.log('GSAP ESC position animation complete.'); // Debug log
                         currentCamera = defaultCamera; // 正式切換攝影機實例
                         if (controls) { // 檢查 controls 是否已定義
-                            // 更新 OrbitControls 所控制的攝影機
-                            // 預設攝影機的目標通常是原點
-                            // 啟用縮放
-                            // 啟用平移
-                            // 解除垂直旋轉限制
-                            // 解除垂直旋轉限制
-                            // 強制更新 controls
-                            
+                            controls.object = currentCamera; // 更新 OrbitControls 所控制的攝影機
+                            controls.target.set(0, 0, 0); // 預設攝影機的目標通常是原點
+                            controls.enableZoom = true; // 啟用縮放
+                            controls.enablePan = true; // 啟用平移
+                            controls.minPolarAngle = 0; // 解除垂直旋轉限制
+                            controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
+                            controls.update(); // 強制更新 controls
+                            console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
                         }
                     }
                 });
@@ -1689,7 +1601,8 @@ renderer.domElement.addEventListener('touchend', () => {
 
             // 只有當不在第一人稱模式時，才更新 OrbitControls
             if (!isFirstPersonMode && controls) { // 檢查 controls 是否已定義
-                }
+                controls.update();
+            }
 
             if (renderer && scene && currentCamera) { // 檢查核心 Three.js 物件是否已定義
                 renderer.render(scene, currentCamera); // 使用 currentCamera 渲染
