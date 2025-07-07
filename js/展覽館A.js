@@ -1018,10 +1018,10 @@ createApp({
 
                         console.log(`點擊了 "${targetNavPointName}"，準備切換到攝影機 "${currentCamera.name}"`);
                         console.log('Current isFirstPersonMode:', isFirstPersonMode); // Debug log
-                        console.log('Controls enabled before disable:', // Debug log
+                        console.log('Controls enabled before disable:'), // Debug log
 
                         // 禁用 OrbitControls
-                        console.log('Controls enabled after disable:', // 判斷是否為第一人稱模式 (這個是全域變數，會在動畫開始時設定)
+                        console.log('Controls enabled after disable:'), // 判斷是否為第一人稱模式 (這個是全域變數，會在動畫開始時設定)
                         isFirstPersonMode = targetIsFirstPersonMode; // 現在直接使用儲存的目標模式
                         console.log('New isFirstPersonMode:', isFirstPersonMode);
 
@@ -1077,7 +1077,7 @@ createApp({
                                     // 強制更新 controls
                                     console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
                                 }
-                                console.log('Controls enabled at end of position animation:', // Debug log
+                               
                             }
                         });
 
@@ -1560,7 +1560,7 @@ renderer.domElement.addEventListener('touchend', () => {
             if (event.key === 'Escape') {
                 console.log('按下 ESC 鍵，切換回預設攝影機');
                 console.log('Current isFirstPersonMode before ESC:', isFirstPersonMode); // Debug log
-                console.log('Controls enabled before ESC:', // Debug log
+                console.log('Controls enabled before ESC:'), // Debug log
 
                 // 停止第一人稱模式
                 isFirstPersonMode = false;
@@ -1569,8 +1569,9 @@ renderer.domElement.addEventListener('touchend', () => {
 
                 // 啟用 OrbitControls (會自動接管 currentCamera)
                 if (controls) { // 檢查 controls 是否已定義
-                    console.log('Controls enabled after ESC re-enable:', // Debug log
+                    
                 }
+            
 
 
                 // 使用 GSAP 動畫平滑移動攝影機
@@ -1582,7 +1583,7 @@ renderer.domElement.addEventListener('touchend', () => {
                     ease: "power2.inOut",
                     onUpdate: function () {
                         if (controls && controls.target) { // 確保 controls 和 controls.target 已定義
-                            currentCamera.lookAt(// 確保在動畫過程中攝影機看向目標
+                            currentCamera.lookAt()// 確保在動畫過程中攝影機看向目標
                         }
                     },
                     onComplete: function () {
@@ -1596,7 +1597,7 @@ renderer.domElement.addEventListener('touchend', () => {
                             // 解除垂直旋轉限制
                             // 解除垂直旋轉限制
                             // 強制更新 controls
-                            console.log('Controls enabled at end of ESC animation:', // Debug log
+                            
                         }
                     }
                 });
