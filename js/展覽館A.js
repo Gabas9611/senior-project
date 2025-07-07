@@ -1,3 +1,12 @@
+
+function updateDebug(msg) {
+    const el = document.getElementById('debug');
+    if (el) {
+        el.innerText = msg;
+    }
+}
+
+
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -466,7 +475,8 @@ createApp({
             raycaster.setFromCamera(mouse, currentCamera);
 
             // *** 關鍵修正：偵測整個模型，而不只是導覽點 ***
-            const intersects = raycaster.intersectObjects([loadedModel], true);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+    updateDebug('🔵 intersects: ' + intersects.length);
 
             if (intersects.length > 0) {
                 const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
@@ -1440,7 +1450,8 @@ createApp({
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
             raycaster.setFromCamera(mouse, currentCamera);
-            const intersects = raycaster.intersectObjects([loadedModel], true); // Intersect with the entire model
+            const intersects = raycaster.intersectObjects(scene.children, true);
+    updateDebug('🔵 intersects: ' + intersects.length); // Intersect with the entire model
 
             let objectToHighlight = null;
             let tooltipText = '';
