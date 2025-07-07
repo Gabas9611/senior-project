@@ -1211,6 +1211,54 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+// 📱🖱 自訂滑鼠與觸控控制器（取代 FirstPersonControls）
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+
+// 滑鼠拖曳
+renderer.domElement.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+});
+renderer.domElement.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePosition.x;
+    const deltaY = e.clientY - previousMousePosition.y;
+    camera.rotation.y -= deltaX * 0.01;
+    camera.rotation.x -= deltaY * 0.01;
+    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+});
+renderer.domElement.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+// 手機觸控
+renderer.domElement.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: false });
+
+renderer.domElement.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+    camera.rotation.y -= deltaX * 0.02;
+    camera.rotation.x -= deltaY * 0.02;
+    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+    previousMousePosition = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    };
+}, { passive: false });
+
+renderer.domElement.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
         container.appendChild(renderer.domElement);
 
         // 2. 添加環境光和方向光
