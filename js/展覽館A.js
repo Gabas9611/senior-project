@@ -1192,18 +1192,44 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
-// 📱 改良 touch 控制與 debug log
-renderer.domElement.addEventListener('touchstart', (e) => {
+// ✅ 滑鼠與觸控自訂旋轉控制器（替代 FirstPersonControls）
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+
+function setupCustomControls() {
+  // 滑鼠拖曳
+  renderer.domElement.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+  });
+
+  renderer.domElement.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePosition.x;
+    const deltaY = e.clientY - previousMousePosition.y;
+
+    camera.rotation.y -= deltaX * 0.01;
+    camera.rotation.x -= deltaY * 0.01;
+    camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
+
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+  });
+
+  renderer.domElement.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  // 觸控拖曳
+  renderer.domElement.addEventListener('touchstart', (e) => {
     isDragging = true;
     previousMousePosition = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
     };
-    console.log("📱 touchstart", previousMousePosition);
     alert("📱 偵測到觸控事件");
-}, { passive: false });
+  }, { passive: false });
 
-renderer.domElement.addEventListener('touchmove', (e) => {
+  renderer.domElement.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
     const deltaX = e.touches[0].clientX - previousMousePosition.x;
@@ -1213,18 +1239,19 @@ renderer.domElement.addEventListener('touchmove', (e) => {
     camera.rotation.x -= deltaY * 0.02;
     camera.rotation.x = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.5, camera.rotation.x));
 
-    console.log("📱 touchmove | rotX:", camera.rotation.x.toFixed(2), "| rotY:", camera.rotation.y.toFixed(2));
-
     previousMousePosition = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
     };
-}, { passive: false });
+  }, { passive: false });
 
-renderer.domElement.addEventListener('touchend', () => {
+  renderer.domElement.addEventListener('touchend', () => {
     isDragging = false;
-    console.log("📱 touchend");
-});
+  });
+}
+
+// 呼叫一次即可啟用
+setupCustomControls();
 
 // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
 let isDragging = false;
