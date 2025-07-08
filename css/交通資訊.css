@@ -154,9 +154,22 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            flex-direction: column;
         }
 
-        .small {
+        .box-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .box-text {
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+         .small {
             width: 240px;
             height: 240px;
             background-color: #90caf9;
@@ -178,6 +191,28 @@
             background-color: #42a5f5;
             font-size: 16px;
             z-index: 3;
+            /* 修改為 flex-start 讓內容靠上排列 */
+            justify-content: flex-start;
+            /* 增加 padding-top 讓標題與頂部有適當距離 */
+            padding-top: 30px;
+        }
+
+        /* 只在large狀態下顯示文字 */
+        .large .box-text {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 確保標題在所有狀態下都顯示 */
+        .box-title {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* large狀態下的標題樣式 - 靠上水平置中 */
+        .large .box-title {
+            margin-bottom: 10%;
+            text-align: center;
         }
 
        /* Mobile Styles */
