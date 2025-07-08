@@ -9,7 +9,8 @@ const { createApp, ref } = Vue;
                 const boxes = ref([
                     { title:'高鐵',text: '123' },
                     {  title:'公車',text: '745' },
-                    { title:'汽車',text: '途經樂業路和祥順路一段' },
+                    { title:'汽車',
+                        text: '從復興路四段到復興東路，向右轉進樂業路，左轉進入祥順路一段，右轉進入中山路二段，之後右轉進入明秀北路，左轉進入明秀東路，再左轉即可到達目的地' },
                     {  title:'公車',text: '217' },
                     {  title:'自行開車',text: '684' }
                 ]);
