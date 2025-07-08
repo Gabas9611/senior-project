@@ -33,7 +33,7 @@ const { createApp } = Vue;
                     } else if (action === 'introduction') {
                         this.actionMessage = '簡介已點擊';
                     } else if (action === 'traffic') {
-                        window.location.href = 'loading.html?target=交通資訊.html';
+                        window.location.href = 'loading.html?target=traffic-information.html';
                         this.actionMessage = '交通資訊已點擊';
                     }
                     // 點擊任何選單項目後都關閉選單

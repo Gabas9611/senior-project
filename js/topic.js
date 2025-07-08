@@ -59,7 +59,7 @@ createApp({
         handleNavClick(action) {
             this.selectedAction = action;
             if (action === 'import') {
-                window.location.href = 'loading.html?target=交通資訊.html';
+                window.location.href = 'loading.html?target=traffic-information.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
