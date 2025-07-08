@@ -74,7 +74,7 @@ createApp({
             const maxOffset = Math.floor(totalBoxes / 2);
             
             // 計算基本偏移量
-            let offset = (i - centerIndex.value) * 190;
+            let offset = (i - centerIndex.value) * 200;
             
             // 限制偏移量範圍，防止超出容器寬度
             // 假設容器寬度為 95%，考慮到最大卡片寬度400px
