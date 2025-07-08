@@ -211,7 +211,7 @@
 
         /* large狀態下的標題樣式 - 靠上水平置中 */
         .large .box-title {
-            margin-bottom: 10%;
+            
             text-align: center;
         }
 
