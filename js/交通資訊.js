@@ -70,7 +70,34 @@ createApp({
         };
 
         const getStyle = (i) => {
-            const offset = (i - centerIndex.value) * 190;
+            const totalBoxes = boxes.value.length;
+            const maxOffset = Math.floor(totalBoxes / 2);
+            
+            // 計算基本偏移量
+            let offset = (i - centerIndex.value) * 190;
+            
+            // 限制偏移量範圍，防止超出容器寬度
+            // 假設容器寬度為 95%，考慮到最大卡片寬度400px
+            const maxAllowedOffset = 450; // 調整此值以適應您的設計
+            
+            if (Math.abs(offset) > maxAllowedOffset) {
+                offset = offset > 0 ? maxAllowedOffset : -maxAllowedOffset;
+            }
+            
+            // 針對邊界情況進行特殊處理
+            if (centerIndex.value === 0) {
+                // 當中心在第一個元素時，限制左側偏移
+                if (i > centerIndex.value) {
+                    offset = Math.min(offset, maxAllowedOffset);
+                }
+            } else if (centerIndex.value === totalBoxes - 1) {
+                // 當中心在最後一個元素時，限制右側偏移
+                if (i < centerIndex.value) {
+                    offset = Math.max(offset, -maxAllowedOffset);
+                }
+            }
+            
+            
             return {
                 transform: `translate(-50%, -50%) translateX(${offset}px)`
             };
