@@ -1242,7 +1242,8 @@ createApp({
         renderer.domElement.addEventListener('mousemove', onMouseMove);
         renderer.domElement.addEventListener('mouseup', onMouseUp);
 
-       renderer.domElement.addEventListener('touchstart', (e) => {
+      // ✅ 手機觸控事件
+        renderer.domElement.addEventListener('touchstart', (e) => {
             isDragging = true;
             previousMousePosition = {
                 x: e.touches[0].clientX,
@@ -1252,23 +1253,17 @@ createApp({
 
         renderer.domElement.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            const deltaX = currentX - previousMousePosition.x;
-            const deltaY = currentY - previousMousePosition.y;
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
-            // 比較水平與垂直移動距離，選擇其中一個方向旋轉
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // 水平移動 → 只改 Y 軸（左右）
-                currentCamera.rotation.y -= deltaX * sensitivity;
-            } else {
-                // 垂直移動 → 只改 X 軸（上下）
-                currentCamera.rotation.x -= deltaY * sensitivity;
-                currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-            }
-
-            previousMousePosition = { x: currentX, y: currentY };
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
         }, { passive: true });
 
         renderer.domElement.addEventListener('touchend', () => {
