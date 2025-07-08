@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>介紹頁面</title>
+    <link rel="stylesheet" href="./css/old-buildings.css">
+
+    <style>
+        /* ✅ 大門專屬視窗樣式 */
+        .info-modal-door {
+            background: linear-gradient(to right, #fff0f0, #ffdada);
+            border: 3px solid #ff4444;
+        }
+
+        .info-modal-door .modal-title {
+            color: #990000;
+        }
+
+        .info-modal-door .modal-button {
+            background-color: #cc0000;
+        }
+
+        .info-modal-door .modal-button:hover {
+            background-color: #990000;
+        }
+    </style>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/",
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <header class="header">
+                <div class="logo-section">
+                    <h1 class="title">下一站，蛻變</h1>
+                </div>
+
+                <nav class="nav-section">
+                    <button class="nav-button" @click="handleNavClick('backToMain')">
+                        回到前頁
+                    </button>
+                </nav>
+            </header>
+
+            <main class="main-content" id="three-container" style="padding: 0; background-color: #cccccc;">
+                <!-- Three.js canvas will be inserted here by Vue -->
+            </main>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <div v-cloak v-if="isInitialized && showInfoModal" class="info-modal-overlay">
+            <div class="info-modal" :class="{ 'info-modal-door': infoModalTitle === '出口' }">
+                <button class="close-button" @click="closeInfoModal">×</button>
+                <h2 class="modal-title">{{ infoModalTitle }}</h2>
+                <div class="modal-content-wrapper">
+                    <div class="carousel-section" v-if="showImageCarousel">
+                        <img :src="carouselImages[currentImageIndex]" class="carousel-image">
+                        <div class="carousel-controls">
+                            <button @click="prevImage">〈</button>
+                            <button @click="nextImage">〉</button>
+                        </div>
+                    </div>
+                    <div class="modal-text-section">
+                        <p class="modal-content" v-html="infoModalContent"></p>
+                    </div>
+                </div>
+                <button v-if="showModalButton" class="modal-button" @click="enterExhibition">{{ infoModalButtonText
+                    }}</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="./js/old-buildings.js"></script>
+</body>
+
+</html>
