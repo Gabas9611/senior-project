@@ -60,7 +60,7 @@
             <div id="tooltip" class="tooltip"></div>
         </div>
 
-        <div v-if="showInfoModal" class="info-modal-overlay">
+        <div v-cloak v-if="isInitialized && showInfoModal" class="info-modal-overlay">
             <div class="info-modal" :class="{ 'info-modal-door': infoModalTitle === '出口' }">
                 <button class="close-button" @click="closeInfoModal">×</button>
                 <h2 class="modal-title">{{ infoModalTitle }}</h2>
@@ -76,7 +76,8 @@
                         <p class="modal-content" v-html="infoModalContent"></p>
                     </div>
                 </div>
-                <button v-if="showModalButton" class="modal-button" @click="enterExhibition">{{ infoModalButtonText }}</button>
+                <button v-if="showModalButton" class="modal-button" @click="enterExhibition">{{ infoModalButtonText
+                    }}</button>
             </div>
         </div>
 
