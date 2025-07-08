@@ -56,29 +56,9 @@
             </main>
         </div>
     </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="module" src="./js/交通資訊.js"></script>
-    <script>
-        const boxes = ['', '', '', '', '']; // 可換成任意內容
-const centerIndex = ref(2);
-
-const updateLayout = (index) => {
-  centerIndex.value = index;
-};
-
-const getSizeClass = (i) => {
-  const diff = Math.abs(i - centerIndex.value);
-  if (diff === 0) return 'large';
-  else if (diff === 1) return 'medium';
-  return 'small';
-};
-
-const getStyle = (i) => {
-  const offset = (i - centerIndex.value) * 150;
-  return {
-    transform: `translate(-50%, -50%) translateX(${offset}px)`
-  };
-};
-    </script>
 
 </body>
 
