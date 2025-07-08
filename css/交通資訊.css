@@ -1,341 +1,365 @@
- 
-     * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-        }
+ body {
+     font-family: 'Arial', sans-serif;
+     background-color: #f5f5f5;
+ }
 
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            
-            min-height: 100vh;
-            position: relative;
-        }
+ .container {
+     max-width: 100%;
+     margin: 0 auto;
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            background-color: #87cbb0;
-        }
+     min-height: 100vh;
+     position: relative;
+ }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
+ .header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 20px 40px;
+     background-color: #87cbb0;
+ }
 
-        .title {
-            font-size: 30px;
-            font-weight: normal;
-            color: #333;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
+ .logo-section {
+     display: flex;
+     align-items: center;
+ }
 
-        .nav-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+ .title {
+     font-size: 30px;
+     font-weight: normal;
+     color: #333;
+     padding: 8px 12px;
+     border-radius: 4px;
+     font-weight: bold;
+ }
 
-        .nav-button {
-            background-color: yellow;
-            color: #333;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
+ .nav-section {
+     display: flex;
+     align-items: center;
+     gap: 15px;
+ }
 
-        .nav-button:hover {
-            background-color: #7a7a7a;
-            transform: translateY(-1px);
-        }
+ .nav-button {
+     background-color: yellow;
+     color: #333;
+     border: none;
+     padding: 8px 16px;
+     border-radius: 20px;
+     cursor: pointer;
+     font-size: 14px;
+     transition: all 0.3s ease;
+ }
 
-        .main-content {
-            background-color: aqua;
-            padding: 40px 20px;
-            min-height: calc(100vh - 80px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
+ .nav-button:hover {
+     background-color: #7a7a7a;
+     transform: translateY(-1px);
+ }
 
-        .content-block {
-            width: 95%;
-            height: 700px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #333;
-            font-size: 18px;
-            position: relative;
-        }
+ .main-content {
+     background-color: aqua;
+     padding: 40px 20px;
+     min-height: calc(100vh - 80px);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     gap: 20px;
+ }
 
-        .inner-rectangle {
-            width: 80%;
-            height: 90%;
-            background-color: black;
-            border: 2px solid #ccc;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 16px;
-            position: relative; /* 添加相對定位 */
-        }
+ .content-block {
+     width: 95%;
+     height: 700px;
+     background-color: #ffffff;
+     border-radius: 8px;
+     padding: 20px;
+     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     color: #333;
+     font-size: 18px;
+     position: relative;
+ }
 
-        /* 地圖覆蓋層樣式 */
-        .map-overlay {
-            position: absolute;
-            right: 3%;
-            width: 90%;
-            height: 90%;
-            background-color: white;
-            border-radius: 18px; /* 稍微小於父容器的圓角 */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 10;
-        }
+ .content-1 {
+     height: 500px;
+ }
 
-        .map-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+ .inner-rectangle {
+     width: 80%;
+     height: 90%;
+     background-color: black;
+     border: 2px solid #ccc;
+     border-radius: 20px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     color: #666;
+     font-size: 16px;
+     position: relative;
+     /* 添加相對定位 */
+ }
 
-        /* 平板樣式的白色圓形按鈕 */
-        .tablet-button {
-            position: absolute;
-            left: 1%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background-color: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 20; /* 確保按鈕在地圖上方 */
-        }
+ /* 地圖覆蓋層樣式 */
+ .map-overlay {
+     position: absolute;
+     right: 3%;
+     width: 90%;
+     height: 90%;
+     background-color: white;
+     border-radius: 18px;
+     /* 稍微小於父容器的圓角 */
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.3s ease, visibility 0.3s ease;
+     z-index: 10;
+ }
 
-        .tablet-button:hover {
-            background-color: #f8f8f8;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
+ .map-overlay.visible {
+     opacity: 1;
+     visibility: visible;
+ }
 
-        .tablet-button::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background-color: #ddd;
-            border-radius: 50%;
-        }
+ /* 平板樣式的白色圓形按鈕 */
+ .tablet-button {
+     position: absolute;
+     left: 1%;
+     top: 50%;
+     transform: translateY(-50%);
+     width: 50px;
+     height: 50px;
+     background-color: #ffffff;
+     border: 2px solid #e0e0e0;
+     border-radius: 50%;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     z-index: 20;
+     /* 確保按鈕在地圖上方 */
+ }
 
-        .content-placeholder {
-            text-align: center;
-            color: #666;
-            font-size: 18px;
-        }
+ .tablet-button:hover {
+     background-color: #f8f8f8;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+ }
 
-        .box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transition: all 0.3s ease;
-            color: white;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-           
-            font-weight: bold;
-            flex-direction: column;
-        }
+ .tablet-button::before {
+     content: '';
+     width: 8px;
+     height: 8px;
+     background-color: #ddd;
+     border-radius: 50%;
+ }
 
-        .box-title {
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
+ .content-placeholder {
+     text-align: center;
+     color: #666;
+     font-size: 18px;
+ }
 
-        .box-text {
-            font-size: 14px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
+ .box {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transition: all 0.3s ease;
+     color: white;
+     border-radius: 8px;
+     padding: 10px;
+     text-align: center;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
 
-         .small {
-            width: 240px;
-            height: 240px;
-            background-color: #90caf9;
-            font-size: 12px;
-            z-index: 1;
-        }
+     font-weight: bold;
+     flex-direction: column;
+ }
 
-        .medium {
-            width: 320px;
-            height: 320px;
-            background-color: #64b5f6;
-            font-size: 14px;
-            z-index: 2;
-        }
+ .box-title {
+     font-size: 18px;
+     margin-bottom: 8px;
+ }
 
-        .large {
-            width: 400px;
-            height: 400px;
-            background-color: #42a5f5;
-            font-size: 16px;
-            z-index: 3;
-            /* 修改為 flex-start 讓內容靠上排列 */
-            justify-content: flex-start;
-            /* 增加 padding-top 讓標題與頂部有適當距離 */
-            padding-top: 30px;
-            padding-left: 2%;
-            padding-right: 2%;
-        }
+ .box-text {
+     font-size: 14px;
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.3s ease, visibility 0.3s ease;
+ }
+ .box-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 
-        /* 只在large狀態下顯示文字 */
-        .large .box-text {
-            opacity: 1;
-            visibility: visible;
-        }
+ .small {
+     width: 240px;
+     height: 240px;
+     background-color: #90caf9;
+     font-size: 12px;
+     z-index: 1;
+ }
 
-        /* 確保標題在所有狀態下都顯示 */
-        .box-title {
-            opacity: 1;
-            visibility: visible;
-        }
+ .medium {
+     width: 320px;
+     height: 320px;
+     background-color: #64b5f6;
+     font-size: 14px;
+     z-index: 2;
+ }
 
-        /* large狀態下的標題樣式 - 靠上水平置中 */
-        .large .box-title {
-            
-            text-align: center;
-        }
+ .large {
+     width: 400px;
+     height: 400px;
+     background-color: #42a5f5;
+     font-size: 16px;
+     z-index: 3;
+     /* 修改為 flex-start 讓內容靠上排列 */
+     justify-content: flex-start;
+     /* 增加 padding-top 讓標題與頂部有適當距離 */
+     padding-top: 30px;
+     padding-left: 2%;
+     padding-right: 2%;
+ }
 
-       /* Mobile Styles */
-        @media (max-width: 768px) {
-            .header {
-                padding: 12px 15px;
-            }
+ /* 只在large狀態下顯示圖片 */
+ .large .box-img {
+     opacity: 1;
+     visibility: visible;
+     width: 80%;
+     height:50%;
+ }
 
-            .title {
-                font-size: 16px;
-                padding: 6px 10px;
-            }
+ /* 只在large狀態下顯示文字 */
+ .large .box-text {
+     opacity: 1;
+     visibility: visible;
+ }
 
-            .logo-bar {
-                height: 35px;
-                margin-right: 12px;
-            }
+ /* 確保標題在所有狀態下都顯示 */
+ .box-title {
+     opacity: 1;
+     visibility: visible;
+ }
 
-            .nav-button {
-                padding: 6px 12px;
-                font-size: 13px;
-            }
+ /* large狀態下的標題樣式 - 靠上水平置中 */
+ .large .box-title {
 
-            .main-content {
-                padding: 30px 15px;
-            }
+     text-align: center;
+ }
 
-            .content-placeholder {
-                font-size: 16px;
-            }
+ /* Mobile Styles */
+ @media (max-width: 768px) {
+     .header {
+         padding: 12px 15px;
+     }
 
-            .content-block {
-                width: 90%;
-                height: 150px;
-                font-size: 16px;
-            }
+     .title {
+         font-size: 16px;
+         padding: 6px 10px;
+     }
 
-            .inner-rectangle {
-                width: 90%;
-                height: 80px;
-                font-size: 14px;
-            }
+     .logo-bar {
+         height: 35px;
+         margin-right: 12px;
+     }
 
-            /* tablet-button 平板樣式 */
-            .tablet-button {
-                width: 40px;
-                height: 40px;
-                left: 8%;
-            }
+     .nav-button {
+         padding: 6px 12px;
+         font-size: 13px;
+     }
 
-            .tablet-button::before {
-                width: 6px;
-                height: 6px;
-            }
-        }
+     .main-content {
+         padding: 30px 15px;
+     }
 
-        /* Small Mobile Styles */
-        @media (max-width: 480px) {
-            .nav-section {
-                gap: 10px;
-            }
+     .content-placeholder {
+         font-size: 16px;
+     }
 
-            .nav-button {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
+     .content-block {
+         width: 90%;
+         height: 150px;
+         font-size: 16px;
+     }
 
-            .title {
-                font-size: 14px;
-                padding: 5px 8px;
-            }
+     .inner-rectangle {
+         width: 90%;
+         height: 80px;
+         font-size: 14px;
+     }
 
-            .logo-bar {
-                height: 30px;
-                width: 3px;
-                margin-right: 10px;
-            }
+     /* tablet-button 平板樣式 */
+     .tablet-button {
+         width: 40px;
+         height: 40px;
+         left: 8%;
+     }
 
-            .content-block {
-                width: 95%;
-                height: 120px;
-                font-size: 14px;
-                padding: 15px;
-            }
+     .tablet-button::before {
+         width: 6px;
+         height: 6px;
+     }
+ }
 
-            .inner-rectangle {
-                width: 95%;
-                height: 60px;
-                font-size: 12px;
-            }
+ /* Small Mobile Styles */
+ @media (max-width: 480px) {
+     .nav-section {
+         gap: 10px;
+     }
 
-            /* tablet-button 小螢幕手機樣式 */
-            .tablet-button {
-                width: 35px;
-                height: 35px;
-                left: 6%;
-            }
+     .nav-button {
+         padding: 5px 10px;
+         font-size: 12px;
+     }
 
-            .tablet-button::before {
-                width: 5px;
-                height: 5px;
-            }
-        }
+     .title {
+         font-size: 14px;
+         padding: 5px 8px;
+     }
+
+     .logo-bar {
+         height: 30px;
+         width: 3px;
+         margin-right: 10px;
+     }
+
+     .content-block {
+         width: 95%;
+         height: 120px;
+         font-size: 14px;
+         padding: 15px;
+     }
+
+     .inner-rectangle {
+         width: 95%;
+         height: 60px;
+         font-size: 12px;
+     }
+
+     /* tablet-button 小螢幕手機樣式 */
+     .tablet-button {
+         width: 35px;
+         height: 35px;
+         left: 6%;
+     }
+
+     .tablet-button::before {
+         width: 5px;
+         height: 5px;
+     }
+ }
