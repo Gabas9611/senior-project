@@ -1,0 +1,387 @@
+/* 主題頁面.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    --header-height: 80px; /* Default header height */
+}
+
+[v-cloak] {
+    display: none !important;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: transparent;
+    height: 100vh; /* 確保容器佔滿整個視窗高度 */
+    position: relative;
+    overflow: hidden; /* 隱藏容器內的滾動條 */
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background-color: transparent; /* 透明背景 */
+    position: absolute; /* 絕對定位 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* 確保 header 在 main-content 上方 */
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: normal;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.nav-section {
+    position: relative; /* 用於定位 sidebar-menu */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-button {
+    background-color: yellow;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #ddd;
+}
+
+.menu-button {
+    background-color: yellow;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: all 0.3s ease;
+    z-index: 100; /* 確保按鈕在選單之上 */
+}
+
+.menu-button:hover {
+    background-color: #7a7a7a;
+}
+
+.menu-line {
+    width: 20px;
+    height: 2px;
+    background-color: #333;
+    border-radius: 1px;
+}
+
+/* 側邊選單的樣式調整 */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    /* 這裡需要動態計算 header 的實際高度 */
+    /* 20px (上 padding) + 20px (下 padding) + 內容高度 (假設40px) = 80px */
+    /* 為了確保不被擋住，可以稍微增加一點距離，例如 80px + 5px = 85px */
+    top: calc(var(--header-height) + 5px); /* 初始設定，會根據 media query 調整 */
+    right: 40px;
+    background-color: #b8b8b8;
+    width: auto;
+    max-width: calc(100vw - 80px);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 101; /* 將 z-index 提高，確保選單在 header 之上 */
+    border-radius: 5px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    pointer-events: none;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.sidebar-menu.is-open {
+    max-height: 300px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.menu-item-button {
+    background-color: yellow;
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+.menu-item-button:last-child {
+    margin-bottom: 0;
+}
+
+.menu-item-button:hover {
+    background-color: #ddd;
+}
+
+.main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* 確保 main-content 在 header 下方 */
+    background-color: aqua;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-placeholder {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+}
+
+/* Info Modal Styles */
+.info-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.info-modal {
+    background: linear-gradient(to right, #e6ffe6, #ccffcc);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-button:hover {
+    color: #f00;
+}
+
+.modal-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 15px; /* header 的 padding 改變，實際高度也會改變 */
+    }
+
+    .title {
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+
+    .nav-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .menu-button {
+        width: 35px;
+        height: 35px;
+    }
+
+    .menu-line {
+        width: 18px;
+    }
+
+    .main-content {
+        padding: 30px 15px;
+    }
+
+    .content-placeholder {
+        font-size: 16px;
+    }
+
+    .sidebar-menu {
+        /* 12px (上 padding) + 15px (下 padding) + 內容高度 (假設35px) = 62px */
+        /* 為了確保不被擋住，可以稍微增加一點距離，例如 62px + 5px = 67px */
+            top: calc(59px + 5px); /* 根據 768px 下的 header 高度調整 */
+        right: 15px;
+        max-width: calc(100vw - 30px);
+        width: auto;
+    }
+
+    .menu-item-button {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+    .nav-section {
+        gap: 10px;
+    }
+
+    .title {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
+
+    .nav-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .menu-button {
+        width: 32px;
+        height: 32px;
+    }
+
+    .menu-line {
+        width: 16px;
+    }
+
+    .sidebar-menu {
+        /* 12px (上 padding) + 15px (下 padding) + 內容高度 (假設32px) = 59px */
+        /* 為了確保不被擋住，可以稍微增加一點距離，例如 59px + 5px = 64px */
+        top: calc(56px + 5px); /* 根據 480px 下的 header 高度調整 */
+        right: 10px;
+        max-width: calc(100vw - 20px);
+        width: auto;
+    }
+
+    .menu-item-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+/* Animation for menu button */
+.menu-button.active .menu-line:nth-child(1) {
+    transform-origin: center;
+    transform: translate(0, 5px) rotate(45deg);
+}
+
+.menu-button.active .menu-line:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-button.active .menu-line:nth-child(3) {
+    transform-origin: center;
+    transform: translate(0, -5px) rotate(-45deg);
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    pointer-events: none; /* Allow mouse events to pass through */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+#three-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}

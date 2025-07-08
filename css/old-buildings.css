@@ -1,0 +1,363 @@
+/* 展覽館A.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+}
+
+[v-cloak] {
+    display: none !important;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: transparent;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: normal;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.nav-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-button {
+    background-color: yellow;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #ddd;
+}
+
+.main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: aqua;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Styles */
+.info-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.info-modal {
+    background: linear-gradient(to right, #e6ffe6, #ccffcc);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 90vw;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-button:hover {
+    color: #f00;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #222;
+    text-align: center;
+}
+
+.modal-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
+}
+
+.modal-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.left-half {
+    flex: 1;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    overflow: hidden;
+    /* 確保圖片不會超出邊界 */
+}
+
+.left-half img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 讓圖片填滿容器，效果類似 background-size: cover */
+}
+
+.carousel-section {
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.carousel-controls button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.modal-text-section {
+    flex: 1;
+    max-width: 50%;
+    overflow-y: auto;
+    padding-right: 10px;
+    text-align: left
+}
+
+.modal-content {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    white-space: normal;
+}
+
+/* ✅ 大門專屬視窗樣式 */
+.info-modal-door {
+    background: linear-gradient(to right, #fff0f0, #ffdada);
+    border: 3px solid #ff4444;
+    width: 60%;
+    max-width: 600px;
+    max-height: 60vh;
+}
+
+.info-modal-door .modal-title {
+    color: #990000;
+}
+
+.info-modal-door .modal-button {
+    background-color: #cc0000;
+}
+
+.info-modal-door .modal-button:hover {
+    background-color: #990000;
+}
+
+
+@media (max-width: 1200px) {
+    .modal-content-wrapper {
+        flex-direction: column;
+    }
+
+    .carousel-section,
+    .modal-text-section {
+        max-width: 100%;
+    }
+
+    .modal-text-section {
+        max-height: 30vh;
+        overflow-y: auto;
+        text-align: left
+    }
+
+    .carousel-image {
+        max-height: 40vh;
+    }
+}
+
+/* Mobile Styles */
+@media (min-width: 769px) {
+    .modal-content-wrapper {
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 15px;
+    }
+
+    .title {
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+
+    .nav-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .main-content {
+        padding: 30px 15px;
+    }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+    .nav-section {
+        gap: 10px;
+    }
+
+    .title {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
+
+    .nav-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+#three-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
