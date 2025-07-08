@@ -31,20 +31,23 @@ createApp({
             isMenuOpen: false,
             selectedAction: '',
             actionMessage: '',
-            showInfoModal: false, // 控制資訊彈出視窗的顯示
-            infoModalTitle: '',   // 資訊彈出視窗的標題
-            infoModalContent: '',  // 資訊彈出視窗的內容
-            infoModalButtonText: '進入參觀', // 新增：資訊彈出視窗按鈕文字
-            modalAction: '', // 新增：彈出視窗按鈕的動作類型
-            showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
-            isInitialized: false // 新增：追蹤應用程式是否已初始化
-        }
+            showInfoModal: false,
+            infoModalTitle: '',
+            infoModalContent: '',
+            infoModalButtonText: '進入參觀',
+            modalAction: '',
+            showModalButton: true,
+            isInitialized: false,
+            carouselImages: [],
+            currentImageIndex: 0,
+            showImageCarousel: false
+        };
     },
     methods: {
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
-                controls.enabled = !this.isMenuOpen; // 選單開啟時禁用 controls，關閉時啟用
+                controls.enabled = !this.isMenuOpen;
                 if (this.isMenuOpen) {
                     console.log('選單已開啟，OrbitControls 已禁用。');
                 } else {
@@ -63,23 +66,33 @@ createApp({
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
-            } else if (action === 'introduction') {
-                window.location.href = 'loading畫面.html?target=index.html';
-                this.actionMessage = '簡介已點擊';
-            } else if (action === 'traffic') {
-                this.actionMessage = '交通資訊已點擊';
-            } else if (action === 'showExhibitionA') {
-                this.switchToCamera('NavCamera7');
-                this.actionMessage = '展覽館A已點擊';
-            } else if (action === 'showExhibitionB') {
-                this.switchToCamera('NavCamera8');
-                this.actionMessage = '展覽館B已點擊';
-            } else if (action === 'showExhibitionC') {
-                this.switchToCamera('NavCamera9');
-                this.actionMessage = '展覽館C已點擊';
+            } else if (action === 'backToMain') {
+                window.location.href = 'loading畫面.html?target=主題頁面.html';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
+            }
+        },
+        prevImage() {
+            if (this.currentImageIndex > 0) {
+                this.currentImageIndex--;
+            } else {
+                this.currentImageIndex = this.carouselImages.length - 1;
+            }
+        },
+        nextImage() {
+            if (this.currentImageIndex < this.carouselImages.length - 1) {
+                this.currentImageIndex++;
+            } else {
+                this.currentImageIndex = 0;
+            }
+        },
+        closeInfoModal() {
+            this.showInfoModal = false;
+            if (controls) {
+                controls.enabled = true;
+                controls.update();
+                console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
         switchToCamera(cameraName) {
