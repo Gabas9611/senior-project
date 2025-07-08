@@ -51,7 +51,8 @@
       <button class="menu-item-button" @click="handleNavClick('showExhibitionC')">彈藥庫歷史館</button>
     </div>
 
-    <div v-if="showInfoModal" class="info-modal-overlay">
+    <!-- 只有初始化完成後 & showInfoModal 才顯示彈窗 -->
+    <div v-cloak v-if="isInitialized && showInfoModal" class="info-modal-overlay">
       <div class="info-modal">
         <button class="close-button" @click="closeInfoModal">×</button>
         <h2 class="modal-title">{{ infoModalTitle }}</h2>
