@@ -1,5 +1,5 @@
  
-        * {
+     * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -100,11 +100,32 @@
             justify-content: center;
             color: #666;
             font-size: 16px;
+            position: relative; /* 添加相對定位 */
         }
+
+        /* 地圖覆蓋層樣式 */
+        .map-overlay {
+            position: absolute;
+            right: 3%;
+            width: 90%;
+            height: 90%;
+            background-color: white;
+            border-radius: 18px; /* 稍微小於父容器的圓角 */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 10;
+        }
+
+        .map-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* 平板樣式的白色圓形按鈕 */
         .tablet-button {
             position: absolute;
-            left: 12%;
+            left: 1%;
             top: 50%;
             transform: translateY(-50%);
             width: 50px;
@@ -118,10 +139,11 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 20; /* 確保按鈕在地圖上方 */
         }
 
         .tablet-button:hover {
-            background-color: #f8f8f88c;
+            background-color: #f8f8f8;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
@@ -132,7 +154,6 @@
             background-color: #ddd;
             border-radius: 50%;
         }
-
 
         .content-placeholder {
             text-align: center;
