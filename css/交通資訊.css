@@ -216,6 +216,8 @@
             justify-content: flex-start;
             /* 增加 padding-top 讓標題與頂部有適當距離 */
             padding-top: 30px;
+            padding-left: 2%;
+            padding-right: 2%;
         }
 
         /* 只在large狀態下顯示文字 */
