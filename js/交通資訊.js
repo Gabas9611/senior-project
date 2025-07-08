@@ -9,7 +9,7 @@ const { createApp, ref } = Vue;
                 const boxes = ref([
                     { title:'高鐵',text: '123' },
                     {  title:'公車',text: '745' },
-                    { title:'汽車',text: '789' },
+                    { title:'汽車',text: '途經樂業路和祥順路一段' },
                     {  title:'公車',text: '217' },
                     {  title:'自行開車',text: '684' }
                 ]);
