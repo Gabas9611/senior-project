@@ -19,7 +19,7 @@ let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6, came
 
 // 宣告互動物件相關的全域變數
 const targetObjectNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06"]; // 宣告為全域常數
-const highlightableNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06", "介紹欄1", "介紹欄2", "介紹欄3", "介紹", "出口"]; // 宣告為全域常數
+const highlightableNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06", "介紹欄1", "介紹欄2", "介紹欄3", "出口"]; // 宣告為全域常數
 const frameNames = ["畫框01", "畫框02", "畫框03", "畫框04"]; // 宣告為全域常數
 const highlightableObjects = []; // 宣告為全域變數
 let currentHoveredObject = null; // 宣告為全域變數
@@ -152,8 +152,15 @@ createApp({
             let displayContent = '沒有找到該物件的介紹資訊。';
 
             // 如果傳入了 clickedObject 且它有 customDisplayName，則優先使用 customDisplayName 作為標題
-            if (clickedObject && clickedObject.userData && clickedObject.userData.customDisplayName) {
-                displayTitle = clickedObject.userData.customDisplayName;
+            if (clickedObject) {
+                let parent = clickedObject;
+                while (parent) {
+                    if (parent.userData && parent.userData.customDisplayName) {
+                        displayTitle = parent.userData.customDisplayName;
+                        break;
+                    }
+                    parent = parent.parent;
+                }
             }
 
             // 根據原始物件名稱設定不同的內容 (這裡保持您現有的邏輯，用 itemName 來判斷)
@@ -182,12 +189,7 @@ createApp({
                     this.modalAction = 'enterHRDept';
                     this.showModalButton = true;
                     break;
-                case '介紹':
-                    displayContent = '歡迎來到勤益彈藥庫改造後的現場<br>以下將帶您來了解要如何操作。<br>1.按住滑鼠左鍵拖曳滑鼠可以調整視角<br>2.點擊地圖上的星星可以切換攝影機<br>3.點擊介紹牌可以與建築互動';
-                    this.infoModalButtonText = '了解更多';
-                    this.modalAction = 'learnMore';
-                    this.showModalButton = false; // 這裡設定為 false，不顯示按鈕
-                    break;
+                
                 case '出口':
                     displayContent = '這是離開展廳的相關資訊。';
                     this.infoModalButtonText = '離開';
@@ -663,7 +665,7 @@ createApp({
         // 導覽攝影機的設定 (保持不變)
         cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(-6.47, -0.9, -0.17);
+        cameraNav1.position.set(-6.47, -0.8, -0.17);
 
         cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
@@ -703,7 +705,7 @@ createApp({
 
         cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav10.name = "NavCamera10";
-        cameraNav10.position.set(-4.62, -0.9, -0.17);
+        cameraNav10.position.set(-4.62, -0.8, -0.17);
         cameraNav10.rotation.y = -Math.PI / 2;
 
         cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -737,74 +739,68 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
-// ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-const sensitivity = 0.005;
-const maxVerticalAngle = Math.PI / 2.5;
+        // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        const sensitivity = 0.005;
+        const maxVerticalAngle = Math.PI / 2.5;
 
-function clamp(val, min, max) {
-    return Math.max(min, Math.min(max, val));
-}
+        function clamp(val, min, max) {
+            return Math.max(min, Math.min(max, val));
+        }
 
-function onMouseDown(e) {
-    isDragging = true;
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-}
+        function onMouseDown(e) {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
 
-function onMouseMove(e) {
-    if (!isDragging) return;
-    const deltaX = e.clientX - previousMousePosition.x;
-    const deltaY = e.clientY - previousMousePosition.y;
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
 
-    currentCamera.rotation.y -= deltaX * sensitivity;
-    currentCamera.rotation.x -= deltaY * sensitivity;
-    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-}
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
 
-function onMouseUp() {
-    isDragging = false;
-}
+        function onMouseUp() {
+            isDragging = false;
+        }
 
-renderer.domElement.addEventListener('mousedown', onMouseDown);
-renderer.domElement.addEventListener('mousemove', onMouseMove);
-renderer.domElement.addEventListener('mouseup', onMouseUp);
+        renderer.domElement.addEventListener('mousedown', onMouseDown);
+        renderer.domElement.addEventListener('mousemove', onMouseMove);
+        renderer.domElement.addEventListener('mouseup', onMouseUp);
 
-// ✅ 手機觸控事件
-renderer.domElement.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    previousMousePosition = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-    };
-}, { passive: true });
+        // ✅ 手機觸控事件
+        renderer.domElement.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+        }, { passive: true });
 
-renderer.domElement.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-    const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    const deltaX = currentX - previousMousePosition.x;
-    const deltaY = currentY - previousMousePosition.y;
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
-    // 比較水平與垂直移動距離，選擇其中一個方向旋轉
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // 水平移動 → 只改 Y 軸（左右）
-        currentCamera.rotation.y -= deltaX * sensitivity;
-    } else {
-        // 垂直移動 → 只改 X 軸（上下）
-        currentCamera.rotation.x -= deltaY * sensitivity;
-        currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-    }
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+        }, { passive: true });
 
-    previousMousePosition = { x: currentX, y: currentY };
-}, { passive: true });
-
-renderer.domElement.addEventListener('touchend', () => {
-    isDragging = false;
-});
+        renderer.domElement.addEventListener('touchend', () => {
+            isDragging = false;
+        });
 
         container.appendChild(renderer.domElement);
 
@@ -841,7 +837,7 @@ renderer.domElement.addEventListener('touchend', () => {
 
         // 5. 載入模型
         loader.load(
-            './model/06月團體專題-老建築改建-20250703-02版 .glb',
+            './model/06月團體專案-20250708-建築外觀版本版.glb',
             function (gltf) {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
@@ -856,26 +852,26 @@ renderer.domElement.addEventListener('touchend', () => {
 
                 // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
                 loadedModel.traverse((child) => {
-                    if (child.isMesh) {
-                        switch (child.name) {
-                            case '介紹欄1':
-                                child.userData.customDisplayName = '台灣歷史館';
-                                break;
-                            case '介紹欄2':
-                                child.userData.customDisplayName = '老建築再生館';
-                                break;
-                            case '介紹欄3':
-                                child.userData.customDisplayName = '彈藥庫歷史館';
-                                break;
-                            case '介紹':
-                                child.userData.customDisplayName = '操作說明';
-                                break;
-                            case '出口':
-                                child.userData.customDisplayName = '離開展廳';
-                                break;
-                            // 如果有其他物件需要自訂名稱，可以在這裡添加
-                        }
+                    switch (child.name) {
+                        case '介紹欄1':
+                            child.userData.customDisplayName = '台灣歷史館';
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '介紹欄2':
+                            child.userData.customDisplayName = '老建築再生館'; 
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '介紹欄3':
+                            child.userData.customDisplayName = '彈藥庫歷史館'; 
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        case '出口':
+                            child.userData.customDisplayName = '離開展廳'; 
+                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            break;
+                        // 如果有其他物件需要自訂名稱，可以在這裡添加
                     }
+
                 });
                 // *** 新增結束：為特定物件添加自訂顯示名稱到 userData ***
 
