@@ -17,6 +17,10 @@ body {
     --header-height: 80px; /* Default header height */
 }
 
+[v-cloak] {
+    display: none !important;
+}
+
 .container {
     max-width: 100%;
     margin: 0 auto;
