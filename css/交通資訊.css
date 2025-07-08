@@ -268,104 +268,250 @@
      text-align: center;
  }
 
- /* Mobile Styles */
- @media (max-width: 768px) {
-     .header {
-         padding: 12px 15px;
-     }
+ /* Tablet Styles - 768px */
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 15px;
+        flex-wrap: wrap;
+    }
 
-     .title {
-         font-size: 16px;
-         padding: 6px 10px;
-     }
+    .title {
+        font-size: 18px;
+        padding: 6px 10px;
+    }
 
-     .logo-bar {
-         height: 35px;
-         margin-right: 12px;
-     }
+    .logo-bar {
+        height: 35px;
+        margin-right: 12px;
+    }
 
-     .nav-button {
-         padding: 6px 12px;
-         font-size: 13px;
-     }
+    .nav-section {
+        gap: 10px;
+    }
 
-     .main-content {
-         padding: 30px 15px;
-     }
+    .nav-button {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
 
-     .content-placeholder {
-         font-size: 16px;
-     }
+    .main-content {
+        padding: 25px 15px;
+        gap: 15px;
+    }
 
-     .content-block {
-         width: 90%;
-         height: 150px;
-         font-size: 16px;
-     }
+    .content-block {
+        width: 95%;
+        height: 400px;
+        font-size: 16px;
+        padding: 15px;
+        border-radius: 6px;
+    }
 
-     .inner-rectangle {
-         width: 90%;
-         height: 80px;
-         font-size: 14px;
-     }
+    .content-1 {
+        height: 350px;
+    }
 
-     /* tablet-button 平板樣式 */
-     .tablet-button {
-         width: 40px;
-         height: 40px;
-         left: 8%;
-     }
+    .inner-rectangle {
+        width: 85%;
+        height: 85%;
+        font-size: 14px;
+        border-radius: 15px;
+    }
 
-     .tablet-button::before {
-         width: 6px;
-         height: 6px;
-     }
- }
+    .screen {
+        right: 3%;
+        width: 90%;
+        height: 85%;
+        border-radius: 8px;
+    }
 
- /* Small Mobile Styles */
- @media (max-width: 480px) {
-     .nav-section {
-         gap: 10px;
-     }
+    .content-placeholder {
+        font-size: 16px;
+    }
 
-     .nav-button {
-         padding: 5px 10px;
-         font-size: 12px;
-     }
+    .tablet-button {
+        width: 25px;
+        height: 25px;
+        left: 1%;
+    }
 
-     .title {
-         font-size: 14px;
-         padding: 5px 8px;
-     }
+    .tablet-button::before {
+        width: 7px;
+        height: 7px;
+    }
 
-     .logo-bar {
-         height: 30px;
-         width: 3px;
-         margin-right: 10px;
-     }
+    /* Box響應式調整 */
+    .small {
+        width: 180px;
+        height: 180px;
+        font-size: 11px;
+    }
 
-     .content-block {
-         width: 95%;
-         height: 120px;
-         font-size: 14px;
-         padding: 15px;
-     }
+    .medium {
+        width: 240px;
+        height: 240px;
+        font-size: 13px;
+    }
 
-     .inner-rectangle {
-         width: 95%;
-         height: 60px;
-         font-size: 12px;
-     }
+    .large {
+        width: 300px;
+        height: 300px;
+        font-size: 15px;
+        padding-top: 20px;
+    }
 
-     /* tablet-button 小螢幕手機樣式 */
-     .tablet-button {
-         width: 35px;
-         height: 35px;
-         left: 6%;
-     }
+    .box-title {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
 
-     .tablet-button::before {
-         width: 5px;
-         height: 5px;
-     }
- }
+    .box-text {
+        font-size: 13px;
+    }
+
+    .box-img {
+        width: 50px;
+        height: 50px;
+        margin: 8px 0;
+    }
+
+    .large .box-img {
+        width: 75%;
+        height: 45%;
+    }
+
+    .map-overlay {
+        border-radius: 15px;
+    }
+}
+
+/* Mobile Styles - 480px */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 12px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo-section {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-section {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-button {
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 15px;
+    }
+
+    .title {
+        font-size: 16px;
+        padding: 5px 8px;
+    }
+
+    .logo-bar {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+    }
+
+    .main-content {
+        padding: 20px 10px;
+        gap: 12px;
+    }
+
+    .content-block {
+        width: 98%;
+        height: 300px;
+        font-size: 14px;
+        padding: 12px;
+        border-radius: 5px;
+    }
+
+    .content-1 {
+        height: 250px;
+    }
+
+    .inner-rectangle {
+        width: 90%;
+        height: 80%;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .screen {
+        right: 2%;
+        width: 92%;
+        height: 80%;
+        border-radius: 6px;
+    }
+
+    .content-placeholder {
+        font-size: 14px;
+    }
+
+    .tablet-button {
+        width: 35px;
+        height: 35px;
+        left: 2%;
+    }
+
+    .tablet-button::before {
+        width: 5px;
+        height: 5px;
+    }
+
+    /* Box小螢幕響應式調整 */
+    .small {
+        width: 140px;
+        height: 140px;
+        font-size: 10px;
+        padding: 8px;
+    }
+
+    .medium {
+        width: 180px;
+        height: 180px;
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .large {
+        width: 220px;
+        height: 220px;
+        font-size: 14px;
+        padding-top: 15px;
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+
+    .box-title {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .box-text {
+        font-size: 11px;
+    }
+
+    .box-img {
+        width: 40px;
+        height: 40px;
+        margin: 5px 0;
+    }
+
+    .large .box-img {
+        width: 70%;
+        height: 40%;
+    }
+
+    .map-overlay {
+        border-radius: 12px;
+    }
+}
