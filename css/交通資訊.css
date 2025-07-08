@@ -74,7 +74,7 @@
  .content-block {
      width: 95%;
      height: 700px;
-     background-color: #ffffff;
+     background: linear-gradient(20deg,rgba(255, 255, 255, 0.825),rgba(255, 255, 255, 0.874));
      border-radius: 8px;
      padding: 20px;
      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
