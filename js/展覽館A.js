@@ -1242,7 +1242,7 @@ createApp({
         renderer.domElement.addEventListener('mousemove', onMouseMove);
         renderer.domElement.addEventListener('mouseup', onMouseUp);
 
-        // ✅ 手機觸控事件
+      // ✅ 手機觸控事件
         renderer.domElement.addEventListener('touchstart', (e) => {
             isDragging = true;
             previousMousePosition = {
