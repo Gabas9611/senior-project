@@ -254,6 +254,7 @@
  .large .box-text {
      opacity: 1;
      visibility: visible;
+     text-align: left;
  }
 
  /* 確保標題在所有狀態下都顯示 */
