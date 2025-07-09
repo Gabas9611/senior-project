@@ -107,6 +107,9 @@ body {
 
 .progress-percentage {
     color: white;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
 }
 
 
