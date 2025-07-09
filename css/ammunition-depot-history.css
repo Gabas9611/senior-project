@@ -21,21 +21,46 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 40px;
-            background-color: #b8b8b8;
+            padding: 5px 40px 20px;
+            z-index: 100;
+            position: relative;
         }
 
         .logo-section {
             display: flex;
             align-items: center;
+            gap: 5px;
+            /* 在logo和標題之間增加間距 */
+        }
+
+        /* 新增logo樣式 */
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            /* 設定logo容器寬度 */
+            height: 60px;
+            /* 設定logo容器高度 */
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* 保持圖片比例，適應容器大小 */
+
         }
 
         .title {
-            font-size: 30px;
-            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
             padding: 8px 12px;
             border-radius: 4px;
-            font-weight: bold;
+            font-family: MPingFang TC;
+            white-space: nowrap;
+            /* 防止標題換行 */
         }
 
         .nav-section {
@@ -45,10 +70,9 @@
         }
 
         .nav-button {
-            background-color: yellow;
-            color: #333;
-            border: none;
-            padding: 8px 16px;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 25px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
@@ -56,7 +80,8 @@
         }
 
         .nav-button:hover {
-            background-color: #7a7a7a;
+            background-color: white;
+            color: blue;
             transform: translateY(-1px);
         }
 
@@ -215,7 +240,7 @@
             .bottom-section {
                 display: flex;
                 flex-direction: column;
-                
+
             }
 
             /* ✅ top-section 手機排序：era-label → photo → red */
