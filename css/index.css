@@ -100,19 +100,20 @@ body {
 .button-1:hover {
     background-color: white;
     color: blue;
-    transform: translateY(-1px);
+   
 }
 
 .button-2 {
+    border: 2px solid white;
     background-color: white;
     color: blue;
 }
 
 .button-2:hover {
     background-color: transparent;
-    border: 2px solid white;
+    
     color: white;
-    transform: translateY(-1px);
+   
 }
 
 .main-content {
