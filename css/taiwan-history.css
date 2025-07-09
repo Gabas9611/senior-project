@@ -18,51 +18,25 @@
         }
 
         .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 40px 20px;
-    z-index: 100;
-    position: relative;
-}
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background-color: #b8b8b8;
+        }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    /* 在logo和標題之間增加間距 */
-}
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
 
-/* 新增logo樣式 */
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    /* 設定logo容器寬度 */
-    height: 60px;
-    /* 設定logo容器高度 */
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    /* 保持圖片比例，適應容器大小 */
-
-}
-
-.title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-family: MPingFang TC;
-    white-space: nowrap;
-    /* 防止標題換行 */
-}
-
+        .title {
+            font-size: 30px;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
 
         .nav-section {
             display: flex;
@@ -71,8 +45,9 @@
         }
 
         .nav-button {
-            border: 2px solid white;
-            color: white;
+            background-color: yellow;
+            color: #333;
+            border: none;
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
@@ -81,8 +56,7 @@
         }
 
         .nav-button:hover {
-            background-color: white;
-            color: blue;
+            background-color: #7a7a7a;
             transform: translateY(-1px);
         }
 
@@ -223,16 +197,23 @@
 
         .photo-img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* 保持比例填滿 */
-            z-index: 1;
+            height: auto;
+            /* ✅ 高度由圖片本身決定 */
+            object-fit: contain;
+            /* 或可拿掉，預設就是完整顯示 */
+            display: block;
         }
 
         .photo-placeholder,
         .photo-left {
-            height: 300px;
+            height: auto;
             /* 或你想要的固定高度 */
+        }
+
+        .photo-placeholder::before,
+        .photo-left::before {
+            pointer-events: none;
+            /* 加上這行 */
         }
 
         @media (max-width: 768px) {
