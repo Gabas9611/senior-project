@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台灣歷史館-下一站，蛻變</title>
+    <title>台灣歷史</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="./css/taiwan-history.css">
 </head>
@@ -14,17 +14,14 @@
         <div class="container">
             <header class="header">
                 <div class="logo-section">
-                    
-                     <div class="logo">
-                        <img src="/img/logo/logo.png" alt="logo">
-                    </div>
+                    <div class="logo-bar"></div>
                     <div class="title">下一站，蛻變</div>
                 </div>
 
                 <nav class="nav-section">
-                    <div class="nav-button" @click="handleNavClick('previous')">
+                    <button class="nav-button" @click="handleNavClick('previous')">
                         回到前頁
-                    </div>
+                    </button>
                 </nav>
             </header>
             <div class="top-section">
@@ -38,13 +35,12 @@
                     日本時代
                 </div>
                 <div class="photo-placeholder">
-                    <img src="./img/ammunition-depot-history/01.jpg" alt="坪林飛行場" class="photo-img">
+                    <img src="./img/taiwan-history/history-paper-3.png" alt="坪林飛行場" class="photo-img">
                 </div>
             </div>
-
             <div class="bottom-section">
                 <div class="photo-left">
-                    <img src="./img/ammunition-depot-history/02.jpg" alt="坪林飛行場" class="photo-img">
+                    <img src="./img/taiwan-history/history-paper-1.png" alt="坪林飛行場" class="photo-img">
                 </div>
                 <div class="year-section">
                     第二次世界大戰
@@ -55,7 +51,6 @@
                             class="text-highlight">坪林飛行場約於1942年至1943年左右由日本帝國海軍開始興建。</span>當時正值太平洋戰爭期間，戰局日益嚴峻，日本軍方深知大型主機場容易成為盟軍空襲的目標。因此，為了分散風險，拓展戰機的航路和備降能力，並為飛行訓練及小型機種提供作戰降落點。
                     </div>
                 </div>
-
             </div>
             <div class="top-section">
                 <div class="red-section">
@@ -68,85 +63,12 @@
                     光復後
                 </div>
                 <div class="photo-placeholder">
-                    <img src="./img/ammunition-depot-history/03.jpg" alt="坪林飛行場" class="photo-img">
+                    <img src="./img/taiwan-history/history-paper-2.png" alt="坪林飛行場" class="photo-img">
                 </div>
             </div>
-            <div class="bottom-section">
-                <div class="photo-left">
-                    <img src="./img/ammunition-depot-history/04.jpg" alt="坪林飛行場" class="photo-img">
-                </div>
-                <div class="year-section">
-                    國軍醫院
-                </div>
-                <div class="blue-section">
-                    <div>
-                        <span class="text-highlight">隨國軍一同建立的醫院</span><br>因為坪林營區的存在，所以太平這邊也有大型的國軍醫院，提供醫療服務，也位於太平區內。
-                    </div>
-                </div>
-
-            </div>
-            <div class="top-section">
-                <div class="red-section">
-                    <div>
-                        <span class="text-highlight">捐贈校地</span><br>
-                        日治時期，位於臺中州大屯郡太平庄坪林（即現今臺中市太平區坪林里一帶）曾設有一座軍事飛行場，日文名稱為坪林飛行場（へいりんひこうじょう），在文獻中也常被稱為三汴飛行場。
-                    </div>
-                </div>
-                <div class="era-label">
-                    轉型
-                </div>
-                <div class="photo-placeholder">
-                    <img src="./img/ammunition-depot-history/05.jpg" alt="坪林飛行場" class="photo-img">
-                </div>
-            </div>
-            <div class="bottom-section">
-                <div class="photo-left">
-                    <img src="./img/ammunition-depot-history/06.jpg" alt="坪林飛行場" class="photo-img">
-                </div>
-                <div class="year-section">
-                    坪林森林公園
-                </div>
-                <div class="blue-section">
-                    <div>
-                        <span
-                            class="text-highlight">坪林飛行場約於1942年至1943年左右由日本帝國海軍開始興建。</span>當時正值太平洋戰爭期間，戰局日益嚴峻，日本軍方深知大型主機場容易成為盟軍空襲的目標。因此，為了分散風險，拓展戰機的航路和備降能力，並為飛行訓練及小型機種提供作戰降落點。
-                    </div>
-                </div>
-
-            </div>
-            <div class="top-section">
-                <div class="red-section">
-                    <div>
-                        <span class="text-highlight">臺中太平區坪林飛行場的建立</span><br>
-                        日治時期，位於臺中州大屯郡太平庄坪林（即現今臺中市太平區坪林里一帶）曾設有一座軍事飛行場，日文名稱為坪林飛行場（へいりんひこうじょう），在文獻中也常被稱為三汴飛行場。
-                    </div>
-                </div>
-                <div class="era-label">
-                    創新中心
-                </div>
-                <div class="photo-placeholder">
-                    <img src="./img/ammunition-depot-history/07.jpg" alt="坪林飛行場" class="photo-img">
-                </div>
-            </div>
-            <div class="bottom-section">
-                <div class="photo-left">
-                    <img src="./img/ammunition-depot-history/08.png" alt="坪林飛行場" class="photo-img">
-                </div>
-                <div class="year-section">
-                    未來展望
-                </div>
-                <div class="blue-section">
-                    <div>
-                        <span
-                            class="text-highlight">坪林飛行場約於1942年至1943年左右由日本帝國海軍開始興建。</span>當時正值太平洋戰爭期間，戰局日益嚴峻，日本軍方深知大型主機場容易成為盟軍空襲的目標。因此，為了分散風險，拓展戰機的航路和備降能力，並為飛行訓練及小型機種提供作戰降落點。
-                    </div>
-                </div>
-
-            </div>
-
         </div>
     </div>
-        <script type="module" src="./js/taiwan-history.js"></script>
+    <script type="module" src="./js/taiwan-history.js"></script>
 </body>
 
 </html>
