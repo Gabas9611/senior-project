@@ -38,7 +38,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 20px 40px;
-    background-color: rgba(0, 0, 0, 0.2);
+
     z-index: 100;
     /* 確保 header 在其他內容之上，包括彈出選單 */
     position: relative;
@@ -67,11 +67,10 @@ body {
 }
 
 .nav-button {
-    background-color: yellow;
-    color: #333;
     border: none;
-    padding: 8px 16px;
+    padding: 8px 25px;
     border-radius: 20px;
+
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -80,6 +79,17 @@ body {
 .nav-button:hover {
     background-color: #7a7a7a;
     transform: translateY(-1px);
+}
+
+.button-1 {
+    border: 2px solid white;
+    color: white;
+}
+
+.button-2 {
+    background-color: white;
+    color: blue;
+
 }
 
 /* .menu-button {
@@ -111,7 +121,7 @@ body {
     transition: all 0.3s ease;
     
 } */
- /* 為漢堡線條添加過渡效果 */
+/* 為漢堡線條添加過渡效果 */
 
 .main-content {
     padding: 40px 20px;
