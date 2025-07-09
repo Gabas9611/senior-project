@@ -33,7 +33,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 10px 40px 20px;
     z-index: 100;
     position: relative;
 }
@@ -41,7 +41,8 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 5px; /* 在logo和標題之間增加間距 */
+    gap: 5px;
+    /* 在logo和標題之間增加間距 */
 }
 
 /* 新增logo樣式 */
@@ -49,25 +50,29 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; /* 設定logo容器寬度 */
-    height: 50px; /* 設定logo容器高度 */
+    width: 60px;
+    /* 設定logo容器寬度 */
+    height: 60px;
+    /* 設定logo容器高度 */
 }
 
 .logo img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* 保持圖片比例，適應容器大小 */
-    
+    object-fit: contain;
+    /* 保持圖片比例，適應容器大小 */
+
 }
 
 .title {
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     color: #fff;
     padding: 8px 12px;
     border-radius: 4px;
     font-family: MPingFang TC;
-    white-space: nowrap; /* 防止標題換行 */
+    white-space: nowrap;
+    /* 防止標題換行 */
 }
 
 .nav-section {
@@ -83,12 +88,8 @@ body {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
-    white-space: nowrap; /* 防止按鈕文字換行 */
-}
-
-.nav-button:hover {
-    background-color: #d6d6d6;
-    transform: translateY(-1px);
+    white-space: nowrap;
+    /* 防止按鈕文字換行 */
 }
 
 .button-1 {
@@ -96,9 +97,22 @@ body {
     color: white;
 }
 
+.button-1:hover {
+    background-color: white;
+    color: blue;
+    transform: translateY(-1px);
+}
+
 .button-2 {
     background-color: white;
     color: blue;
+}
+
+.button-2:hover {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    transform: translateY(-1px);
 }
 
 .main-content {
@@ -154,11 +168,13 @@ body {
     }
 
     .logo-section {
-        gap: 10px; /* 在手機上減少間距 */
+        gap: 10px;
+        /* 在手機上減少間距 */
     }
 
     .logo {
-        width: 35px; /* 手機上縮小logo */
+        width: 35px;
+        /* 手機上縮小logo */
         height: 35px;
     }
 
@@ -196,7 +212,8 @@ body {
     }
 
     .logo {
-        width: 30px; /* 小手機上進一步縮小logo */
+        width: 30px;
+        /* 小手機上進一步縮小logo */
         height: 30px;
     }
 
