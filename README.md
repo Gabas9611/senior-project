@@ -3,6 +3,7 @@
 https://gabas9611.github.io/senior-project/
 
 2025/07/10 更新項目:
+
 1.所有頁(除了loading)改變nav-專案logo+文字圖案
 2.交通資訊中資訊卡增加防抖機制，排版更動
 3.old-buildings和taiwan-history的按鈕路徑修正
