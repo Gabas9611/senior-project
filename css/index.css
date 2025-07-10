@@ -211,9 +211,9 @@ body {
     }
 
     .logo {
-        width: 30px;
+        width: 15px;
         /* 小手機上進一步縮小logo */
-        height: 30px;
+        height: 15px;
     }
 
     .title {
