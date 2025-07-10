@@ -88,21 +88,22 @@ body {
 }
 
 .nav-button {
-    background-color: transparent;
+     background-color:white;
+     color: blue;
     border: 2px solid white;
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
-    color: white;
+   
     font-weight: bold;
     white-space: nowrap;
     transition: background-color 0.3s ease;
 }
 
 .nav-button:hover {
-    background-color:white;
-    color: blue;
+    background-color: transparent; 
+    color: white;
 }
 
 .menu-button {
