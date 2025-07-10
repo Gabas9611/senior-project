@@ -3,10 +3,6 @@
      padding: 0;
      box-sizing: border-box;
  }
- html,body{
-    width: 100%;
-    height: 100%;
- }
 
  body {
      font-family: 'Arial', sans-serif;
@@ -16,7 +12,6 @@
  .container {
      max-width: 100%;
      margin: 0 auto;
-     min-height: 100vh;
      position: relative;
  }
 
@@ -31,7 +26,7 @@
  .logo-section {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
     /* 在logo和標題之間增加間距 */
 }
 
@@ -415,33 +410,40 @@
 
 /* Mobile Styles - 480px */
 @media (max-width: 480px) {
-   .header {
+    .header {
         padding: 10px 12px;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .logo-section {
-        gap: 8px;
-    }
-
-    .logo {
-        width: 30px;
-        /* 小手機上進一步縮小logo */
-        height: 30px;
-    }
-
-    .title {
-        font-size: 14px;
-        padding: 5px 8px;
+        width: 100%;
+        justify-content: center;
     }
 
     .nav-section {
-        gap: 5px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .nav-button {
         padding: 5px 10px;
-        font-size: 11px;
+        font-size: 12px;
+        border-radius: 15px;
     }
+
+    .title {
+        font-size: 16px;
+        padding: 5px 8px;
+    }
+
+    .logo-bar {
+        height: 30px;
+        width: 3px;
+        margin-right: 10px;
+    }
+
     .main-content {
         padding: 20px 10px;
         gap: 12px;
@@ -478,8 +480,8 @@
     }
 
     .tablet-button {
-        width: 5px;
-        height: 5px;
+        width: 35px;
+        height: 35px;
         left: 2%;
     }
 
