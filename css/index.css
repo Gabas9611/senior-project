@@ -45,6 +45,8 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
+     background-color: black;
+    
     
     /* 在logo和標題之間增加間距 */
 }
@@ -72,7 +74,7 @@ body {
     font-size: 30px;
     font-weight: bold;
     color: #fff;
-    background-color: black;
+   
     padding: 9px 12px;
     font-family: MPingFang TC;
     white-space: nowrap;
@@ -81,7 +83,7 @@ body {
 
 .nav-section {
     position: fixed;
-    top: 56%;
+    top: 57%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
