@@ -33,7 +33,7 @@
  .logo-section {
      display: flex;
      align-items: center;
-
+     background-color: black;
      /* 在logo和標題之間增加間距 */
  }
 
@@ -59,7 +59,6 @@
  .title {
      font-size: 20px;
      font-weight: bold;
-     background-color: black;
      color: #fff;
      padding: 9px 12px;
 
