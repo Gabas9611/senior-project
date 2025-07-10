@@ -20,49 +20,53 @@
      align-items: center;
      justify-content: space-between;
      position: fixed;
+     /* Keep header fixed */
+     top: 0;
+     /* Align to the top */
+     left: 0;
+     /* Align to the left */
      min-width: 100%;
-     min-height: 10%;
      padding: 5px 40px 20px;
      background-color: #b8b8b8;
  }
 
  .logo-section {
-    display: flex;
-    align-items: center;
-    
-    /* 在logo和標題之間增加間距 */
-}
+     display: flex;
+     align-items: center;
 
-/* 新增logo樣式 */
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    /* 設定logo容器寬度 */
-    height: 60px;
-    /* 設定logo容器高度 */
-}
+     /* 在logo和標題之間增加間距 */
+ }
 
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    /* 保持圖片比例，適應容器大小 */
+ /* 新增logo樣式 */
+ .logo {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 60px;
+     /* 設定logo容器寬度 */
+     height: 60px;
+     /* 設定logo容器高度 */
+ }
 
-}
+ .logo img {
+     width: 100%;
+     height: 100%;
+     object-fit: contain;
+     /* 保持圖片比例，適應容器大小 */
 
-.title {
-    font-size: 20px;
-    font-weight: bold;
-    background-color: black;
-    color: #fff;
-    padding: 9px 12px;
-    
-    font-family: MPingFang TC;
-    white-space: nowrap;
-    /* 防止標題換行 */
-}
+ }
+
+ .title {
+     font-size: 20px;
+     font-weight: bold;
+     background-color: black;
+     color: #fff;
+     padding: 9px 12px;
+
+     font-family: MPingFang TC;
+     white-space: nowrap;
+     /* 防止標題換行 */
+ }
 
  .nav-section {
      display: flex;
@@ -72,7 +76,7 @@
 
  .nav-button {
      border: 2px solid white;
-    background-color: white;
+     background-color: white;
      color: black;
      padding: 8px 25px;
      border-radius: 20px;
@@ -83,26 +87,26 @@
  }
 
  .nav-button:hover {
-    background-color: transparent;
+     background-color: transparent;
      color: white;
      transform: translateY(-1px);
  }
 
  .main-content {
+     padding-top: 100px;
      padding: 40px 20px;
      min-height: calc(100vh - 80px);
      display: flex;
      flex-direction: column;
      align-items: center;
-     
-     
+     background-color: #d2d2d2;
      gap: 20px;
  }
 
  .content-block {
      width: 95%;
      height: 700px;
-    
+
      border-radius: 8px;
      padding: 20px;
      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -133,9 +137,10 @@
      position: relative;
      /* 添加相對定位 */
  }
- .screen{
-    position: absolute;
-    right: 4%;
+
+ .screen {
+     position: absolute;
+     right: 4%;
      width: 88%;
      height: 90%;
      background-color: white;
@@ -229,21 +234,22 @@
      visibility: hidden;
      transition: opacity 0.3s ease, visibility 0.3s ease;
  }
+
  .box-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 10px 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
+     width: 60px;
+     height: 60px;
+     object-fit: cover;
+     border-radius: 8px;
+     margin: 10px 0;
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.3s ease, visibility 0.3s ease;
+ }
 
  .small {
      width: 270px;
      height: 270px;
-     background: linear-gradient(5deg,rgba(255, 255, 255, 0.484),#90caf9);
+     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #90caf9);
      font-size: 12px;
      z-index: 1;
  }
@@ -251,7 +257,7 @@
  .medium {
      width: 360px;
      height: 360px;
-     background: linear-gradient(5deg,rgba(255, 255, 255, 0.484), #64b5f6);
+     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #64b5f6);
      font-size: 14px;
      z-index: 2;
  }
@@ -259,7 +265,7 @@
  .large {
      width: 500px;
      height: 500px;
-     background: linear-gradient(5deg,rgba(255, 255, 255, 0.484), #42a5f5);
+     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #42a5f5);
      font-size: 16px;
      z-index: 3;
      /* 修改為 flex-start 讓內容靠上排列 */
@@ -275,7 +281,7 @@
      opacity: 1;
      visibility: visible;
      width: 80%;
-     height:30%;
+     height: 30%;
  }
 
  /* 只在large狀態下顯示文字 */
@@ -298,249 +304,249 @@
  }
 
  /* Tablet Styles - 768px */
-@media (max-width: 768px) {
-    .header {
-        padding: 12px 15px;
-        flex-wrap: wrap;
-    }
+ @media (max-width: 768px) {
+     .header {
+         padding: 12px 15px;
+         flex-wrap: wrap;
+     }
 
-    .title {
-        font-size: 18px;
-        padding: 6px 10px;
-    }
+     .title {
+         font-size: 18px;
+         padding: 6px 10px;
+     }
 
-    .logo-bar {
-        height: 35px;
-        margin-right: 12px;
-    }
+     .logo-bar {
+         height: 35px;
+         margin-right: 12px;
+     }
 
-    .nav-section {
-        gap: 10px;
-    }
+     .nav-section {
+         gap: 10px;
+     }
 
-    .nav-button {
-        padding: 6px 12px;
-        font-size: 13px;
-    }
+     .nav-button {
+         padding: 6px 12px;
+         font-size: 13px;
+     }
 
-    .main-content {
-        padding: 25px 15px;
-        gap: 15px;
-    }
+     .main-content {
+         padding: 25px 15px;
+         gap: 15px;
+     }
 
-    .content-block {
-        width: 95%;
-        height: 400px;
-        font-size: 16px;
-        padding: 15px;
-        border-radius: 6px;
-    }
+     .content-block {
+         width: 95%;
+         height: 400px;
+         font-size: 16px;
+         padding: 15px;
+         border-radius: 6px;
+     }
 
-    .content-1 {
-        height: 350px;
-    }
+     .content-1 {
+         height: 350px;
+     }
 
-    .inner-rectangle {
-        width: 85%;
-        height: 85%;
-        font-size: 14px;
-        border-radius: 15px;
-    }
+     .inner-rectangle {
+         width: 85%;
+         height: 85%;
+         font-size: 14px;
+         border-radius: 15px;
+     }
 
-    .screen {
-        right: 3%;
-        width: 90%;
-        height: 85%;
-        border-radius: 8px;
-    }
+     .screen {
+         right: 3%;
+         width: 90%;
+         height: 85%;
+         border-radius: 8px;
+     }
 
-    .content-placeholder {
-        font-size: 16px;
-    }
+     .content-placeholder {
+         font-size: 16px;
+     }
 
-    .tablet-button {
-        width: 25px;
-        height: 25px;
-        left: 1%;
-    }
+     .tablet-button {
+         width: 25px;
+         height: 25px;
+         left: 1%;
+     }
 
-    .tablet-button::before {
-        width: 7px;
-        height: 7px;
-    }
+     .tablet-button::before {
+         width: 7px;
+         height: 7px;
+     }
 
-    /* Box響應式調整 */
-    .small {
-        width: 180px;
-        height: 180px;
-        font-size: 11px;
-    }
+     /* Box響應式調整 */
+     .small {
+         width: 180px;
+         height: 180px;
+         font-size: 11px;
+     }
 
-    .medium {
-        width: 240px;
-        height: 240px;
-        font-size: 13px;
-    }
+     .medium {
+         width: 240px;
+         height: 240px;
+         font-size: 13px;
+     }
 
-    .large {
-        width: 300px;
-        height: 300px;
-        font-size: 15px;
-        padding-top: 20px;
-    }
+     .large {
+         width: 300px;
+         height: 300px;
+         font-size: 15px;
+         padding-top: 20px;
+     }
 
-    .box-title {
-        font-size: 16px;
-        margin-bottom: 6px;
-    }
+     .box-title {
+         font-size: 16px;
+         margin-bottom: 6px;
+     }
 
-    .box-text {
-        font-size: 13px;
-    }
+     .box-text {
+         font-size: 13px;
+     }
 
-    .box-img {
-        width: 50px;
-        height: 50px;
-        margin: 8px 0;
-    }
+     .box-img {
+         width: 50px;
+         height: 50px;
+         margin: 8px 0;
+     }
 
-    .large .box-img {
-        width: 75%;
-        height: 45%;
-    }
+     .large .box-img {
+         width: 75%;
+         height: 45%;
+     }
 
-    .map-overlay {
-        border-radius: 15px;
-    }
-}
+     .map-overlay {
+         border-radius: 15px;
+     }
+ }
 
-/* Mobile Styles - 480px */
-@media (max-width: 480px) {
-    .header {
-        padding: 10px 12px;
-        flex-direction: column;
-        gap: 10px;
-    }
+ /* Mobile Styles - 480px */
+ @media (max-width: 480px) {
+     .header {
+         padding: 10px 12px;
+         flex-direction: column;
+         gap: 10px;
+     }
 
-    .logo-section {
-        width: 100%;
-        justify-content: center;
-    }
+     .logo-section {
+         width: 100%;
+         justify-content: center;
+     }
 
-    .nav-section {
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+     .nav-section {
+         gap: 8px;
+         flex-wrap: wrap;
+         justify-content: center;
+     }
 
-    .nav-button {
-        padding: 5px 10px;
-        font-size: 12px;
-        border-radius: 15px;
-    }
+     .nav-button {
+         padding: 5px 10px;
+         font-size: 12px;
+         border-radius: 15px;
+     }
 
-    .title {
-        font-size: 16px;
-        padding: 5px 8px;
-    }
+     .title {
+         font-size: 16px;
+         padding: 5px 8px;
+     }
 
-    .logo-bar {
-        height: 30px;
-        width: 3px;
-        margin-right: 10px;
-    }
+     .logo-bar {
+         height: 30px;
+         width: 3px;
+         margin-right: 10px;
+     }
 
-    .main-content {
-        padding: 20px 10px;
-        gap: 12px;
-    }
+     .main-content {
+         padding: 20px 10px;
+         gap: 12px;
+     }
 
-    .content-block {
-        width: 98%;
-        height: 300px;
-        font-size: 14px;
-        padding: 12px;
-        border-radius: 5px;
-    }
+     .content-block {
+         width: 98%;
+         height: 300px;
+         font-size: 14px;
+         padding: 12px;
+         border-radius: 5px;
+     }
 
-    .content-1 {
-        height: 250px;
-    }
+     .content-1 {
+         height: 250px;
+     }
 
-    .inner-rectangle {
-        width: 90%;
-        height: 80%;
-        font-size: 12px;
-        border-radius: 12px;
-    }
+     .inner-rectangle {
+         width: 90%;
+         height: 80%;
+         font-size: 12px;
+         border-radius: 12px;
+     }
 
-    .screen {
-        right: 2%;
-        width: 92%;
-        height: 80%;
-        border-radius: 6px;
-    }
+     .screen {
+         right: 2%;
+         width: 92%;
+         height: 80%;
+         border-radius: 6px;
+     }
 
-    .content-placeholder {
-        font-size: 14px;
-    }
+     .content-placeholder {
+         font-size: 14px;
+     }
 
-    .tablet-button {
-        width: 35px;
-        height: 35px;
-        left: 2%;
-    }
+     .tablet-button {
+         width: 35px;
+         height: 35px;
+         left: 2%;
+     }
 
-    .tablet-button::before {
-        width: 5px;
-        height: 5px;
-    }
+     .tablet-button::before {
+         width: 5px;
+         height: 5px;
+     }
 
-    /* Box小螢幕響應式調整 */
-    .small {
-        width: 140px;
-        height: 140px;
-        font-size: 10px;
-        padding: 8px;
-    }
+     /* Box小螢幕響應式調整 */
+     .small {
+         width: 140px;
+         height: 140px;
+         font-size: 10px;
+         padding: 8px;
+     }
 
-    .medium {
-        width: 180px;
-        height: 180px;
-        font-size: 12px;
-        padding: 8px;
-    }
+     .medium {
+         width: 180px;
+         height: 180px;
+         font-size: 12px;
+         padding: 8px;
+     }
 
-    .large {
-        width: 220px;
-        height: 220px;
-        font-size: 14px;
-        padding-top: 15px;
-        padding-left: 3%;
-        padding-right: 3%;
-    }
+     .large {
+         width: 220px;
+         height: 220px;
+         font-size: 14px;
+         padding-top: 15px;
+         padding-left: 3%;
+         padding-right: 3%;
+     }
 
-    .box-title {
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
+     .box-title {
+         font-size: 14px;
+         margin-bottom: 5px;
+     }
 
-    .box-text {
-        font-size: 11px;
-    }
+     .box-text {
+         font-size: 11px;
+     }
 
-    .box-img {
-        width: 40px;
-        height: 40px;
-        margin: 5px 0;
-    }
+     .box-img {
+         width: 40px;
+         height: 40px;
+         margin: 5px 0;
+     }
 
-    .large .box-img {
-        width: 70%;
-        height: 40%;
-    }
+     .large .box-img {
+         width: 70%;
+         height: 40%;
+     }
 
-    .map-overlay {
-        border-radius: 12px;
-    }
-}
+     .map-overlay {
+         border-radius: 12px;
+     }
+ }
