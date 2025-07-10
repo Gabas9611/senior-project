@@ -29,6 +29,7 @@ let originalEmissive = new Map(); // 宣告為全域變數
 createApp({
     data() {
         return {
+            showInstruction: true, // ✅ 預設顯示遮罩
             isMenuOpen: false,
             selectedAction: '',
             actionMessage: '',
@@ -45,6 +46,9 @@ createApp({
         };
     },
     methods: {
+        hideInstruction() {
+            this.showInstruction = false;
+        },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
