@@ -19,8 +19,11 @@
      display: flex;
      align-items: center;
      justify-content: space-between;
+     position: fixed;
+     min-width: 100%;
+     min-height: 10%;
      padding: 5px 40px 20px;
-     background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+     background-color: #b8b8b8;
  }
 
  .logo-section {
@@ -86,13 +89,13 @@
  }
 
  .main-content {
-      background: linear-gradient(90deg, #ffb300 0%, #92FE9D 100%);
      padding: 40px 20px;
      min-height: calc(100vh - 80px);
      display: flex;
      flex-direction: column;
      align-items: center;
-     justify-content: center;
+     
+     
      gap: 20px;
  }
 
@@ -216,12 +219,12 @@
  }
 
  .box-title {
-     font-size: 20px;
+     font-size: 30px;
      margin-bottom: 8px;
  }
 
  .box-text {
-     font-size: 14px;
+     font-size: 20px;
      opacity: 0;
      visibility: hidden;
      transition: opacity 0.3s ease, visibility 0.3s ease;
