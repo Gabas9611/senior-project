@@ -46,7 +46,7 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    
     /* 在logo和標題之間增加間距 */
 }
 
@@ -74,8 +74,8 @@ body {
     font-weight: bold;
     background-color: black;
     color: #fff;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 9px 12px;
+    
     font-family: MPingFang TC;
     white-space: nowrap;
     /* 防止標題換行 */
