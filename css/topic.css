@@ -89,7 +89,7 @@ body {
 
 .nav-button {
      background-color:white;
-     color: blue;
+     color:black;
     border: 2px solid white;
     padding: 10px 20px;
     border-radius: 20px;
@@ -134,7 +134,7 @@ body {
 .menu-line {
     width: 20px;
     height: 2px;
-    background-color: blue;
+    background-color: black;
     border-radius: 1px;
 }
 
@@ -171,7 +171,7 @@ body {
 
 .menu-item-button {
     background-color: white;
-    color: blue;
+    color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
