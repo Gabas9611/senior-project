@@ -45,7 +45,6 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
-     background-color: black;
     
     
     /* 在logo和標題之間增加間距 */
@@ -56,9 +55,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
+    width: 500px;
     /* 設定logo容器寬度 */
-    height: 80px;
+    height: 100px;
     /* 設定logo容器高度 */
 }
 
@@ -70,20 +69,11 @@ body {
 
 }
 
-.title {
-    font-size: 30px;
-    font-weight: bold;
-    color: #fff;
-   
-    padding: 9px 12px;
-    font-family: MPingFang TC;
-    white-space: nowrap;
-    /* 防止標題換行 */
-}
+
 
 .nav-section {
     position: fixed;
-    top: 57%;
+    top: 59%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
