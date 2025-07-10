@@ -94,14 +94,14 @@ body {
 
 .button-1 {
     border: 2px solid white;
-    color: white;
-    background-color: transparent;
+    background-color: white;
+    color: blue;
 }
 
 .button-1:hover {
-    background-color: white;
-    color: blue;
-   
+    
+   color: white;
+    background-color: transparent;
 }
 
 .button-2 {
