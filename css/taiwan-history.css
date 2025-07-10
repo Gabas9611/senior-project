@@ -28,7 +28,7 @@
         .logo-section {
             display: flex;
             align-items: center;
-           
+           background-color: black;
             /* 在logo和標題之間增加間距 */
         }
 
@@ -56,7 +56,6 @@
             font-weight: bold;
             color: #fff;
             padding: 9px 12px;
-           background-color: black;
             font-family: MPingFang TC;
             white-space: nowrap;
             /* 防止標題換行 */
