@@ -21,6 +21,45 @@
 
 <body>
   <div id="app">
+    <div id="instruction-mask" @click="hideInstruction" v-show="showInstruction">
+      <div>
+        <h1>歡迎來到「下一站，蛻變」</h1>
+        <br>
+        <br>
+        <br>
+        <h2>操作說明</h2>
+        <br>
+        <p><img class="icon-img large" src="./img/topic/mouse.png"> 拖曳滑鼠 /手指滑動：調整視角</p>
+        <br>
+        <p><img class="icon-img medium" src="./img/topic/point.png">點地面標記：移動位置</p>
+        <br>
+        <p><img class="icon-img small" src="./img/topic/check.png"> 點擊物件：獲取資訊</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2>點一下畫面開始導覽</h2>
+      </div>
+
+      <!-- 左上角主選單提示箭頭與說明 -->
+
+      <!-- 左上角 LOGO 區提示 -->
+      <div class="logo-tip">
+        <div class="arrow-down"></div>
+        <p>點擊標題可以回到首頁</p>
+      </div>
+
+      <!-- 右上角選單提示 -->
+      <div class="menu-button-tip">
+        <div class="arrow-down"></div>
+        <div class="menu-tip-text">
+          <p>點擊交通資訊按鈕可以前往交通資訊頁面</p>
+          <br>
+          <p>點擊選單中的按鈕可以直接前往建築前面</p>
+        </div>
+      </div>
+
+    </div>
     <div class="container">
       <header class="header">
         <div class="logo-section">
