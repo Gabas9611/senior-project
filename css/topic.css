@@ -84,7 +84,7 @@ body {
 .nav-section {
     position: relative; /* 用於定位 sidebar-menu */
     display: flex;
-    align-items: center;
+    align-items: center; 
     gap: 15px;
 }
 
