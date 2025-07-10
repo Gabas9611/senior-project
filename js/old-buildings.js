@@ -68,7 +68,7 @@ createApp({
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
             } else if (action === 'backToMain') {
-                window.location.href = 'loading.html?target=index.html';
+                window.location.href = 'loading.html?target=topic.html';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
