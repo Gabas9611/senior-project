@@ -1,4 +1,4 @@
-const { createApp, ref } = Vue;
+const { createApp, ref, onMounted, onUnmounted } = Vue;
 
 createApp({
     setup() {
@@ -6,6 +6,7 @@ createApp({
         const actionMessage = ref('');
         const centerIndex = ref(2);
         const isMapVisible = ref(false); // 新增：控制地圖顯示狀態
+        const screenWidth = ref(window.innerWidth); // 新增：追蹤螢幕寬度
 
         const boxes = ref([
             {
@@ -41,6 +42,40 @@ createApp({
             }
         ]);
 
+
+       // 新增：根據螢幕寬度獲取響應式偏移量限制
+        const getMaxAllowedOffset = () => {
+            if (screenWidth.value <= 480) {
+                // Mobile: 最大卡片寬度220px，容器寬度較小
+                return 120;
+            } else if (screenWidth.value <= 768) {
+                // Tablet: 最大卡片寬度300px
+                return 180;
+            } else {
+                // Desktop: 最大卡片寬度500px
+                return 450;
+            }
+        };
+
+        // 新增：根據螢幕寬度獲取卡片間距
+        const getCardSpacing = () => {
+            if (screenWidth.value <= 480) {
+                // Mobile: 較小的間距
+                return 120;
+            } else if (screenWidth.value <= 768) {
+                // Tablet: 中等間距
+                return 160;
+            } else {
+                // Desktop: 標準間距
+                return 200;
+            }
+        };
+
+        // 新增：監聽視窗大小變化
+        const handleResize = () => {
+            screenWidth.value = window.innerWidth;
+        };
+
         const handleNavClick = (action) => {
             console.log('Button clicked with action:', action);
             selectedAction.value = action;
@@ -53,7 +88,6 @@ createApp({
             }
         };
 
-        // 切換地圖和螢幕顯示狀態的函數
         const toggleMap = () => {
             isMapVisible.value = !isMapVisible.value;
         };
@@ -71,15 +105,13 @@ createApp({
 
         const getStyle = (i) => {
             const totalBoxes = boxes.value.length;
-            const maxOffset = Math.floor(totalBoxes / 2);
+            const cardSpacing = getCardSpacing(); // 使用響應式間距
+            const maxAllowedOffset = getMaxAllowedOffset(); // 使用響應式偏移量限制
             
-            // 計算基本偏移量
-            let offset = (i - centerIndex.value) * 200;
+            // 計算基本偏移量（使用響應式間距）
+            let offset = (i - centerIndex.value) * cardSpacing;
             
             // 限制偏移量範圍，防止超出容器寬度
-            // 假設容器寬度為 95%，考慮到最大卡片寬度400px
-            const maxAllowedOffset = 450; // 調整此值以適應您的設計
-            
             if (Math.abs(offset) > maxAllowedOffset) {
                 offset = offset > 0 ? maxAllowedOffset : -maxAllowedOffset;
             }
@@ -97,11 +129,20 @@ createApp({
                 }
             }
             
-            
             return {
                 transform: `translate(-50%, -50%) translateX(${offset}px)`
             };
         };
+
+        // 組件掛載時添加事件監聽器
+        onMounted(() => {
+            window.addEventListener('resize', handleResize);
+        });
+
+        // 組件卸載時移除事件監聽器
+        onUnmounted(() => {
+            window.removeEventListener('resize', handleResize);
+        });
 
         return {
             selectedAction,
@@ -109,6 +150,7 @@ createApp({
             centerIndex,
             boxes,
             isMapVisible,
+            screenWidth,
             handleNavClick,
             toggleMap,
             updateLayout,
