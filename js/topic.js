@@ -21,7 +21,7 @@ let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6, came
 
 // 宣告互動物件相關的全域變數
 const targetObjectNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06"]; // 宣告為全域常數
-const highlightableNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06", "介紹欄1", "介紹欄2", "介紹欄3", "出口"]; // 宣告為全域常數
+const highlightableNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06", "介紹欄1", "介紹欄2", "介紹欄3"]; // 宣告為全域常數
 const frameNames = ["畫框01", "畫框02", "畫框03", "畫框04"]; // 宣告為全域常數
 const highlightableObjects = []; // 宣告為全域變數
 let currentHoveredObject = null; // 宣告為全域變數
@@ -30,7 +30,7 @@ let originalEmissive = new Map(); // 宣告為全域變數
 createApp({
     data() {
         return {
-      loadingProgress: 0,
+            loadingProgress: 0,
             isMenuOpen: false,
             selectedAction: '',
             actionMessage: '',
@@ -41,10 +41,15 @@ createApp({
             modalAction: '', // 新增：彈出視窗按鈕的動作類型
             showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
             isInitialized: false, // 新增：追蹤應用程式是否已初始化
-            loadingProgress: 0 // 進度條百分比
+            loadingProgress: 0, // 進度條百分比
+            showInstruction: true // ✅ 遮罩初始顯示
         }
     },
     methods: {
+        hideInstruction() {
+            this.showInstruction = false;
+        },
+
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
@@ -101,14 +106,14 @@ createApp({
                 isFirstPersonMode = targetIsFirstPersonMode;
 
                 isTransitioning = true;
-gsap.to(currentCamera.position, {
+                gsap.to(currentCamera.position, {
                     duration: 1.5,
                     x: targetCamera.position.x,
                     y: targetCamera.position.y,
                     z: targetCamera.position.z,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
                         console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
                     }
@@ -125,11 +130,11 @@ gsap.to(currentCamera.position, {
                     z: targetRotationZ,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         if (isFirstPersonMode) {
                             firstPersonRotationX = targetRotationX;
                             firstPersonRotationY = targetRotationY;
-                                isTransitioning = false;
+                            isTransitioning = false;
                         }
                         console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
                         console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
@@ -141,7 +146,7 @@ gsap.to(currentCamera.position, {
         },
         closeInfoModal() {
             this.showInfoModal = false;
-      isTransitioning = false;
+            isTransitioning = false;
             // 重新啟用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = true;
@@ -151,10 +156,10 @@ gsap.to(currentCamera.position, {
         },
         // *** 修改開始：showFrameInfo 方法新增 clickedObject 參數 ***
         showFrameInfo(itemName, clickedObject = null) {
-      if (isTransitioning) {
-        console.log('跳過 showFrameInfo，因為動畫尚未完成。');
-        return;
-      }
+            if (isTransitioning) {
+                console.log('跳過 showFrameInfo，因為動畫尚未完成。');
+                return;
+            }
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = false;
@@ -200,13 +205,6 @@ gsap.to(currentCamera.position, {
                     displayContent = '這是人力資源部的詳細介紹內容。';
                     this.infoModalButtonText = '進入導覽';
                     this.modalAction = 'enterHRDept';
-                    this.showModalButton = true;
-                    break;
-                
-                case '出口':
-                    displayContent = '這是離開展廳的相關資訊。';
-                    this.infoModalButtonText = '離開';
-                    this.modalAction = 'exit';
                     this.showModalButton = true;
                     break;
                 default:
@@ -268,7 +266,7 @@ gsap.to(currentCamera.position, {
                 const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
 
                 // clickableFramesAndDoor 和 frameNames 現在是全域變數
-                const clickableObjects = ["介紹欄1", "介紹欄2", "介紹欄3", "介紹", "出口"];
+                const clickableObjects = ["介紹欄1", "介紹欄2", "介紹欄3", "介紹"];
                 let targetNavPointName = null;
                 let clickedItemName = null;
 
@@ -298,10 +296,10 @@ gsap.to(currentCamera.position, {
                     // 如果點擊的是「介紹欄1」，則切換攝影機並將視角向後看
                     if (clickedItemName === '介紹欄1') {
                         // 直接使用全域的 cameraNav7
-                        const targetCamera = cameraNav7;
+                        const targetCamera = cameraNav6;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄1". Target Camera (NavCamera7) position:', targetCamera.position);
+                            console.log('Clicked "介紹欄1". Target Camera (NavCamera6) position:', targetCamera.position);
                             console.log('Current Camera position BEFORE switch:', currentCamera.position);
                             console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
@@ -314,22 +312,22 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera7 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera7，並進入第一人稱模式。');
+                                    console.log('攝影機已切換到 NavCamera6，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('介紹欄1', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -337,25 +335,25 @@ gsap.to(currentCamera.position, {
                             // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
                             // 並且將當前攝影機的旋轉設定為這個初始旋轉
                             // 這樣滑鼠拖曳可以從這個點開始
-                            const navCamera7Config = navCameras["我是導覽點07"];
-                            if (navCamera7Config) {
-                                currentCamera.rotation.set(navCamera7Config.initialRotationX, navCamera7Config.initialRotationY, 0, 'YXZ');
-                                firstPersonRotationX = navCamera7Config.initialRotationX;
-                                firstPersonRotationY = navCamera7Config.initialRotationY;
-                                console.log('NavCamera7 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            const navCamera6Config = navCameras["我是導覽點06"];
+                            if (navCamera6Config) {
+                                currentCamera.rotation.set(navCamera6Config.initialRotationX, navCamera6Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera6Config.initialRotationX;
+                                firstPersonRotationY = navCamera6Config.initialRotationY;
+                                console.log('NavCamera6 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
-                                console.warn('NavCamera7 config not found in navCameras.');
+                                console.warn('NavCamera6 config not found in navCameras.');
                             }
 
                         } else {
-                            console.warn('無法找到 cameraNav7。');
+                            console.warn('無法找到 cameraNav6。');
                         }
                     } else if (clickedItemName === '介紹欄2') {
                         // 直接使用全域的 cameraNav8
-                        const targetCamera = cameraNav8;
+                        const targetCamera = cameraNav3;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄2". Target Camera (NavCamera8) position:', targetCamera.position);
+                            console.log('Clicked "介紹欄2". Target Camera (NavCamera3) position:', targetCamera.position);
                             console.log('Current Camera position BEFORE switch:', currentCamera.position);
                             console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
@@ -368,22 +366,22 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera8，並進入第一人稱模式。');
+                                    console.log('攝影機已切換到 NavCamera3，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('介紹欄2', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -391,25 +389,25 @@ gsap.to(currentCamera.position, {
                             // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
                             // 並且將當前攝影機的旋轉設定為這個初始旋轉
                             // 這樣滑鼠拖曳可以從這個點開始
-                            const navCamera8Config = navCameras["我是導覽點08"];
-                            if (navCamera8Config) {
-                                currentCamera.rotation.set(navCamera8Config.initialRotationX, navCamera8Config.initialRotationY, 0, 'YXZ');
-                                firstPersonRotationX = navCamera8Config.initialRotationX;
-                                firstPersonRotationY = navCamera8Config.initialRotationY;
-                                console.log('NavCamera8 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            const navCamera3Config = navCameras["我是導覽點03"];
+                            if (navCamera3Config) {
+                                currentCamera.rotation.set(navCamera3Config.initialRotationX, navCamera3Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera3Config.initialRotationX;
+                                firstPersonRotationY = navCamera3Config.initialRotationY;
+                                console.log('NavCamera3 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
-                                console.warn('NavCamera8 config not found in navCameras.');
+                                console.warn('NavCamera3 config not found in navCameras.');
                             }
 
                         } else {
-                            console.warn('無法找到 cameraNav8。');
+                            console.warn('無法找到 cameraNav3。');
                         }
                     } else if (clickedItemName === '介紹欄3') {
                         // 直接使用全域的 cameraNav9
-                        const targetCamera = cameraNav9;
+                        const targetCamera = cameraNav2;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄3". Target Camera (NavCamera9) position:', targetCamera.position);
+                            console.log('Clicked "介紹欄3". Target Camera (NavCamera2) position:', targetCamera.position);
                             console.log('Current Camera position BEFORE switch:', currentCamera.position);
                             console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
@@ -422,22 +420,22 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera9，並進入第一人稱模式。');
+                                    console.log('攝影機已切換到 NavCamera2，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('介紹欄3', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -445,126 +443,18 @@ gsap.to(currentCamera.position, {
                             // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
                             // 並且將當前攝影機的旋轉設定為這個初始旋轉
                             // 這樣滑鼠拖曳可以從這個點開始
-                            const navCamera9Config = navCameras["我是導覽點09"];
-                            if (navCamera9Config) {
-                                currentCamera.rotation.set(navCamera9Config.initialRotationX, navCamera9Config.initialRotationY, 0, 'YXZ');
-                                firstPersonRotationX = navCamera9Config.initialRotationX;
-                                firstPersonRotationY = navCamera9Config.initialRotationY;
-                                console.log('NavCamera9 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                            const navCamera2Config = navCameras["我是導覽點02"];
+                            if (navCamera2Config) {
+                                currentCamera.rotation.set(navCamera2Config.initialRotationX, navCamera2Config.initialRotationY, 0, 'YXZ');
+                                firstPersonRotationX = navCamera2Config.initialRotationX;
+                                firstPersonRotationY = navCamera2Config.initialRotationY;
+                                console.log('NavCamera2 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
-                                console.warn('NavCamera9 config not found in navCameras.');
+                                console.warn('NavCamera2 config not found in navCameras.');
                             }
 
                         } else {
-                            console.warn('無法找到 cameraNav9。');
-                        }
-                    } else if (clickedItemName === '介紹') {
-                        // 直接使用全域的 cameraNav10
-                        const targetCamera = cameraNav10;
-
-                        if (targetCamera) {
-                            console.log('Clicked "介紹". Target Camera (NavCamera10) position:', targetCamera.position);
-                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
-                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
-
-                            // 立即切換 currentCamera
-                            currentCamera = targetCamera;
-
-                            // 禁用 OrbitControls
-                            controls.enabled = false;
-                            isFirstPersonMode = true; // 設定為第一人稱模式
-
-                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera10 的位置
-                            isTransitioning = true;
-gsap.to(currentCamera.position, {
-                                duration: 1.5,
-                                x: targetCamera.position.x,
-                                y: targetCamera.position.y,
-                                z: targetCamera.position.z,
-                                ease: "power2.inOut",
-                                onComplete: function () {
-        if (!isTransitioning) return;
-                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera10，並進入第一人稱模式。');
-                                    // 在第一人稱模式下，OrbitControls 應保持禁用
-                                    // 並且不需要設定 controls.object 或 controls.target
-                                    // 視角控制將由 handleMouseMove 處理
-                                    // *** 修改：傳遞 clickedObject ***
-                                    this.showFrameInfo('介紹', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
-                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
-                            });
-
-                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
-                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
-                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
-                            // 這樣滑鼠拖曳可以從這個點開始
-                            const navCamera10Config = navCameras["我是導覽點10"];
-                            if (navCamera10Config) {
-                                currentCamera.rotation.set(navCamera10Config.initialRotationX, navCamera10Config.initialRotationY, 0, 'YXZ');
-                                firstPersonRotationX = navCamera10Config.initialRotationX;
-                                firstPersonRotationY = navCamera10Config.initialRotationY;
-                                console.log('NavCamera10 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
-                            } else {
-                                console.warn('NavCamera10 config not found in navCameras.');
-                            }
-
-                        } else {
-                            console.warn('無法找到 cameraNav10。');
-                        }
-                    } else if (clickedItemName === '出口') {
-                        // 直接使用全域的 cameraNav11
-                        const targetCamera = cameraNav11;
-
-                        if (targetCamera) {
-                            console.log('Clicked "出口". Target Camera (NavCamera11) position:', targetCamera.position);
-                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
-                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
-
-                            // 立即切換 currentCamera
-                            currentCamera = targetCamera;
-
-                            // 禁用 OrbitControls
-                            controls.enabled = false;
-                            isFirstPersonMode = true; // 設定為第一人稱模式
-
-                            // 使用 GSAP 動畫平滑移動攝影機到 NavCamera11 的位置
-                            isTransitioning = true;
-gsap.to(currentCamera.position, {
-                                duration: 1.5,
-                                x: targetCamera.position.x,
-                                y: targetCamera.position.y,
-                                z: targetCamera.position.z,
-                                ease: "power2.inOut",
-                                onComplete: function () {
-        if (!isTransitioning) return;
-                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera11，並進入第一人稱模式。');
-                                    // 在第一人稱模式下，OrbitControls 應保持禁用
-                                    // 並且不需要設定 controls.object 或 controls.target
-                                    // 視角控制將由 handleMouseMove 處理
-                                    // *** 修改：傳遞 clickedObject ***
-                                    this.showFrameInfo('出口', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
-                                }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
-                            });
-
-                            // 移除旋轉動畫，讓攝影機保持其預設的初始旋轉
-                            // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
-                            // 並且將當前攝影機的旋轉設定為這個初始旋轉
-                            // 這樣滑鼠拖曳可以從這個點開始
-                            const navCamera11Config = navCameras["我是導覽點11"];
-                            if (navCamera11Config) {
-                                currentCamera.rotation.set(navCamera11Config.initialRotationX, navCamera11Config.initialRotationY, 0, 'YXZ');
-                                firstPersonRotationX = navCamera11Config.initialRotationX;
-                                firstPersonRotationY = navCamera11Config.initialRotationY;
-                                console.log('NavCamera11 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
-                            } else {
-                                console.warn('NavCamera11 config not found in navCameras.');
-                            }
-
-                        } else {
-                            console.warn('無法找到 cameraNav11。');
+                            console.warn('無法找到 cameraNav2。');
                         }
                     }
                 }
@@ -616,7 +506,7 @@ gsap.to(currentCamera.position, {
                                 }
                             },
                             onComplete: function () {
-        if (!isTransitioning) return;
+                                if (!isTransitioning) return;
                                 console.log('GSAP position animation complete.'); // Debug log
                                 currentCamera = targetCamera; // 正式切換攝影機實例
                                 console.log('currentCamera after switch:', currentCamera.name); // Debug log
@@ -635,7 +525,7 @@ gsap.to(currentCamera.position, {
                                     // 啟用滑鼠拖曳控制的標誌
                                     isDragging = false; // 初始不拖曳
 
-                                        isTransitioning = false;
+                                    isTransitioning = false;
 
                                 } else {
                                     // 恢復 OrbitControls 設置，並啟用
@@ -667,9 +557,9 @@ gsap.to(currentCamera.position, {
                             z: targetRotationZ,
                             ease: "power2.inOut",
                             onComplete: function () {
-        if (!isTransitioning) return;
+                                if (!isTransitioning) return;
                                 console.log('GSAP rotation animation complete.'); // Debug log
-                                    isTransitioning = false;
+                                isTransitioning = false;
                             }
                         });
                     }
@@ -688,68 +578,41 @@ gsap.to(currentCamera.position, {
         // 導覽攝影機的設定 (保持不變)
         cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(-6.47, -0.8, -0.17);
+        cameraNav1.position.set(-6.60, -0.9, -0.03);
 
         cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
-        cameraNav2.position.set(-4.51, -0.9, -0.17);
+        cameraNav2.position.set(-4.34, -0.9, -0.03);
 
         cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav3.name = "NavCamera3";
-        cameraNav3.position.set(-2.14, -0.9, -0.17);
+        cameraNav3.position.set(-2.07, -0.9, -0.03);
 
         cameraNav4 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav4.name = "NavCamera4";
-        cameraNav4.position.set(0.47, -0.9, -0.17);
+        cameraNav4.position.set(0.57, -0.9, 0.86);
 
         cameraNav5 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav5.name = "NavCamera5";
-        cameraNav5.position.set(3.38, -0.9, -0.17);
+        cameraNav5.position.set(1.63, -0.9, -0.03);
 
         cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav6.name = "NavCamera6";
-        cameraNav6.position.set(5.36, -0.9, -0.17);
+        cameraNav6.position.set(3.89, -0.9, 0.84);
 
 
-        cameraNav7 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        cameraNav7.name = "NavCamera7";
-        cameraNav7.position.set(3.38, -0.9, -0.17);
-        cameraNav7.rotation.y = Math.PI; // 將攝影機繞 Y 軸旋轉 180 度 (π 弧度)
 
-        cameraNav8 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        cameraNav8.name = "NavCamera8";
-        cameraNav8.position.set(-2.14, -0.9, -0.17); // 調整位置
-
-
-        cameraNav9 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        cameraNav9.name = "NavCamera9";
-        cameraNav9.position.set(-4.51, -0.9, -0.17); // 調整位置
-        cameraNav9.rotation.y = Math.PI;
-
-        cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        cameraNav10.name = "NavCamera10";
-        cameraNav10.position.set(-4.62, -0.8, -0.17);
-        cameraNav10.rotation.y = -Math.PI / 2;
-
-        cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        cameraNav11.name = "NavCamera11";
-        cameraNav11.position.set(5.37, -0.9, -0.17);
 
 
 
         // 導覽點與攝影機的對應關係 (保持不變)
         navCameras = {
-            "我是導覽點01": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 },
-            "我是導覽點02": { camera: cameraNav2, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
+            "我是導覽點01": { camera: cameraNav1, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 },
+            "我是導覽點02": { camera: cameraNav2, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI },
             "我是導覽點03": { camera: cameraNav3, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
             "我是導覽點04": { camera: cameraNav4, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
-            "我是導覽點05": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
-            "我是導覽點06": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 },
-            "我是導覽點07": { camera: cameraNav7, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI }, // 对应介紹欄1
-            "我是導覽點08": { camera: cameraNav8, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 }, // 对应介紹欄2
-            "我是導覽點09": { camera: cameraNav9, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI },  // 对应介紹欄3
-            "我是導覽點10": { camera: cameraNav10, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 2 }, // 对应介紹
-            "我是導覽點11": { camera: cameraNav11, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI / 2 } // 对应出口
+            "我是導覽點05": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI/4 },
+            "我是導覽點06": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI },
         };
 
         // 1. 初始化場景、攝影機和渲染器 (賦值給全域變數)
@@ -881,15 +744,15 @@ gsap.to(currentCamera.position, {
                             console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '介紹欄2':
-                            child.userData.customDisplayName = '老建築再生館'; 
+                            child.userData.customDisplayName = '老建築再生館';
                             console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '介紹欄3':
-                            child.userData.customDisplayName = '彈藥庫歷史館'; 
+                            child.userData.customDisplayName = '彈藥庫歷史館';
                             console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '出口':
-                            child.userData.customDisplayName = '離開展廳'; 
+                            child.userData.customDisplayName = '離開展廳';
                             console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         // 如果有其他物件需要自訂名稱，可以在這裡添加
@@ -970,10 +833,10 @@ gsap.to(currentCamera.position, {
 
             },
             (xhr) => {
-          const percent = (xhr.loaded / xhr.total) * 100;
-          this.loadingProgress = percent;
-          console.log(`模型載入中... ${percent.toFixed(2)}%`);
-        },
+                const percent = (xhr.loaded / xhr.total) * 100;
+                this.loadingProgress = percent;
+                console.log(`模型載入中... ${percent.toFixed(2)}%`);
+            },
             function (error) {
                 console.error('載入模型時發生錯誤！', error);
             }
@@ -1144,7 +1007,7 @@ gsap.to(currentCamera.position, {
                         }
                     },
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log('GSAP ESC position animation complete.'); // Debug log
                         currentCamera = defaultCamera; // 正式切換攝影機實例
                         if (controls) { // 檢查 controls 是否已定義
@@ -1156,7 +1019,7 @@ gsap.to(currentCamera.position, {
                             controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                             controls.update(); // 強制更新 controls
                             console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
-                                isTransitioning = false;
+                            isTransitioning = false;
                         }
                     }
                 });
@@ -1170,9 +1033,9 @@ gsap.to(currentCamera.position, {
                     z: defaultCamera.rotation.z,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log('GSAP rotation animation complete.'); // Debug log
-                            isTransitioning = false;
+                        isTransitioning = false;
                     }
                 });
             }
