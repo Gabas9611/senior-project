@@ -43,6 +43,7 @@ createApp({
             carouselImages: [],
             currentImageIndex: 0,
             showImageCarousel: false
+
         };
     },
     methods: {
@@ -94,7 +95,7 @@ createApp({
         },
         closeInfoModal() {
             this.showInfoModal = false;
-      isTransitioning = false;
+            isTransitioning = false;
             if (controls) {
                 controls.enabled = true;
                 controls.update();
@@ -116,14 +117,14 @@ createApp({
                 isFirstPersonMode = targetIsFirstPersonMode;
 
                 isTransitioning = true;
-gsap.to(currentCamera.position, {
+                gsap.to(currentCamera.position, {
                     duration: 1.5,
                     x: targetCamera.position.x,
                     y: targetCamera.position.y,
                     z: targetCamera.position.z,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
                         console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
                     }
@@ -140,11 +141,11 @@ gsap.to(currentCamera.position, {
                     z: targetRotationZ,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         if (isFirstPersonMode) {
                             firstPersonRotationX = targetRotationX;
                             firstPersonRotationY = targetRotationY;
-                                isTransitioning = false;
+                            isTransitioning = false;
                         }
                         console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
                         console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
@@ -156,7 +157,7 @@ gsap.to(currentCamera.position, {
         },
         closeInfoModal() {
             this.showInfoModal = false;
-      isTransitioning = false;
+            isTransitioning = false;
             // 重新啟用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = true;
@@ -166,10 +167,10 @@ gsap.to(currentCamera.position, {
         },
         // *** 修改開始：showFrameInfo 方法新增 clickedObject 參數 ***
         showFrameInfo(itemName, clickedObject = null) {
-      if (isTransitioning) {
-        console.log('跳過 showFrameInfo，因為動畫尚未完成。');
-        return;
-      }
+            if (isTransitioning) {
+                console.log('跳過 showFrameInfo，因為動畫尚未完成。');
+                return;
+            }
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = false;
@@ -532,14 +533,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera3 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera3，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -547,7 +548,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框01', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -586,14 +587,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera4，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -601,7 +602,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框02', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -640,14 +641,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera5，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -655,7 +656,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框03', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -694,14 +695,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera10 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera6，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -709,7 +710,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框04', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -748,14 +749,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera7，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -763,7 +764,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框05', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -802,14 +803,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera8，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -817,7 +818,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框06', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -856,14 +857,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera9 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera9，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -871,7 +872,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框07', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -910,14 +911,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera10，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -925,7 +926,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('畫框08', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -964,14 +965,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera8 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera11，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -979,7 +980,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('桌子', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -1019,14 +1020,14 @@ gsap.to(currentCamera.position, {
 
                             // 使用 GSAP 動畫平滑移動攝影機到 NavCamera11 的位置
                             isTransitioning = true;
-gsap.to(currentCamera.position, {
+                            gsap.to(currentCamera.position, {
                                 duration: 1.5,
                                 x: targetCamera.position.x,
                                 y: targetCamera.position.y,
                                 z: targetCamera.position.z,
                                 ease: "power2.inOut",
                                 onComplete: function () {
-        if (!isTransitioning) return;
+                                    if (!isTransitioning) return;
                                     console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
                                     console.log('攝影機已切換到 NavCamera12，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
@@ -1034,7 +1035,7 @@ gsap.to(currentCamera.position, {
                                     // 視角控制將由 handleMouseMove 處理
                                     // *** 修改：傳遞 clickedObject ***
                                     this.showFrameInfo('大門', clickedObject); // 在動畫完成後顯示資訊彈出視窗
-                                        isTransitioning = false;
+                                    isTransitioning = false;
                                 }.bind(this) // 綁定 this，確保在 onComplete 中可以訪問 Vue 實例的 this
                             });
 
@@ -1105,7 +1106,7 @@ gsap.to(currentCamera.position, {
                                 }
                             },
                             onComplete: function () {
-        if (!isTransitioning) return;
+                                if (!isTransitioning) return;
                                 console.log('GSAP position animation complete.'); // Debug log
                                 currentCamera = targetCamera; // 正式切換攝影機實例
                                 console.log('currentCamera after switch:', currentCamera.name); // Debug log
@@ -1124,7 +1125,7 @@ gsap.to(currentCamera.position, {
                                     // 啟用滑鼠拖曳控制的標誌
                                     isDragging = false; // 初始不拖曳
 
-                                        isTransitioning = false;
+                                    isTransitioning = false;
 
                                 } else {
                                     // 恢復 OrbitControls 設置，並啟用
@@ -1156,9 +1157,9 @@ gsap.to(currentCamera.position, {
                             z: targetRotationZ,
                             ease: "power2.inOut",
                             onComplete: function () {
-        if (!isTransitioning) return;
+                                if (!isTransitioning) return;
                                 console.log('GSAP rotation animation complete.'); // Debug log
-                                    isTransitioning = false;
+                                isTransitioning = false;
                             }
                         });
                     }
@@ -1212,7 +1213,7 @@ gsap.to(currentCamera.position, {
 
         cameraNav9 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav9.name = "NavCamera9";
-        cameraNav9.position.set(-2.49, 0.1, -0.21); 
+        cameraNav9.position.set(-2.49, 0.1, -0.21);
         cameraNav9.rotation.y = Math.PI;
 
         cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -1661,7 +1662,7 @@ gsap.to(currentCamera.position, {
                         }
                     },
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log('GSAP ESC position animation complete.'); // Debug log
                         currentCamera = defaultCamera; // 正式切換攝影機實例
                         if (controls) { // 檢查 controls 是否已定義
@@ -1673,7 +1674,7 @@ gsap.to(currentCamera.position, {
                             controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                             controls.update(); // 強制更新 controls
                             console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
-                                isTransitioning = false;
+                            isTransitioning = false;
                         }
                     }
                 });
@@ -1687,9 +1688,9 @@ gsap.to(currentCamera.position, {
                     z: defaultCamera.rotation.z,
                     ease: "power2.inOut",
                     onComplete: function () {
-        if (!isTransitioning) return;
+                        if (!isTransitioning) return;
                         console.log('GSAP rotation animation complete.'); // Debug log
-                            isTransitioning = false;
+                        isTransitioning = false;
                     }
                 });
             }
