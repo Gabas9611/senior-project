@@ -86,6 +86,7 @@ body {
     padding: 8px 25px;
     border-radius: 20px;
     cursor: pointer;
+    font-weight: bold;
     font-size: 14px;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -95,7 +96,7 @@ body {
 .button-1 {
     border: 2px solid white;
     background-color: white;
-    color: blue;
+    color: black;
 }
 
 .button-1:hover {
@@ -107,7 +108,7 @@ body {
 .button-2 {
     border: 2px solid white;
     background-color: white;
-    color: blue;
+    color: black;
 }
 
 .button-2:hover {
