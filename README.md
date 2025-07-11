@@ -2,6 +2,11 @@
 
 https://gabas9611.github.io/senior-project/
 
+2025/07/11 更新項目：
+1.topic.html 更動遮罩設定
+2.topic.css 遮罩樣式修改，調整css
+
+
 2025/07/10 更新項目:
 
 1.所有頁(除了loading)改變nav-專案logo+文字圖案
