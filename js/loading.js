@@ -39,4 +39,4 @@ const interval = setInterval(() => {
         clearInterval(interval);
         window.location.href = redirectUrl;
     }
-}, 100); // Update every 100ms
+}, 50); // Update every 100ms

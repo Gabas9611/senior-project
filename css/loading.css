@@ -70,7 +70,7 @@ body {
     font-weight: bold;
     font-family: monospace;
     font-size: 30px;
-    background: linear-gradient(90deg, #3f2fcf 50%, #1a1b6900 0) right/200% 100%;
+    background: linear-gradient(90deg, #000000 50%, #1a1b6900 0) right/200% 100%;
     animation: l21 2s infinite linear;
 }
 
