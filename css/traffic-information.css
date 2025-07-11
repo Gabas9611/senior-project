@@ -119,6 +119,10 @@
 
  .content-1 {
      height: 500px;
+      background: linear-gradient(135deg, #e85a5a, #d44545);
+ }
+ .content-2{
+    background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
  }
 
  .inner-rectangle {
