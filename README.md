@@ -2,6 +2,10 @@
 
 https://gabas9611.github.io/senior-project/
 
+2025/07/12 更新項目：
+1.全部網頁js中畫面跳轉路徑修正，現在統一不經由loading頁面
+2.topic與old-buildings 頁面中加入loading畫面，調整html/css/js
+
 2025/07/11 更新項目：
 1.topic.html/old-buildings.html 更動遮罩設定
 2.topic.css/old-buildings.css 遮罩樣式修改，調整css
