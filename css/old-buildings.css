@@ -21,7 +21,7 @@ body {
     display: none !important;
 }
 
-#instruction-mask {
+#instruction-mask-layer-1 {
     position: fixed;
     top: 0;
     left: 0;
@@ -38,19 +38,18 @@ body {
     cursor: pointer;
 }
 
-#instruction-mask h1 {
+#instruction-mask-layer-1 h1 {
     font-size: 60px;
     margin-bottom: 1rem;
 }
 
-#instruction-mask h2 {
+#instruction-mask-layer-1 h2 {
     font-size: 32px;
     margin-bottom: 1rem;
 }
 
-#instruction-mask p {
+#instruction-mask-layer-1 p {
     font-size: 28px;
-    align-items: center
 }
 
 .logo-tip,
@@ -68,7 +67,38 @@ body {
     letter-spacing: 2px
 }
 
-#instruction-mask .menu-tip-text p {
+#instruction-mask-layer-2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(188, 188, 233, 0.774);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+#instruction-mask-layer-2 h1 {
+    font-size: 60px;
+    margin-bottom: 1rem;
+}
+
+#instruction-mask-layer-2 h2 {
+    font-size: 32px;
+    margin-bottom: 1rem;
+}
+
+#instruction-mask-layer-2 p {
+    font-size: 28px;
+}
+
+#instruction-mask-layer-2 .menu-tip-text p {
     font-size: 18px;
     /* ✅ 單獨設定字體大小 */
     line-height: 1.5;
@@ -153,7 +183,7 @@ body {
     display: flex;
     align-items: center;
     background-color: black;
-   
+
     /* 在logo和標題之間增加間距 */
 }
 
@@ -194,21 +224,21 @@ body {
 }
 
 .nav-button {
-    background-color:white;
+    background-color: white;
     border: 2px solid white;
     padding: 8px 25px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
-   color:blue;
+    color: blue;
     font-weight: bold;
     white-space: nowrap;
     transition: background-color 0.3s ease;
 }
 
 .nav-button:hover {
-     background-color: transparent; 
-     color: white;
+    background-color: transparent;
+    color: white;
 }
 
 .main-content {
@@ -278,8 +308,8 @@ body {
 }
 
 .modal-button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: white;
+    color: black;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -412,14 +442,11 @@ body {
     }
 }
 
-/* Mobile Styles */
-@media (min-width: 769px) {
+@media (max-width: 768px) {
     .modal-content-wrapper {
         flex-direction: row;
     }
-}
 
-@media (max-width: 768px) {
     .header {
         padding: 12px 15px;
     }
@@ -454,6 +481,74 @@ body {
         padding: 6px 12px;
         font-size: 12px;
     }
+
+    #instruction-mask-layer-2 h2 {
+        font-size: 32px;
+        margin-bottom: 1rem;
+    }
+
+    #instruction-mask-layer-2 p {
+        font-size: 18px;
+    }
+
+    #instruction-mask-layer-2 .menu-tip-text p {
+        font-size: 16px;
+        /* ✅ 單獨設定字體大小 */
+        line-height: 1.5;
+        letter-spacing: 0.5px;
+        text-align: left;
+    }
+
+    /* 左上角 LOGO 說明 */
+    .logo-tip {
+        position: absolute;
+        top: 80px;
+        left: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #fff;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        color: white;
+        z-index: 10001;
+        width: 90px;
+        /* ✅ Updated width */
+        text-align: left;
+    }
+
+
+    .logo-tip .arrow-down {
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 12px solid white;
+    }
+
+
+
+    /* 右上角選單說明 */
+    .menu-button-tip {
+        top: 80px;
+        right: 30px;
+        text-align: left;
+        font-size: 12px;
+        width: 100px;
+    }
+
+    .menu-button-tip .arrow-down {
+        position: absolute;
+        top: -12px;
+        left: 80%;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 12px solid white;
+    }
 }
 
 /* Tooltip Styles */
@@ -475,19 +570,41 @@ body {
 }
 
 canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 0;
-  touch-action: none;
-  pointer-events: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+    touch-action: none;
+    pointer-events: auto;
 }
 
 #three-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+* 操作圖示大小統一管理 */ .icon-img {
+    vertical-align: middle;
+    margin-right: 2px;
+    /* ✅ 更小的圖文間距 */
+}
+
+.icon-img.large {
+    height: 36px;
+}
+
+.icon-img.medium {
+    height: 36px;
+    margin-right: 6px;
+
+}
+
+.icon-img.small {
+    height: 36px;
+    margin-right: 6px;
+
 }
