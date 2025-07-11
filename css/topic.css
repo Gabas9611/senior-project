@@ -477,6 +477,10 @@ body {
 
 /* Small Mobile Styles */
 @media (max-width: 480px) {
+    .logo{
+        width: 50px;
+        height: 50px;
+    }
     .nav-section {
         gap: 10px;
     }
