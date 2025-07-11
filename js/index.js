@@ -26,11 +26,8 @@ createApp({
         handleNavClick(action) {
             this.selectedAction = action;
             if (action === 'import') {
-                window.location.href = 'loading.html?target=topic.html';
+                window.location.href = 'topic.html';
                 this.actionMessage = '進入專案已點擊';
-            } else if (action === 'traffic') {
-                window.location.href = 'loading.html?target=traffic-information.html';
-                this.actionMessage = '交通資訊已點擊';
             }
             // 點擊任何選單項目後都關閉選單
             if (this.isMenuOpen) {
