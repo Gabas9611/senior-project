@@ -1268,7 +1268,8 @@ createApp({
         // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
-        const sensitivity = 0.005;
+        const mouseSensitivity = 0.005;
+        const touchSensitivity = 0.002;
         const maxVerticalAngle = Math.PI / 2.5;
 
         function clamp(val, min, max) {
@@ -1280,13 +1281,14 @@ createApp({
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
-        function onMouseMove(e) {
+       function onMouseMove(e) {
             if (!isDragging) return;
-            const deltaX = e.clientX - previousMousePosition.x;
-            const deltaY = e.clientY - previousMousePosition.y;
 
-            currentCamera.rotation.y -= deltaX * sensitivity;
-            currentCamera.rotation.x -= deltaY * sensitivity;
+            const deltaX = (e.clientX - previousMousePosition.x) * mouseSensitivity;
+            const deltaY = (e.clientY - previousMousePosition.y) * mouseSensitivity;
+
+            currentCamera.rotation.y -= deltaX;
+            currentCamera.rotation.x -= deltaY;
             currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
             previousMousePosition = { x: e.clientX, y: e.clientY };
@@ -1317,14 +1319,14 @@ renderer.domElement.addEventListener('touchmove', (e) => {
     const deltaY = currentY - previousMouseY;
 
     // 模仿電腦版：根據主要移動方向選一個旋轉
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // 水平旋轉
-        currentCamera.rotation.y -= deltaX * sensitivity;
-    } else {
-        // 垂直旋轉
-        currentCamera.rotation.x -= deltaY * sensitivity;
-        currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-    }
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // 水平旋轉
+                currentCamera.rotation.y -= deltaX * touchSensitivity;
+            } else {
+                // 垂直旋轉
+                currentCamera.rotation.x -= deltaY * touchSensitivity;
+                currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+            }
 
     previousMouseX = currentX;
     previousMouseY = currentY;
