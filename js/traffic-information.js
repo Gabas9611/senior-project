@@ -66,15 +66,14 @@ createApp({
         const handleResize = () => {
             screenWidth.value = window.innerWidth;
         };
-
-        const handleNavClick = (action) => {
+const handleNavClick = (action) => {
             console.log('Button clicked with action:', action);
             selectedAction.value = action;
             if (action === 'home') {
-                window.location.href = 'loading.html?target=index.html';
+                window.location.href = 'index.html';
                 actionMessage.value = '返回首頁已點擊';
             } else if (action === 'previous') {
-                window.location.href = 'loading.html?target=topic.html';
+                window.location.href = 'topic.html';
                 actionMessage.value = '返回前頁已點擊';
             }
         };
