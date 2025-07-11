@@ -266,7 +266,7 @@ createApp({
                 const clickedObject = intersects[0].object; // 這是實際被點擊的 Three.js 物件
 
                 // clickableFramesAndDoor 和 frameNames 現在是全域變數
-                const clickableObjects = ["介紹欄1", "介紹欄2", "介紹欄3", "介紹"];
+                const clickableObjects = ["介紹欄1", "介紹欄2", "介紹欄3"];
                 let targetNavPointName = null;
                 let clickedItemName = null;
 
