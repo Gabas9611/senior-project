@@ -1302,12 +1302,37 @@ createApp({
 
         // ✅ 手機觸控事件
         renderer.domElement.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            previousMousePosition = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY
-            };
-        }, { passive: true });
+    if (e.touches.length !== 1) return;
+    isDragging = true;
+    previousMouseX = e.touches[0].clientX;
+    previousMouseY = e.touches[0].clientY;
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchmove', (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const deltaX = currentX - previousMouseX;
+    const deltaY = currentY - previousMouseY;
+
+    // 模仿電腦版：根據主要移動方向選一個旋轉
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // 水平旋轉
+        currentCamera.rotation.y -= deltaX * sensitivity;
+    } else {
+        // 垂直旋轉
+        currentCamera.rotation.x -= deltaY * sensitivity;
+        currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+    }
+
+    previousMouseX = currentX;
+    previousMouseY = currentY;
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchend', () => {
+    isDragging = false;
+}, { passive: true });
 
         renderer.domElement.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
