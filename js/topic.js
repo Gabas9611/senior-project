@@ -18,7 +18,7 @@ let isTransitioning = false;
 
 
 // 導覽攝影機的設定 (Moved to global scope)
-let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6, cameraNav7, cameraNav8, cameraNav9, cameraNav10, cameraNav11;
+let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6
 
 // 宣告互動物件相關的全域變數
 const targetObjectNames = ["我是導覽點01", "我是導覽點02", "我是導覽點03", "我是導覽點04", "我是導覽點05", "我是導覽點06"]; // 宣告為全域常數
@@ -31,29 +31,41 @@ let originalEmissive = new Map(); // 宣告為全域變數
 createApp({
     data() {
         return {
-            instructionStep: 1,
+            // loading 與初始化流程
             loadingProgress: 0,
+            instructionStep: 0,
+            isInitialized: false,
+            // showInstruction: true, // ✅ 遮罩初始顯示
+
+            // 彈窗控制
+            showInfoModal: false,
+            infoModalTitle: '',
+            infoModalContent: '',
+            infoModalButtonText: '進入參觀',
+            showModalButton: true,
+            modalAction: '',
+
+            // 選單與導覽狀態
             isMenuOpen: false,
             selectedAction: '',
             actionMessage: '',
-            showInfoModal: false, // 控制資訊彈出視窗的顯示
-            infoModalTitle: '',   // 資訊彈出視窗的標題
-            infoModalContent: '',  // 資訊彈出視窗的內容
-            infoModalButtonText: '進入參觀', // 新增：資訊彈出視窗按鈕文字
-            modalAction: '', // 新增：彈出視窗按鈕的動作類型
-            showModalButton: true, // 新增：控制是否顯示彈出視窗按鈕
-            isInitialized: false, // 新增：追蹤應用程式是否已初始化
-            loadingProgress: 0, // 進度條百分比
-            showInstruction: true // ✅ 遮罩初始顯示
-
-        }
+        };
     },
     methods: {
+        updateLoadingUI() {
+            const percentText = document.getElementById('progressPercentage');
+            const barFill = document.querySelector('.progress-bar-fill');
+            if (percentText && barFill) {
+                percentText.innerText = `${this.loadingProgress}%`;
+                barFill.style.width = `${this.loadingProgress}%`;
+            }
+        },
         showSecondMask() {
             this.instructionStep = 2;
         },
         hideInstruction() {
-            this.instructionStep = 0;
+            this.instructionStep = null;
+            this.isInitialized = true;
         },
 
         toggleMenu() {
@@ -74,12 +86,12 @@ createApp({
         handleNavClick(action) {
             this.selectedAction = action;
             if (action === 'import') {
-                window.location.href = 'loading.html?target=traffic-information.html';
+                window.location.href = 'traffic-information.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
             } else if (action === 'introduction') {
-                window.location.href = 'loading.html?target=index.html';
+                window.location.href = 'index.html';
                 this.actionMessage = '簡介已點擊';
             } else if (action === 'traffic') {
                 this.actionMessage = '交通資訊已點擊';
@@ -227,7 +239,7 @@ createApp({
             this.closeInfoModal(); // 先關閉彈出視窗
             switch (this.modalAction) {
                 case 'enterExhibitionA':
-                    window.location.href = 'loading.html?target=taiwan-history.html';
+                    window.location.href = 'taiwan-history.html';
                     break;
                 case 'exit':
                     window.location.href = 'loading.html?target=index.html';
@@ -237,10 +249,10 @@ createApp({
                     console.log('查看更多畫作');
                     break;
                 case 'enterDesignDept':
-                    window.location.href = 'loading.html?target=old-buildings.html';
+                    window.location.href = 'old-buildings.html';
                     break;
                 case 'enterHRDept':
-                    window.location.href = 'loading.html?target=ammunition-depot-history.html';
+                    window.location.href = 'ammunition-depot-history.html';
                     break;
                 case 'learnMore':
                     console.log('了解更多');
@@ -635,7 +647,7 @@ createApp({
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
         const mouseSensitivity = 0.005;
-const touchSensitivity = 0.002;
+        const touchSensitivity = 0.002;
         const maxVerticalAngle = Math.PI / 2.5;
 
         function clamp(val, min, max) {
@@ -648,17 +660,17 @@ const touchSensitivity = 0.002;
         }
 
         function onMouseMove(e) {
-    if (!isDragging) return;
+            if (!isDragging) return;
 
-    const deltaX = (e.clientX - previousMousePosition.x) * mouseSensitivity;
-    const deltaY = (e.clientY - previousMousePosition.y) * mouseSensitivity;
+            const deltaX = (e.clientX - previousMousePosition.x) * mouseSensitivity;
+            const deltaY = (e.clientY - previousMousePosition.y) * mouseSensitivity;
 
-    currentCamera.rotation.y -= deltaX;
-    currentCamera.rotation.x -= deltaY;
-    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+            currentCamera.rotation.y -= deltaX;
+            currentCamera.rotation.x -= deltaY;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
-    previousMousePosition = { x: e.clientX, y: e.clientY };
-}
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
 
         function onMouseUp() {
             isDragging = false;
@@ -669,23 +681,14 @@ const touchSensitivity = 0.002;
         renderer.domElement.addEventListener('mouseup', onMouseUp);
 
         // ✅ 手機觸控事件
-       renderer.domElement.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    isDragging = true;
-    previousMouseX = e.touches[0].clientX;
-    previousMouseY = e.touches[0].clientY;
-}, { passive: true });
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
 
-renderer.domElement.addEventListener('touchmove', (e) => {
-    if (!isDragging || e.touches.length !== 1) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-    const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    const deltaX = currentX - previousMouseX;
-    const deltaY = currentY - previousMouseY;
-
-    // 模仿電腦版：根據主要移動方向選一個旋轉
-   if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // 比較哪個移動方向較大，只保留一個方向的旋轉
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 // 水平旋轉
                 currentCamera.rotation.y -= deltaX * touchSensitivity;
             } else {
@@ -694,28 +697,10 @@ renderer.domElement.addEventListener('touchmove', (e) => {
                 currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
             }
 
-    previousMouseX = currentX;
-    previousMouseY = currentY;
-}, { passive: true });
-
-renderer.domElement.addEventListener('touchend', () => {
-    isDragging = false;
-}, { passive: true });
-
-        renderer.domElement.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.touches[0].clientX - previousMousePosition.x;
-            const deltaY = e.touches[0].clientY - previousMousePosition.y;
-
-            currentCamera.rotation.y -= deltaX * sensitivity;
-            currentCamera.rotation.x -= deltaY * sensitivity;
-            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-
-            previousMousePosition = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY
-            };
+            previousMouseX = currentX;
+            previousMouseY = currentY;
         }, { passive: true });
+
 
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
@@ -757,13 +742,15 @@ renderer.domElement.addEventListener('touchend', () => {
         // 5. 載入模型
         loader.load(
             './model/topic.glb',
-            function (gltf) {
+            (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
                 console.log('--- 模型已成功載入並添加到場景中 ---');
 
-                // 將模型置中
+                // 模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
+                const modelCenter = new THREE.Vector3();
+                const modelSize = new THREE.Vector3();
                 box.getCenter(modelCenter);
                 box.getSize(modelSize);
                 loadedModel.position.sub(modelCenter);
@@ -852,6 +839,11 @@ renderer.domElement.addEventListener('touchend', () => {
                 // 確保控制器更新其內部狀態
                 controls.update();
 
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    this.instructionStep = 1;
+                }, 500);
+
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
                     const marker = loadedModel.getObjectByName(name);
@@ -869,6 +861,11 @@ renderer.domElement.addEventListener('touchend', () => {
                 const percent = (xhr.loaded / xhr.total) * 100;
                 this.loadingProgress = percent;
                 console.log(`模型載入中... ${percent.toFixed(2)}%`);
+
+                const percentageText = document.getElementById('progressPercentage');
+                if (percentageText) {
+                    percentageText.textContent = `${Math.round(percent)}%`;
+                }
             },
             function (error) {
                 console.error('載入模型時發生錯誤！', error);
@@ -1073,13 +1070,6 @@ renderer.domElement.addEventListener('touchend', () => {
                 });
             }
         }
-
-        // Attach Event Listeners (這段重複了，但為了整合完整性保留，實際部署時可刪除重複的)
-        renderer.domElement.addEventListener('mousemove', handleMouseMove);
-        renderer.domElement.addEventListener('mousedown', handleMouseDown);
-        renderer.domElement.addEventListener('mouseup', handleMouseUp);
-        renderer.domElement.addEventListener('click', this.onMouseClick);
-        window.addEventListener('keydown', handleKeyDown, false);
 
         function animate() {
             requestAnimationFrame(animate);
