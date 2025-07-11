@@ -80,7 +80,7 @@ body {
     color: #0000;
     padding: 0 5px;
     background: inherit;
-    background-image: linear-gradient(90deg, #fff 50%, #3f2fcf 0);
+    background-image: linear-gradient(90deg, #fff 50%, #ffffff 0);
     -webkit-background-clip: text;
     background-clip: text;
 }
