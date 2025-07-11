@@ -20,7 +20,7 @@ setInterval(() => {
     index = (index + 1) % colors.length;
     document.getElementById('leftHalf').setAttribute('fill', colors[index][0]);
     document.getElementById('rightHalf').setAttribute('fill', colors[index][1]);
-}, 1000);
+}, 5000);
 
 let progress = 0;
 const progressBar = document.getElementById('progressBar');
