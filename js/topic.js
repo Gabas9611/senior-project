@@ -667,8 +667,22 @@ createApp({
         renderer.domElement.addEventListener('mouseup', onMouseUp);
 
         // ✅ 手機觸控事件
-        renderer.domElement.addEventListener('touchstart', (e) => {
-            isDragging = true;
+       renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            // 比較哪個移動方向較大，只保留一個方向的旋轉
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // 只做水平旋轉（左右）
+                currentCamera.rotation.y -= deltaX * sensitivity;
+            } else {
+                // 只做垂直旋轉（上下）
+                currentCamera.rotation.x -= deltaY * sensitivity;
+                currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+            }
+
             previousMousePosition = {
                 x: e.touches[0].clientX,
                 y: e.touches[0].clientY
