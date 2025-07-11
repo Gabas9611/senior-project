@@ -248,7 +248,7 @@
  .small {
      width: 270px;
      height: 270px;
-     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #90caf9);
+     background: rgb(220, 219, 219);
      font-size: 12px;
      z-index: 1;
  }
@@ -256,7 +256,7 @@
  .medium {
      width: 360px;
      height: 360px;
-     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #64b5f6);
+     background: rgb(175, 175, 175);
      font-size: 14px;
      z-index: 2;
  }
@@ -264,7 +264,7 @@
  .large {
      width: 500px;
      height: 500px;
-     background: linear-gradient(5deg, rgba(255, 255, 255, 0.484), #42a5f5);
+     background: gray;
      font-size: 16px;
      z-index: 3;
      /* 修改為 flex-start 讓內容靠上排列 */
