@@ -16,6 +16,7 @@ let navCameras = {}; // 宣告為全域變數，並在 mounted 中填充
 let isTransitioning = false;
 
 
+
 // 導覽攝影機的設定 (Moved to global scope)
 let cameraNav1, cameraNav2, cameraNav3, cameraNav4, cameraNav5, cameraNav6, cameraNav7, cameraNav8, cameraNav9, cameraNav10, cameraNav11;
 
@@ -30,6 +31,7 @@ let originalEmissive = new Map(); // 宣告為全域變數
 createApp({
     data() {
         return {
+            instructionStep: 1,
             loadingProgress: 0,
             isMenuOpen: false,
             selectedAction: '',
@@ -43,11 +45,15 @@ createApp({
             isInitialized: false, // 新增：追蹤應用程式是否已初始化
             loadingProgress: 0, // 進度條百分比
             showInstruction: true // ✅ 遮罩初始顯示
+
         }
     },
     methods: {
+        showSecondMask() {
+            this.instructionStep = 2;
+        },
         hideInstruction() {
-            this.showInstruction = false;
+            this.instructionStep = 0;
         },
 
         toggleMenu() {
@@ -78,13 +84,13 @@ createApp({
             } else if (action === 'traffic') {
                 this.actionMessage = '交通資訊已點擊';
             } else if (action === 'showExhibitionA') {
-                this.switchToCamera('NavCamera7');
+                this.switchToCamera('NavCamera6');
                 this.actionMessage = '展覽館A已點擊';
             } else if (action === 'showExhibitionB') {
-                this.switchToCamera('NavCamera8');
+                this.switchToCamera('NavCamera3');
                 this.actionMessage = '展覽館B已點擊';
             } else if (action === 'showExhibitionC') {
-                this.switchToCamera('NavCamera9');
+                this.switchToCamera('NavCamera2');
                 this.actionMessage = '展覽館C已點擊';
             }
             if (this.isMenuOpen) {
@@ -611,7 +617,7 @@ createApp({
             "我是導覽點02": { camera: cameraNav2, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI },
             "我是導覽點03": { camera: cameraNav3, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
             "我是導覽點04": { camera: cameraNav4, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: 0 },
-            "我是導覽點05": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI/4 },
+            "我是導覽點05": { camera: cameraNav5, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: Math.PI / 4 },
             "我是導覽點06": { camera: cameraNav6, isFirstPerson: true, initialLookAt: null, initialRotationX: 0, initialRotationY: -Math.PI },
         };
 

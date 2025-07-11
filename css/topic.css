@@ -23,7 +23,7 @@ body {
     display: none !important;
 }
 
-#instruction-mask {
+#instruction-mask-layer-1 {
     position: fixed;
     top: 0;
     left: 0;
@@ -40,17 +40,17 @@ body {
     cursor: pointer;
 }
 
-#instruction-mask h1 {
+#instruction-mask-layer-1 h1 {
     font-size: 60px;
     margin-bottom: 1rem;
 }
 
-#instruction-mask h2 {
+#instruction-mask-layer-1 h2 {
     font-size: 32px;
     margin-bottom: 1rem;
 }
 
-#instruction-mask p {
+#instruction-mask-layer-1 p {
     font-size: 28px;
 }
 
@@ -69,7 +69,38 @@ body {
     letter-spacing: 2px
 }
 
-#instruction-mask .menu-tip-text p {
+#instruction-mask-layer-2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(188, 188, 233, 0.774);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+#instruction-mask-layer-2 h1 {
+    font-size: 60px;
+    margin-bottom: 1rem;
+}
+
+#instruction-mask-layer-2 h2 {
+    font-size: 32px;
+    margin-bottom: 1rem;
+}
+
+#instruction-mask-layer-2 p {
+    font-size: 28px;
+}
+
+#instruction-mask-layer-2 .menu-tip-text p {
     font-size: 18px;
     /* ✅ 單獨設定字體大小 */
     line-height: 1.5;
@@ -144,23 +175,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 40px 20px;
-    background-color: transparent;
-    /* 透明背景 */
-    position: absolute;
-    /* 絕對定位 */
+   padding: 6px 40px 20px;
+    background-color: transparent; /* 透明背景 */
+    position: absolute; /* 絕對定位 */
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
-    /* 確保 header 在 main-content 上方 */
+    z-index: 100; /* 確保 header 在 main-content 上方 */
 }
 
 .logo-section {
     display: flex;
     align-items: center;
     background-color: black;
-
+    
     /* 在logo和標題之間增加間距 */
 }
 
@@ -188,7 +216,7 @@ body {
     font-weight: bold;
     color: #fff;
     padding: 9px 12px;
-
+    
     font-family: MPingFang TC;
     white-space: nowrap;
     /* 防止標題換行 */
@@ -203,20 +231,20 @@ body {
 }
 
 .nav-button {
-    background-color: white;
-    color: black;
+     background-color:white;
+     color:black;
     border: 2px solid white;
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 16px;   
     font-weight: bold;
     white-space: nowrap;
     transition: background-color 0.3s ease;
 }
 
 .nav-button:hover {
-    background-color: transparent;
+    background-color: transparent; 
     color: white;
 }
 
@@ -262,15 +290,13 @@ body {
     /* 這裡需要動態計算 header 的實際高度 */
     /* 20px (上 padding) + 20px (下 padding) + 內容高度 (假設40px) = 80px */
     /* 為了確保不被擋住，可以稍微增加一點距離，例如 80px + 5px = 85px */
-    top: calc(var(--header-height) + 2px);
-    /* 初始設定，會根據 media query 調整 */
+    top: calc(var(--header-height) + 2px); /* 初始設定，會根據 media query 調整 */
     right: 40px;
     background-color: #b8b8b8;
     width: auto;
     max-width: calc(100vw - 80px);
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 101;
-    /* 將 z-index 提高，確保選單在 header 之上 */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 101; /* 將 z-index 提高，確保選單在 header 之上 */
     border-radius: 5px;
     overflow: hidden;
     max-height: 0;
@@ -294,7 +320,7 @@ body {
     text-decoration: none;
     display: block;
     text-align: center;
-    border: 2px solid white;
+     border:2px solid white;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: 16px;
@@ -310,9 +336,9 @@ body {
 }
 
 .menu-item-button:hover {
-    background-color: transparent;
+    background-color:transparent;
     color: white;
-
+   
 }
 
 .main-content {
@@ -351,7 +377,7 @@ body {
 }
 
 .info-modal {
-    background: black;
+    background: linear-gradient(to right, #e6ffe6, #ccffcc);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -363,13 +389,13 @@ body {
 
 .close-button {
     position: absolute;
-    top: 2px;
+    top: 10px;
     right: 10px;
     background: none;
     border: none;
-    font-size: 40px;
+    font-size: 24px;
     cursor: pointer;
-    color: white;
+    color: #333;
 }
 
 .close-button:hover {
@@ -379,7 +405,7 @@ body {
 .modal-title {
     font-size: 24px;
     margin-bottom: 15px;
-    color:white;
+    color: #333;
 }
 
 .modal-button {
@@ -387,8 +413,7 @@ body {
     color: black;
     padding: 10px 20px;
     border: none;
-    border-radius: 10px;
-    border: 2px solid white;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 18px;
     margin-top: 20px;
@@ -397,9 +422,7 @@ body {
 }
 
 .modal-button:hover {
-    background-color: transparent;
-    color: white;
-
+    background-color: #0056b3;
 }
 
 /* Mobile Styles */
@@ -439,8 +462,7 @@ body {
     .sidebar-menu {
         /* 12px (上 padding) + 15px (下 padding) + 內容高度 (假設35px) = 62px */
         /* 為了確保不被擋住，可以稍微增加一點距離，例如 62px + 5px = 67px */
-        top: calc(59px + 5px);
-        /* 根據 768px 下的 header 高度調整 */
+            top: calc(59px + 5px); /* 根據 768px 下的 header 高度調整 */
         right: 15px;
         max-width: calc(100vw - 30px);
         width: auto;
@@ -450,48 +472,6 @@ body {
         font-size: 14px;
         padding: 10px 14px;
     }
-
-    #instruction-mask {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;  /* 垂直置中 */
-    align-items: center;      /* 水平置中 */
-    text-align: center;
-    padding: 1.5rem 1rem;
-    overflow-y: auto;
-    position: fixed;
-    inset: 0;                 /* top:0; bottom:0; left:0; right:0; */
-  }
-
-  #instruction-mask h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    word-break: break-word;
-  }
-
-  #instruction-mask h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-  }
-
-  #instruction-mask p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 0.8rem;
-    word-break: break-word;
-  }
-
-  #instruction-mask .menu-tip-text p {
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-    .logo-tip,
-    .menu-button-tip {
-        display: none;
-        /* 可選：手機下隱藏氣泡提示 */
-    }
-
 }
 
 /* Small Mobile Styles */
@@ -533,41 +513,6 @@ body {
         font-size: 12px;
         padding: 8px 12px;
     }
-
-    #instruction-mask {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;  /* 垂直置中 */
-    align-items: center;      /* 水平置中 */
-    text-align: center;
-    padding: 1.5rem 1rem;
-    overflow-y: auto;
-    position: fixed;
-    inset: 0;                 /* top:0; bottom:0; left:0; right:0; */
-  }
-
-  #instruction-mask h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    word-break: break-word;
-  }
-
-  #instruction-mask h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-  }
-
-  #instruction-mask p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 0.8rem;
-    word-break: break-word;
-  }
-
-  #instruction-mask .menu-tip-text p {
-    font-size: 0.9rem;
-    text-align: center;
-  }
 }
 
 /* Animation for menu button */
