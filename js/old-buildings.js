@@ -29,34 +29,43 @@ let originalEmissive = new Map(); // 宣告為全域變數
 createApp({
     data() {
         return {
-            instructionStep: 1,
-            showInstruction: true, // ✅ 預設顯示遮罩
-            isMenuOpen: false,
-            selectedAction: '',
-            actionMessage: '',
+            // loading 與初始化流程
+            loadingProgress: 0,
+            instructionStep: 0,
+            isInitialized: false,
+            // showInstruction: true, // ✅ 遮罩初始顯示
+
+            // 彈窗控制
             showInfoModal: false,
             infoModalTitle: '',
             infoModalContent: '',
             infoModalButtonText: '進入參觀',
-            modalAction: '',
             showModalButton: true,
-            isInitialized: false,
-            carouselImages: [],
-            currentImageIndex: 0,
-            showImageCarousel: false
+            modalAction: '',
 
+            // 選單與導覽狀態
+            isMenuOpen: false,
+            selectedAction: '',
+            actionMessage: '',
         };
     },
     methods: {
+        updateLoadingUI() {
+            const percentText = document.getElementById('progressPercentage');
+            const barFill = document.querySelector('.progress-bar-fill');
+            if (percentText && barFill) {
+                percentText.innerText = `${this.loadingProgress}%`;
+                barFill.style.width = `${this.loadingProgress}%`;
+            }
+        },
         showSecondMask() {
             this.instructionStep = 2;
         },
         hideInstruction() {
-            this.instructionStep = 0;
+            this.instructionStep = null;
+            this.isInitialized = true;
         },
-        // hideInstruction() {
-        //     this.showInstruction = false;
-        // },
+
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
             if (controls) {
@@ -75,12 +84,12 @@ createApp({
         handleNavClick(action) {
             this.selectedAction = action;
             if (action === 'import') {
-                window.location.href = 'loading.html?target=traffic-information.html';
-                this.actionMessage = '進入專案已點擊';
+                window.location.href = 'topic.html';
+                this.actionMessage = '回到前頁已點擊';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
             } else if (action === 'backToMain') {
-                window.location.href = 'loading.html?target=topic.html';
+                window.location.href = 'topic.html';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
@@ -440,7 +449,7 @@ createApp({
                     window.location.href = 'loading.html?target=taiwan-history.html';
                     break;
                 case 'exit':
-                    window.location.href = 'loading.html?target=index.html';
+                    window.location.href = 'topic.html';
                     break;
                 case 'viewArtwork':
                     // 這裡可以添加跳轉到畫作詳細頁面或執行其他操作的邏輯
@@ -466,16 +475,8 @@ createApp({
         // 新增：滑鼠點擊事件，用於切換攝影機和偵測物件點擊
         onMouseClick(event) {
             // 確保應用程式已初始化，避免在載入時觸發
-            if (!this.isInitialized) {
-                console.log('應用程式未初始化，忽略點擊事件。');
-                return;
-            }
-
-            // 檢查 loadedModel, raycaster, mouse, currentCamera 是否已初始化
-            if (!loadedModel || !raycaster || !mouse || !currentCamera) {
-                console.warn('Three.js 核心物件尚未完全初始化。');
-                return;
-            }
+            if (!this.isInitialized || isTransitioning) return; // ✅ 防止初始化前與動畫中點擊
+            if (!loadedModel || !raycaster || !mouse || !currentCamera) return;
 
             event.preventDefault();
 
@@ -1268,6 +1269,7 @@ createApp({
         // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
+        // const sensitivity = 0.002;
         const mouseSensitivity = 0.005;
         const touchSensitivity = 0.002;
         const maxVerticalAngle = Math.PI / 2.5;
@@ -1281,7 +1283,7 @@ createApp({
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
-       function onMouseMove(e) {
+        function onMouseMove(e) {
             if (!isDragging) return;
 
             const deltaX = (e.clientX - previousMousePosition.x) * mouseSensitivity;
@@ -1294,6 +1296,7 @@ createApp({
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
+
         function onMouseUp() {
             isDragging = false;
         }
@@ -1304,21 +1307,21 @@ createApp({
 
         // ✅ 手機觸控事件
         renderer.domElement.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    isDragging = true;
-    previousMouseX = e.touches[0].clientX;
-    previousMouseY = e.touches[0].clientY;
-}, { passive: true });
+            if (e.touches.length !== 1) return;
+            isDragging = true;
+            previousMouseX = e.touches[0].clientX;
+            previousMouseY = e.touches[0].clientY;
+        }, { passive: true });
 
-renderer.domElement.addEventListener('touchmove', (e) => {
-    if (!isDragging || e.touches.length !== 1) return;
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
 
-    const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    const deltaX = currentX - previousMouseX;
-    const deltaY = currentY - previousMouseY;
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = currentX - previousMouseX;
+            const deltaY = currentY - previousMouseY;
 
-    // 模仿電腦版：根據主要移動方向選一個旋轉
+            // 模仿電腦版：根據主要移動方向選一個旋轉
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 // 水平旋轉
                 currentCamera.rotation.y -= deltaX * touchSensitivity;
@@ -1328,13 +1331,13 @@ renderer.domElement.addEventListener('touchmove', (e) => {
                 currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
             }
 
-    previousMouseX = currentX;
-    previousMouseY = currentY;
-}, { passive: true });
+            previousMouseX = currentX;
+            previousMouseY = currentY;
+        }, { passive: true });
 
-renderer.domElement.addEventListener('touchend', () => {
-    isDragging = false;
-}, { passive: true });
+        renderer.domElement.addEventListener('touchend', () => {
+            isDragging = false;
+        }, { passive: true });
 
         renderer.domElement.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
@@ -1391,7 +1394,7 @@ renderer.domElement.addEventListener('touchend', () => {
         // 5. 載入模型
         loader.load(
             './model/old-buildings.glb',
-            function (gltf) {
+            (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
                 console.log('--- 模型已成功載入並添加到場景中 ---');
@@ -1510,6 +1513,11 @@ renderer.domElement.addEventListener('touchend', () => {
                 // 確保控制器更新其內部狀態
                 controls.update();
 
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    this.instructionStep = 1;
+                }, 500);
+
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
                     const marker = loadedModel.getObjectByName(name);
@@ -1523,8 +1531,15 @@ renderer.domElement.addEventListener('touchend', () => {
                 });
 
             },
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            (xhr) => {
+                const percent = (xhr.loaded / xhr.total) * 100;
+                this.loadingProgress = percent;
+                console.log(`模型載入中... ${percent.toFixed(2)}%`);
+
+                const percentageText = document.getElementById('progressPercentage');
+                if (percentageText) {
+                    percentageText.textContent = `${Math.round(percent)}%`;
+                }
             },
             function (error) {
                 console.error('載入模型時發生錯誤！', error);
@@ -1731,9 +1746,9 @@ renderer.domElement.addEventListener('touchend', () => {
         }
 
         // Attach Event Listeners (這段重複了，但為了整合完整性保留，實際部署時可刪除重複的)
-        renderer.domElement.addEventListener('mousemove', handleMouseMove);
-        renderer.domElement.addEventListener('mousedown', handleMouseDown);
-        renderer.domElement.addEventListener('mouseup', handleMouseUp);
+        // renderer.domElement.addEventListener('mousemove', handleMouseMove);
+        // renderer.domElement.addEventListener('mousedown', handleMouseDown);
+        // renderer.domElement.addEventListener('mouseup', handleMouseUp);
         renderer.domElement.addEventListener('click', this.onMouseClick);
         window.addEventListener('keydown', handleKeyDown, false);
 
