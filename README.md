@@ -8,6 +8,7 @@ https://gabas9611.github.io/senior-project/
 3.topic.js/old-buildings.js 右上角下拉式選單建築跳轉功能修正
 4.topic.css調整彈跳視窗樣式
 5.topic.js/old-building.js 手機版移動調整
+6.index.css手機板調整
 
 
 2025/07/10 更新項目:
