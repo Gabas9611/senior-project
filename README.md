@@ -6,6 +6,7 @@ https://gabas9611.github.io/senior-project/
 1.topic.html/old-buildings.html 更動遮罩設定
 2.topic.css/old-buildings.css 遮罩樣式修改，調整css
 3.topic.js/old-buildings.js 右上角下拉式選單建築跳轉功能修正
+4.topic.css調整彈跳視窗樣式
 
 
 2025/07/10 更新項目:
