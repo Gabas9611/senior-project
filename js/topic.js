@@ -586,6 +586,7 @@ createApp({
         },
     },
     mounted() {
+        document.getElementById('app').style.display = 'block';
         // 0. 基本設定
         const container = document.getElementById('three-container');
         if (!container) {
