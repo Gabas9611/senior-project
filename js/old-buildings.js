@@ -47,6 +47,10 @@ createApp({
             isMenuOpen: false,
             selectedAction: '',
             actionMessage: '',
+
+            showImageCarousel: false,
+            carouselImages: [],
+            currentImageIndex: 0,
         };
     },
     methods: {
