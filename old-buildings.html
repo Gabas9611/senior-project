@@ -67,7 +67,7 @@
         <!-- 第一層遮罩 -->
         <div id="instruction-mask-layer-1" @click="showSecondMask" v-show="instructionStep === 1">
             <div>
-                <h1>歡迎來到「下一站，蛻變」</h1>
+                <h1>歡迎來到「老建築再生館」</h1>
                 <br><br><br>
                 <h2>操作說明</h2>
                 <br>
@@ -75,7 +75,7 @@
                 <br>
                 <p><img class="icon-img medium" src="./img/topic/point.png">點地面標記：移動位置</p>
                 <br>
-                <p><img class="icon-img small" src="./img/topic/check.png"> 點擊畫框或是桌子：獲取資訊</p>
+                <p><img class="icon-img small" src="./img/old-buildings/painted.png"> 點擊畫框或是桌子：獲取資訊</p>
                 <br><br><br><br>
                 <h2>點一下畫面繼續閱讀</h2>
             </div>
@@ -85,7 +85,7 @@
         <div id="instruction-mask-layer-2" @click="hideInstruction" v-show="instructionStep === 2">
             <div class="instruction-mask-header">
                 <div>
-                    <h2>點一下畫面開始參觀</h2>
+                    <h2>再點一下畫面即可開始參觀</h2>
                 </div>
                 <div class="logo-tip">
                     <div class="arrow-down"></div>
@@ -94,7 +94,7 @@
                 <div class="menu-button-tip">
                     <div class="arrow-down"></div>
                     <div class="menu-tip-text">
-                        <p>點擊回到前頁按鈕可以前往主題頁面</p>
+                        <p>點擊回到首頁按鈕可以前往首頁頁面</p>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
 
         <div class="container">
             <header class="header">
-                <div class="logo-section">
+                <div class="logo-section" @click="handleNavClick('import')">
                     <div class="logo">
                         <img src="./img/logo/Logo-1.png" alt="logo">
                     </div>
@@ -110,7 +110,7 @@
                 </div>
 
                 <nav class="nav-section">
-                    <button class="nav-button" @click="handleNavClick('import')">交通資訊</button>
+                    <button class="nav-button" @click="handleNavClick('import')">回到首頁</button>
                     
                 </nav>
             </header>
