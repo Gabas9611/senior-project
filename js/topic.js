@@ -709,6 +709,8 @@ createApp({
     currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
   }
 
+currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ'); // 💥 關鍵：避免畫面斜向滾動
+
   previousMouseX = currentX;
   previousMouseY = currentY;
 }, { passive: true });
