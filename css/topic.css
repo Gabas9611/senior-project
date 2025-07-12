@@ -23,6 +23,15 @@ body {
     display: none !important;
 }
 
+#instruction-mask-layer-1,
+#instruction-mask-layer-2 {
+  display: none;
+}
+
+#app {
+      display: none;
+    }
+
 #loadingScreen {
     position: fixed;
     top: 0;
