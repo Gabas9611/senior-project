@@ -847,7 +847,6 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                         currentCamera.rotation.set(initialCameraConfig.initialRotationX, initialCameraConfig.initialRotationY, 0, 'YXZ');
                         firstPersonRotationX = initialCameraConfig.initialRotationX;
                         firstPersonRotationY = initialCameraConfig.initialRotationY;
-                        0, 
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
                     } else {
                         controls.object = currentCamera;
@@ -860,7 +859,7 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
                     console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
-                    currentCamera.rotation.z = 0; // ✅ 強制清除 Z 軸旋轉，防止傾斜
+                    
                 } else {
                     console.warn('未找到初始攝影機配置。將使用預設的第三人稱視角。');
                     updateCameraForModel();
