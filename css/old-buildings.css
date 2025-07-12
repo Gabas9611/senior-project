@@ -592,6 +592,15 @@ body {
 
 /* Small Mobile Styles */
 @media (max-width: 480px) {
+    #instruction-mask-layer-1 h1 {
+        font-size: 30px;
+    }
+     #instruction-mask-layer-1 h2{
+        font-size: 25px;
+     }
+      #instruction-mask-layer-1 p{
+        font-size: 15px;
+      }
     .nav-section {
         gap: 10px;
     }
@@ -635,7 +644,7 @@ body {
         font-size: 14px;
         color: white;
         z-index: 10001;
-        width: 90px;
+        width: 150px;
         /* ✅ Updated width */
         text-align: left;
     }
@@ -660,7 +669,7 @@ body {
         right: 30px;
         text-align: left;
         font-size: 12px;
-        width: 100px;
+        width: 150px;
     }
 
     .menu-button-tip .arrow-down {
