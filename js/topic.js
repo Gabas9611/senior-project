@@ -690,26 +690,26 @@ createApp({
         }, { passive: true });
 
         renderer.domElement.addEventListener('touchmove', (e) => {
-            if (!isDragging || e.touches.length !== 1) return;
+  if (!isFirstPersonMode || !isDragging || e.touches.length !== 1) return;
 
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            const deltaX = currentX - previousMouseX;
-            const deltaY = currentY - previousMouseY;
+  const currentX = e.touches[0].clientX;
+  const currentY = e.touches[0].clientY;
+  const deltaX = currentX - previousMouseX;
+  const deltaY = currentY - previousMouseY;
 
-            // 模仿電腦版：根據主要移動方向選一個旋轉
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // 水平旋轉
-                currentCamera.rotation.y -= deltaX * touchSensitivity;
-            } else {
-                // 垂直旋轉
-                currentCamera.rotation.x -= deltaY * touchSensitivity;
-                currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-            }
+  // 根據主要移動方向選擇旋轉方向
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // 左右水平移動（旋轉 Y 軸）
+    currentCamera.rotation.y -= deltaX * touchSensitivity;
+  } else {
+    // 上下垂直移動（旋轉 X 軸，需限制最大角度）
+    currentCamera.rotation.x -= deltaY * touchSensitivity;
+    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+  }
 
-            previousMouseX = currentX;
-            previousMouseY = currentY;
-        }, { passive: true });
+  previousMouseX = currentX;
+  previousMouseY = currentY;
+}, { passive: true });
 
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
@@ -1001,21 +1001,24 @@ createApp({
             }
 
             // First-person camera rotation logic (if isDragging and isFirstPersonMode)
-            if (isFirstPersonMode && isDragging) {
-                const deltaX = event.clientX - previousMouseX;
-                const deltaY = event.clientY - previousMouseY;
+           if (isFirstPersonMode && isDragging) {
+  const deltaX = event.clientX - previousMouseX;
+  const deltaY = event.clientY - previousMouseY;
 
-                firstPersonRotationY -= deltaX * 0.002; // Adjust sensitivity
-                firstPersonRotationX -= deltaY * 0.002; // Adjust sensitivity
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // 水平為主，僅旋轉 Y 軸
+    firstPersonRotationY -= deltaX * 0.002;
+  } else {
+    // 垂直為主，僅旋轉 X 軸
+    firstPersonRotationX -= deltaY * 0.002;
+    firstPersonRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, firstPersonRotationX));
+  }
 
-                // Clamp X rotation to prevent flipping
-                firstPersonRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, firstPersonRotationX));
+  currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ');
 
-                currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ');
-
-                previousMouseX = event.clientX;
-                previousMouseY = event.clientY;
-            }
+  previousMouseX = event.clientX;
+  previousMouseY = event.clientY;
+}
         }
 
         function handleMouseDown(event) {
