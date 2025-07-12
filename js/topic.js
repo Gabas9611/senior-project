@@ -759,7 +759,7 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
         // 5. 載入模型
         loader.load(
             './model/topic.glb',
-            function (gltf) {
+            (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
 
@@ -769,10 +769,10 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                 if (progressBar) progressBar.style.width = '100%';
                 if (percentageText) percentageText.textContent = '100%';
 
-                // 延遲後關掉 loading 畫面，確保視覺上同步
+                // ✅ 使用箭頭函式可正確取得 this
                 setTimeout(() => {
                     document.getElementById('loadingScreen').style.display = 'none';
-                    app.instructionStep = 1;
+                    this.instructionStep = 1;
                 }, 300);
 
                 // 模型置中
