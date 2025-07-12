@@ -770,10 +770,21 @@ createApp({
         // 5. 載入模型
         loader.load(
             './model/topic.glb',
-            (gltf) => {
+            function (gltf) {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
-                console.log('--- 模型已成功載入並添加到場景中 ---');
+
+                // 強制補滿進度條
+                const progressBar = document.getElementById('progressBar');
+                const percentageText = document.getElementById('progressPercentage');
+                if (progressBar) progressBar.style.width = '100%';
+                if (percentageText) percentageText.textContent = '100%';
+
+                // 延遲後關掉 loading 畫面，確保視覺上同步
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    app.instructionStep = 1;
+                }, 300);
 
                 // 模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
@@ -867,10 +878,8 @@ createApp({
                 // 確保控制器更新其內部狀態
                 controls.update();
 
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    this.instructionStep = 1;
-                }, 500);
+                // document.getElementById('loadingScreen').style.display = 'none';
+                // app.instructionStep = 1;
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
@@ -886,13 +895,18 @@ createApp({
 
             },
             (xhr) => {
-                const percent = (xhr.loaded / xhr.total) * 100;
+                const percent = Math.min((xhr.loaded / xhr.total) * 100, 100);
                 this.loadingProgress = percent;
                 console.log(`模型載入中... ${percent.toFixed(2)}%`);
 
                 const percentageText = document.getElementById('progressPercentage');
                 if (percentageText) {
                     percentageText.textContent = `${Math.round(percent)}%`;
+                }
+
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar) {
+                    progressBar.style.width = `${percent}%`;
                 }
             },
             function (error) {
