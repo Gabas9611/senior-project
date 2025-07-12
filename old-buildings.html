@@ -41,6 +41,30 @@
 
 <body>
     <div id="app">
+
+        <!-- Loading 畫面 -->
+        <div id="loadingScreen">
+            <video autoplay loop muted playsinline id="background-video">
+                <source src="./img/animation/strong-wind.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="wrapper">
+                <div class="loader-container">
+                    <div class="map-background"></div>
+                    <svg class="pin" viewBox="0 0 100 130">
+                        <path id="leftHalf" d="M50,5 C25,5 5,30 5,55 C5,85 50,125 50,125 Z" fill="#8e24aa" />
+                        <path id="rightHalf" d="M50,5 C75,5 95,30 95,55 C95,85 50,125 50,125 Z" fill="#43a047" />
+                        <circle class="hole" cx="50" cy="40" r="10" />
+                    </svg>
+                </div>
+                <div class="loader"></div>
+                <div class="progress-container">
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一層遮罩 -->
         <div id="instruction-mask-layer-1" @click="showSecondMask" v-show="instructionStep === 1">
             <div>
                 <h1>歡迎來到「下一站，蛻變」</h1>
@@ -51,7 +75,7 @@
                 <br>
                 <p><img class="icon-img medium" src="./img/topic/point.png">點地面標記：移動位置</p>
                 <br>
-                <p><img class="icon-img small" src="./img/topic/check.png"> 點擊物件：獲取資訊</p>
+                <p><img class="icon-img small" src="./img/topic/check.png"> 點擊畫框或是桌子：獲取資訊</p>
                 <br><br><br><br>
                 <h2>點一下畫面繼續閱讀</h2>
             </div>
@@ -70,56 +94,53 @@
                 <div class="menu-button-tip">
                     <div class="arrow-down"></div>
                     <div class="menu-tip-text">
-                        <p>點擊交通資訊按鈕可以前往交通資訊頁面</p>
-                        <br>
-                        <p>點擊選單中的按鈕可以直接前往建築前面</p>
+                        <p>點擊回到前頁按鈕可以前往主題頁面</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <header class="header">
-            <div class="logo-section">
-                <div class="logo">
-                    <img src="./img/logo/Logo-1.png" alt="logo">
+
+        <div class="container">
+            <header class="header">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="./img/logo/Logo-1.png" alt="logo">
+                    </div>
+                    <h1 class="title">下一站，蛻變</h1>
                 </div>
-                <h1 class="title">下一站，蛻變</h1>
-            </div>
 
-            <nav class="nav-section">
-                <button class="nav-button" @click="handleNavClick('backToMain')">
-                    回到首頁
-                </button>
-            </nav>
-        </header>
+                <nav class="nav-section">
+                    <button class="nav-button" @click="handleNavClick('import')">交通資訊</button>
+                    
+                </nav>
+            </header>
 
-        <main class="main-content" id="three-container" style="padding: 0; background-color: #cccccc;">
-            <!-- Three.js canvas will be inserted here by Vue -->
-        </main>
-        <div id="tooltip" class="tooltip"></div>
-    </div>
+            <main class="main-content" id="three-container" style="padding: 0; background-color: #cccccc;">
+                <!-- Three.js canvas will be inserted here by Vue -->
+            </main>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
 
-    <div v-cloak v-if="isInitialized && showInfoModal" class="info-modal-overlay">
-        <div class="info-modal" :class="{ 'info-modal-door': infoModalTitle === '出口' }">
-            <button class="close-button" @click="closeInfoModal">×</button>
-            <h2 class="modal-title">{{ infoModalTitle }}</h2>
-            <div class="modal-content-wrapper">
-                <div class="carousel-section" v-if="showImageCarousel">
-                    <img :src="carouselImages[currentImageIndex]" class="carousel-image">
-                    <div class="carousel-controls">
-                        <button @click="prevImage">〈</button>
-                        <button @click="nextImage">〉</button>
+        <div v-cloak v-if="isInitialized && showInfoModal" class="info-modal-overlay">
+            <div class="info-modal" :class="{ 'info-modal-door': infoModalTitle === '出口' }">
+                <button class="close-button" @click="closeInfoModal">×</button>
+                <h2 class="modal-title">{{ infoModalTitle }}</h2>
+                <div class="modal-content-wrapper">
+                    <div class="carousel-section" v-if="showImageCarousel">
+                        <img :src="carouselImages[currentImageIndex]" class="carousel-image">
+                        <div class="carousel-controls">
+                            <button @click="prevImage">〈</button>
+                            <button @click="nextImage">〉</button>
+                        </div>
+                    </div>
+                    <div class="modal-text-section">
+                        <p class="modal-content" v-html="infoModalContent"></p>
                     </div>
                 </div>
-                <div class="modal-text-section">
-                    <p class="modal-content" v-html="infoModalContent"></p>
-                </div>
+                <button v-if="showModalButton" class="modal-button" @click="enterExhibition">{{ infoModalButtonText
+                    }}</button>
             </div>
-            <button v-if="showModalButton" class="modal-button" @click="enterExhibition">{{ infoModalButtonText
-                }}</button>
         </div>
-    </div>
 
     </div>
 
