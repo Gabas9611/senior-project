@@ -1397,6 +1397,19 @@ createApp({
             (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
+
+                // 強制補滿進度條
+                const progressBar = document.getElementById('progressBar');
+                const percentageText = document.getElementById('progressPercentage');
+                if (progressBar) progressBar.style.width = '100%';
+                if (percentageText) percentageText.textContent = '100%';
+
+                // ✅ 使用箭頭函式可正確取得 this
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    this.instructionStep = 1;
+                }, 300);
+                
                 console.log('--- 模型已成功載入並添加到場景中 ---');
 
                 // 將模型置中
