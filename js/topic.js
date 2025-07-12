@@ -643,6 +643,7 @@ createApp({
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
         // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
