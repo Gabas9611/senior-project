@@ -20,7 +20,31 @@
 </head>
 
 <body>
-  <div id="app">
+  <div id="app" >
+
+    <!-- Loading 畫面 -->
+    <div id="loadingScreen">
+      <video autoplay loop muted playsinline id="background-video">
+        <source src="./img/animation/strong-wind.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="wrapper">
+        <div class="loader-container">
+          <div class="map-background"></div>
+          <svg class="pin" viewBox="0 0 100 130">
+            <path id="leftHalf" d="M50,5 C25,5 5,30 5,55 C5,85 50,125 50,125 Z" fill="#8e24aa" />
+            <path id="rightHalf" d="M50,5 C75,5 95,30 95,55 C95,85 50,125 50,125 Z" fill="#43a047" />
+            <circle class="hole" cx="50" cy="40" r="10" />
+          </svg>
+        </div>
+        <div class="loader"></div>
+        <div class="progress-container">
+          <span class="progress-percentage" id="progressPercentage">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第一層遮罩 -->
     <div id="instruction-mask-layer-1" @click="showSecondMask" v-show="instructionStep === 1">
       <div>
         <h1>歡迎來到「下一站，蛻變」</h1>
@@ -54,7 +78,6 @@
             <br>
             <p>點擊選單中的按鈕可以直接前往建築前面</p>
           </div>
-
         </div>
       </div>
     </div>
@@ -99,15 +122,6 @@
         <p v-if="!showModalButton" class="modal-content" v-html="infoModalContent"></p>
         <button v-else class="modal-button" @click="enterExhibition">{{ infoModalButtonText }}</button>
       </div>
-    </div>
-
-    <!-- 顯示loading 模型 -->
-    <div v-if="!isInitialized" class="loading-overlay">
-      <div class="loading-spinner"></div>
-      <div class="progress-container">
-        <div class="progress-bar" :style="{ width: loadingProgress + '%' }"></div>
-      </div>
-      <p class="loading-text">載入中... {{ loadingProgress.toFixed(0) }}%</p>
     </div>
 
   </div>
