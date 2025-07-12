@@ -690,19 +690,19 @@ createApp({
         }, { passive: true });
 
         renderer.domElement.addEventListener('touchmove', (e) => {
-            if (!isFirstPersonMode || !isDragging || e.touches.length !== 1) return;
+            if (!isDragging || e.touches.length !== 1) return;
 
             const currentX = e.touches[0].clientX;
             const currentY = e.touches[0].clientY;
             const deltaX = currentX - previousMouseX;
             const deltaY = currentY - previousMouseY;
 
-            // 根據主要移動方向選擇旋轉方向
+            // 模仿電腦版：根據主要移動方向選一個旋轉
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // 左右水平移動（旋轉 Y 軸）
+                // 水平旋轉
                 currentCamera.rotation.y -= deltaX * touchSensitivity;
             } else {
-                // 上下垂直移動（旋轉 X 軸，需限制最大角度）
+                // 垂直旋轉
                 currentCamera.rotation.x -= deltaY * touchSensitivity;
                 currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
             }
@@ -711,9 +711,23 @@ createApp({
             previousMouseY = currentY;
         }, { passive: true });
 
-
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
+        }, { passive: true });
+
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
         }, { passive: true });
 
         renderer.domElement.addEventListener('touchend', () => {
@@ -759,18 +773,7 @@ createApp({
             (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
-
-                // 強制補滿進度條
-                const progressBar = document.getElementById('progressBar');
-                const percentageText = document.getElementById('progressPercentage');
-                if (progressBar) progressBar.style.width = '100%';
-                if (percentageText) percentageText.textContent = '100%';
-
-                // ✅ 使用箭頭函式可正確取得 this
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    this.instructionStep = 1;
-                }, 300);
+                console.log('--- 模型已成功載入並添加到場景中 ---');
 
                 // 模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
@@ -864,8 +867,10 @@ createApp({
                 // 確保控制器更新其內部狀態
                 controls.update();
 
-                // document.getElementById('loadingScreen').style.display = 'none';
-                // app.instructionStep = 1;
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    this.instructionStep = 1;
+                }, 500);
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
@@ -881,18 +886,13 @@ createApp({
 
             },
             (xhr) => {
-                const percent = Math.min((xhr.loaded / xhr.total) * 100, 100);
+                const percent = (xhr.loaded / xhr.total) * 100;
                 this.loadingProgress = percent;
                 console.log(`模型載入中... ${percent.toFixed(2)}%`);
 
                 const percentageText = document.getElementById('progressPercentage');
                 if (percentageText) {
                     percentageText.textContent = `${Math.round(percent)}%`;
-                }
-
-                const progressBar = document.getElementById('progressBar');
-                if (progressBar) {
-                    progressBar.style.width = `${percent}%`;
                 }
             },
             function (error) {
