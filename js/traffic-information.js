@@ -1,6 +1,6 @@
 const { createApp, ref, onMounted, onUnmounted } = Vue;
 
-createApp({
+const app = createApp({
     setup() {
         const selectedAction = ref('');
         const actionMessage = ref('');
@@ -12,32 +12,32 @@ createApp({
         const boxes = ref([
             {
                 title: '單車',
-                title_name:'單車(29min)',
+                title_name: '單車(29min)',
                 text:
                     '從大智北一街左轉至大智北路，右轉進新民街，右轉進入復興路四段，左轉進入復興東路，右轉進入樂業路，左轉進入祥順路一段，向右轉進入新平路一段，向左轉進入環太東路，向左轉進入大源路，向右轉進入中山路二段477巷186弄，向右轉進入明秀西路，向左轉進入明秀南路，右轉即可到達目的地。',
                 img: './img/traffic/bike.jpg',
             },
             {
                 title: '241公車',
-                title_name:'241公車(39min)',
+                title_name: '241公車(39min)',
                 text: '從台中火車站步行4min至台中車站C月台轉乘，經過31min至三中心站下車，再步行4min到達目的地。',
                 img: './img/traffic/241bus.jpg',
             },
             {
                 title: '汽車',
-                title_name:'汽車(22min)',
+                title_name: '汽車(22min)',
                 text: '從復興路四段到復興東路，向右轉進樂業路，左轉進入祥順路一段，右轉進入中山路二段，之後右轉進入明秀北路，左轉進入明秀東路，再左轉即可到達目的地。',
                 img: './img/traffic/car.jpg'
             },
             {
                 title: '51公車',
-                title_name:'51公車(32min)',
+                title_name: '51公車(32min)',
                 text: '從台中火車站步行3min到新時代購物中心站搭公車經過24min到三中心站下車，再步行5min到達目的地。',
                 img: './img/traffic/51bus.jpg',
             },
             {
                 title: '41公車',
-                title_name:'41公車(40min)',
+                title_name: '41公車(40min)',
                 text: '從台中火車站步行6min到第一廣場轉乘，經過29min後在三中心站下車，再步行5min後抵達。',
                 img: './img/traffic/41bus.jpg',
             }
@@ -46,7 +46,7 @@ createApp({
         const getMaxAllowedOffset = () => {
             if (screenWidth.value <= 425) {
                 return 90;
-            } 
+            }
             else if (screenWidth.value <= 480) {
                 return 180;
             }
@@ -70,7 +70,7 @@ createApp({
         const handleResize = () => {
             screenWidth.value = window.innerWidth;
         };
-const handleNavClick = (action) => {
+        const handleNavClick = (action) => {
             console.log('Button clicked with action:', action);
             selectedAction.value = action;
             if (action === 'home') {
@@ -153,4 +153,7 @@ const handleNavClick = (action) => {
             getStyle
         };
     }
-}).mount('#app');
+});
+
+// 掛載 Vue 應用
+app.mount('#app');
