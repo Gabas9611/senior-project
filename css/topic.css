@@ -235,7 +235,7 @@ body {
 /* 左上角 LOGO 說明 */
 .logo-tip {
     position: absolute;
-    top: 80px;
+    top: 90px;
     left: 30px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #fff;
@@ -299,7 +299,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-   padding: 6px 40px 20px;
+   padding: 20px 40px 20px;
     background-color: transparent; /* 透明背景 */
     position: absolute; /* 絕對定位 */
     top: 0;
