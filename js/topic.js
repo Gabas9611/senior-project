@@ -670,8 +670,6 @@ createApp({
             currentCamera.rotation.x -= deltaY;
             currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
-            currentCamera.rotation.z = 0; // 💥 關鍵：避免畫面斜向滾動
-
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
@@ -709,16 +707,15 @@ createApp({
     currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
   }
 
-currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ'); // 💥 關鍵：避免畫面斜向滾動
-
   previousMouseX = currentX;
   previousMouseY = currentY;
 }, { passive: true });
 
+
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
         }, { passive: true });
-        
+
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
         });
@@ -759,7 +756,7 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
         // 5. 載入模型
         loader.load(
             './model/topic.glb',
-            (gltf) => {
+            function (gltf) {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
 
@@ -769,10 +766,10 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                 if (progressBar) progressBar.style.width = '100%';
                 if (percentageText) percentageText.textContent = '100%';
 
-                // ✅ 使用箭頭函式可正確取得 this
+                // 延遲後關掉 loading 畫面，確保視覺上同步
                 setTimeout(() => {
                     document.getElementById('loadingScreen').style.display = 'none';
-                    this.instructionStep = 1;
+                    app.instructionStep = 1;
                 }, 300);
 
                 // 模型置中
@@ -837,7 +834,7 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                     }
                 }
 
-               if (initialCameraConfig) {
+                if (initialCameraConfig) {
                     const targetCamera = initialCameraConfig.camera;
                     currentCamera = targetCamera;
                     isFirstPersonMode = initialCameraConfig.isFirstPerson;
@@ -859,7 +856,6 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
                         console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
                     console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
-                    
                 } else {
                     console.warn('未找到初始攝影機配置。將使用預設的第三人稱視角。');
                     updateCameraForModel();
@@ -1006,24 +1002,21 @@ currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ')
             }
 
             // First-person camera rotation logic (if isDragging and isFirstPersonMode)
-           if (isFirstPersonMode && isDragging) {
-  const deltaX = event.clientX - previousMouseX;
-  const deltaY = event.clientY - previousMouseY;
+            if (isFirstPersonMode && isDragging) {
+                const deltaX = event.clientX - previousMouseX;
+                const deltaY = event.clientY - previousMouseY;
 
-  if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    // 水平為主，僅旋轉 Y 軸
-    firstPersonRotationY -= deltaX * 0.002;
-  } else {
-    // 垂直為主，僅旋轉 X 軸
-    firstPersonRotationX -= deltaY * 0.002;
-    firstPersonRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, firstPersonRotationX));
-  }
+                firstPersonRotationY -= deltaX * 0.002; // Adjust sensitivity
+                firstPersonRotationX -= deltaY * 0.002; // Adjust sensitivity
 
-  currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ');
+                // Clamp X rotation to prevent flipping
+                firstPersonRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, firstPersonRotationX));
 
-  previousMouseX = event.clientX;
-  previousMouseY = event.clientY;
-}
+                currentCamera.rotation.set(firstPersonRotationX, firstPersonRotationY, 0, 'YXZ');
+
+                previousMouseX = event.clientX;
+                previousMouseY = event.clientY;
+            }
         }
 
         function handleMouseDown(event) {
