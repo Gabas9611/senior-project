@@ -890,13 +890,13 @@ createApp({
 
                 if (xhr.lengthComputable && xhr.total > 0) {
                     percent = (xhr.loaded / xhr.total) * 100;
+                    percent = Math.min(percent, 100); // 保護上限
                 } else {
-                    // 若無法計算進度，視為 100%
-                    percent = 100;
-                    console.warn('無法計算載入進度，fallback 使用 100%。');
+                    percent = 100; // 無法計算進度時直接設為 100%
+                    console.warn('lengthComputable 無效，使用 fallback 100%');
                 }
 
-                percent = Math.min(percent, 100); // 強制限制最大為 100
+                // 更新 Vue 的進度與 UI
                 this.loadingProgress = Math.round(percent);
 
                 const percentageText = document.getElementById('progressPercentage');
