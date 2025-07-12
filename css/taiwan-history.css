@@ -267,6 +267,12 @@
                 flex-direction: column;
 
             }
+            .red-section::after{
+                display: none;
+            }
+            .blue-section::before{
+                display: none;
+            }
 
             /* ✅ top-section 手機排序：era-label → photo → red */
             .top-section .era-label {
@@ -304,6 +310,9 @@
         }
 
         @media (max-width: 480px) {
+            .header{
+                max-width: 100%;
+            }
             .logo-section {
                 max-width: 40%;
             }
@@ -323,6 +332,12 @@
             .blue-section {
                 font-size: 14px;
                 padding: 20px;
+            }
+            .red-section::after{
+                display: none;
+            }
+            .blue-section::before{
+                display: none;
             }
 
             .photo-placeholder,
