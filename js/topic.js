@@ -690,26 +690,26 @@ createApp({
         }, { passive: true });
 
         renderer.domElement.addEventListener('touchmove', (e) => {
-  if (!isFirstPersonMode || !isDragging || e.touches.length !== 1) return;
+            if (!isFirstPersonMode || !isDragging || e.touches.length !== 1) return;
 
-  const currentX = e.touches[0].clientX;
-  const currentY = e.touches[0].clientY;
-  const deltaX = currentX - previousMouseX;
-  const deltaY = currentY - previousMouseY;
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = currentX - previousMouseX;
+            const deltaY = currentY - previousMouseY;
 
-  // 根據主要移動方向選擇旋轉方向
-  if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    // 左右水平移動（旋轉 Y 軸）
-    currentCamera.rotation.y -= deltaX * touchSensitivity;
-  } else {
-    // 上下垂直移動（旋轉 X 軸，需限制最大角度）
-    currentCamera.rotation.x -= deltaY * touchSensitivity;
-    currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-  }
+            // 根據主要移動方向選擇旋轉方向
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // 左右水平移動（旋轉 Y 軸）
+                currentCamera.rotation.y -= deltaX * touchSensitivity;
+            } else {
+                // 上下垂直移動（旋轉 X 軸，需限制最大角度）
+                currentCamera.rotation.x -= deltaY * touchSensitivity;
+                currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+            }
 
-  previousMouseX = currentX;
-  previousMouseY = currentY;
-}, { passive: true });
+            previousMouseX = currentX;
+            previousMouseY = currentY;
+        }, { passive: true });
 
 
         renderer.domElement.addEventListener('touchend', () => {
@@ -754,7 +754,9 @@ createApp({
         const modelSize = new THREE.Vector3();
 
         // 5. 載入模型
-        (gltf) => {
+        loader.load(
+            './model/topic.glb',
+            (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
 
