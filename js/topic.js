@@ -682,13 +682,22 @@ createApp({
         renderer.domElement.addEventListener('mouseup', onMouseUp);
 
         // ✅ 手機觸控事件
+        renderer.domElement.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            isDragging = true;
+            previousMouseX = e.touches[0].clientX;
+            previousMouseY = e.touches[0].clientY;
+        }, { passive: true });
+
         renderer.domElement.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
+            if (!isDragging || e.touches.length !== 1) return;
 
-            const deltaX = e.touches[0].clientX - previousMousePosition.x;
-            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = currentX - previousMouseX;
+            const deltaY = currentY - previousMouseY;
 
-            // 比較哪個移動方向較大，只保留一個方向的旋轉
+            // 模仿電腦版：根據主要移動方向選一個旋轉
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 // 水平旋轉
                 currentCamera.rotation.y -= deltaX * touchSensitivity;
@@ -702,6 +711,24 @@ createApp({
             previousMouseY = currentY;
         }, { passive: true });
 
+        renderer.domElement.addEventListener('touchend', () => {
+            isDragging = false;
+        }, { passive: true });
+
+        renderer.domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            currentCamera.rotation.y -= deltaX * sensitivity;
+            currentCamera.rotation.x -= deltaY * sensitivity;
+            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
+
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+        }, { passive: true });
 
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
