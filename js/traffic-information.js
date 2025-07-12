@@ -44,9 +44,13 @@ createApp({
         ]);
 
         const getMaxAllowedOffset = () => {
-            if (screenWidth.value <= 480) {
+            if (screenWidth.value <= 425) {
+                return 90;
+            } 
+            else if (screenWidth.value <= 480) {
                 return 180;
-            } else if (screenWidth.value <= 768) {
+            }
+            else if (screenWidth.value <= 768) {
                 return 250;
             } else {
                 return 450;
