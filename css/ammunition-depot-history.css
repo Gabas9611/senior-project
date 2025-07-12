@@ -253,6 +253,13 @@
                 flex-direction: column;
 
             }
+           .red-section::after{
+                display: none;
+            }
+            .blue-section::before{
+                display: none;
+            }
+
 
             /* ✅ top-section 手機排序：era-label → photo → red */
             .top-section .era-label {
