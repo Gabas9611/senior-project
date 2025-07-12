@@ -294,7 +294,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 40px 20px;
+    padding: 20px 40px 20px;
     background-color: transparent;
     position: absolute;
     top: 0;
@@ -731,17 +731,17 @@ canvas {
 }
 
 .icon-img.large {
-    height: 36px;
+    height: 25px;
 }
 
 .icon-img.medium {
-    height: 36px;
+    height: 25px;
     margin-right: 6px;
 
 }
 
 .icon-img.small {
-    height: 36px;
+    height: 25px;
     margin-right: 6px;
 
 }
