@@ -670,6 +670,8 @@ createApp({
             currentCamera.rotation.x -= deltaY;
             currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
 
+            currentCamera.rotation.z = 0; // 💥 關鍵：避免畫面斜向滾動
+
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
