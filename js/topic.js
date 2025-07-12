@@ -773,7 +773,6 @@ createApp({
             (gltf) => {
                 loadedModel = gltf.scene;
                 scene.add(loadedModel);
-                console.log('--- 模型已成功載入並添加到場景中 ---');
 
                 // 模型置中
                 const box = new THREE.Box3().setFromObject(loadedModel);
@@ -867,13 +866,10 @@ createApp({
                 // 確保控制器更新其內部狀態
                 controls.update();
 
-                 vm.loadingProgress = 100;
-      vm.updateLoadingUI();
-      requestAnimationFrame(() => {
-        document.getElementById('loadingScreen').style.display = 'none';
-        vm.instructionStep = 1;
-      });
-    },
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    this.instructionStep = 1;
+                }, 500);
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
@@ -889,14 +885,25 @@ createApp({
 
             },
             (xhr) => {
-      if (xhr.lengthComputable && xhr.total > 0) {
-        const percent = Math.min((xhr.loaded / xhr.total) * 100, 100);
-        vm.loadingProgress = Math.round(percent);
-        vm.updateLoadingUI();
-      }
-    },
-    (err) => {
-      console.error('載入失敗', err);
+                let percent = 0;
+
+                if (xhr.lengthComputable && xhr.total > 0) {
+                    percent = (xhr.loaded / xhr.total) * 100;
+                    percent = Math.min(percent, 100); // 保護上限
+                } else {
+                    percent = 100; // 無法計算進度時直接設為 100%
+                    console.warn('lengthComputable 無效，使用 fallback 100%');
+                }
+
+                // 更新 Vue 的進度與 UI
+                this.loadingProgress = Math.round(percent);
+
+                const percentageText = document.getElementById('progressPercentage');
+                if (percentageText) {
+                    percentageText.textContent = `${this.loadingProgress}%`;
+                }
+
+                console.log(`模型載入中... ${percent.toFixed(2)}%`);
             }
         );
 
