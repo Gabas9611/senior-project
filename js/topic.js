@@ -886,17 +886,25 @@ createApp({
 
             },
             (xhr) => {
-                const percent = (xhr.loaded / xhr.total) * 100;
-                this.loadingProgress = percent;
-                console.log(`模型載入中... ${percent.toFixed(2)}%`);
+                let percent = 0;
+
+                if (xhr.lengthComputable && xhr.total > 0) {
+                    percent = (xhr.loaded / xhr.total) * 100;
+                } else {
+                    // 若無法計算進度，視為 100%
+                    percent = 100;
+                    console.warn('無法計算載入進度，fallback 使用 100%。');
+                }
+
+                percent = Math.min(percent, 100); // 強制限制最大為 100
+                this.loadingProgress = Math.round(percent);
 
                 const percentageText = document.getElementById('progressPercentage');
                 if (percentageText) {
-                    percentageText.textContent = `${Math.round(percent)}%`;
+                    percentageText.textContent = `${this.loadingProgress}%`;
                 }
-            },
-            function (error) {
-                console.error('載入模型時發生錯誤！', error);
+
+                console.log(`模型載入中... ${percent.toFixed(2)}%`);
             }
         );
 
