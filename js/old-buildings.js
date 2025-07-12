@@ -1263,7 +1263,13 @@ createApp({
         defaultCamera.position.set(0, 0, 5);
         currentCamera = defaultCamera;
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer = new THREE.WebGLRenderer({
+            alpha: true,       // ✅ 啟用透明背景
+            antialias: true    // ✅ 抗鋸齒讓邊緣更平滑
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setClearColor(0x000000, 0);  // ✅ 完全透明背景
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
         // ✅ 自訂第一人稱視角旋轉控制器（滑鼠 + 觸控）
@@ -1395,17 +1401,17 @@ createApp({
         loader.load(
             './model/old-buildings.glb',
             (gltf) => {
-                            loadedModel = gltf.scene;
-                            scene.add(loadedModel);
-            
-                            // 模型置中
-                            const box = new THREE.Box3().setFromObject(loadedModel);
-                            const modelCenter = new THREE.Vector3();
-                            const modelSize = new THREE.Vector3();
-                            box.getCenter(modelCenter);
-                            box.getSize(modelSize);
-                            loadedModel.position.sub(modelCenter);
-                            console.log('模型已移到世界中心。');
+                loadedModel = gltf.scene;
+                scene.add(loadedModel);
+
+                // 模型置中
+                const box = new THREE.Box3().setFromObject(loadedModel);
+                const modelCenter = new THREE.Vector3();
+                const modelSize = new THREE.Vector3();
+                box.getCenter(modelCenter);
+                box.getSize(modelSize);
+                loadedModel.position.sub(modelCenter);
+                console.log('模型已移到世界中心。');
                 // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
                 loadedModel.traverse((child) => {
                     switch (child.name) {
