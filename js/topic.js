@@ -1071,6 +1071,9 @@ createApp({
             }
         }
 
+        renderer.domElement.addEventListener('click', this.onMouseClick);
+        window.addEventListener('keydown', handleKeyDown, false);
+
         function animate() {
             requestAnimationFrame(animate);
 
