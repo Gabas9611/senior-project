@@ -233,7 +233,7 @@ body {
 /* 左上角 LOGO 說明 */
 .logo-tip {
     position: absolute;
-    top: 80px;
+    top: 90px;
     left: 30px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #fff;
@@ -263,7 +263,7 @@ body {
 
 /* 右上角選單說明 */
 .menu-button-tip {
-    top: 80px;
+    top: 90px;
     right: 30px;
     text-align: left;
     font-size: 12px;
