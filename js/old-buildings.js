@@ -1395,30 +1395,17 @@ createApp({
         loader.load(
             './model/old-buildings.glb',
             (gltf) => {
-                loadedModel = gltf.scene;
-                scene.add(loadedModel);
-
-                // 強制補滿進度條
-                const progressBar = document.getElementById('progressBar');
-                const percentageText = document.getElementById('progressPercentage');
-                if (progressBar) progressBar.style.width = '100%';
-                if (percentageText) percentageText.textContent = '100%';
-
-                // ✅ 使用箭頭函式可正確取得 this
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    this.instructionStep = 1;
-                }, 300);
-                
-                console.log('--- 模型已成功載入並添加到場景中 ---');
-
-                // 將模型置中
-                const box = new THREE.Box3().setFromObject(loadedModel);
-                box.getCenter(modelCenter);
-                box.getSize(modelSize);
-                loadedModel.position.sub(modelCenter);
-                console.log('模型已移到世界中心。');
-
+                            loadedModel = gltf.scene;
+                            scene.add(loadedModel);
+            
+                            // 模型置中
+                            const box = new THREE.Box3().setFromObject(loadedModel);
+                            const modelCenter = new THREE.Vector3();
+                            const modelSize = new THREE.Vector3();
+                            box.getCenter(modelCenter);
+                            box.getSize(modelSize);
+                            loadedModel.position.sub(modelCenter);
+                            console.log('模型已移到世界中心。');
                 // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
                 loadedModel.traverse((child) => {
                     switch (child.name) {
@@ -1545,17 +1532,25 @@ createApp({
 
             },
             (xhr) => {
-                const percent = (xhr.loaded / xhr.total) * 100;
-                this.loadingProgress = percent;
-                console.log(`模型載入中... ${percent.toFixed(2)}%`);
+                let percent = 0;
+
+                if (xhr.lengthComputable && xhr.total > 0) {
+                    percent = (xhr.loaded / xhr.total) * 100;
+                    percent = Math.min(percent, 100); // 保護上限
+                } else {
+                    percent = 100; // 無法計算進度時直接設為 100%
+                    console.warn('lengthComputable 無效，使用 fallback 100%');
+                }
+
+                // 更新 Vue 的進度與 UI
+                this.loadingProgress = Math.round(percent);
 
                 const percentageText = document.getElementById('progressPercentage');
                 if (percentageText) {
-                    percentageText.textContent = `${Math.round(percent)}%`;
+                    percentageText.textContent = `${this.loadingProgress}%`;
                 }
-            },
-            function (error) {
-                console.error('載入模型時發生錯誤！', error);
+
+                console.log(`模型載入中... ${percent.toFixed(2)}%`);
             }
         );
 
