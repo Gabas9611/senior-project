@@ -867,10 +867,13 @@ createApp({
                 // 確保控制器更新其內部狀態
                 controls.update();
 
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    this.instructionStep = 1;
-                }, 500);
+                this.loadingProgress = 100;
+this.updateLoadingUI();
+
+requestAnimationFrame(() => {
+  document.getElementById('loadingScreen').style.display = 'none';
+  this.instructionStep = 1;
+});
 
                 // 輸出標示點的座標
                 targetObjectNames.forEach(name => {
