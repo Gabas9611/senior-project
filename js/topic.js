@@ -714,22 +714,7 @@ createApp({
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
         }, { passive: true });
-
-        renderer.domElement.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.touches[0].clientX - previousMousePosition.x;
-            const deltaY = e.touches[0].clientY - previousMousePosition.y;
-
-            currentCamera.rotation.y -= deltaX * sensitivity;
-            currentCamera.rotation.x -= deltaY * sensitivity;
-            currentCamera.rotation.x = clamp(currentCamera.rotation.x, -maxVerticalAngle, maxVerticalAngle);
-
-            previousMousePosition = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY
-            };
-        }, { passive: true });
-
+        
         renderer.domElement.addEventListener('touchend', () => {
             isDragging = false;
         });
