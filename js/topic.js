@@ -1,3 +1,35 @@
+
+// ✅ 變色動畫控制區段（建議放在檔案最上方或任一函式外部）
+const colors = [
+  ['#8e24aa', '#43a047'],
+  ['#f44336', '#2196f3'],
+  ['#ff9800', '#3f51b5'],
+  ['#009688', '#e91e63']
+];
+
+let colorIndex = 0;
+let colorInterval = null;
+
+function startColorAnimation() {
+  const leftHalf = document.getElementById('leftHalf');
+  const rightHalf = document.getElementById('rightHalf');
+  if (!leftHalf || !rightHalf) return;
+
+  colorInterval = setInterval(() => {
+    colorIndex = (colorIndex + 1) % colors.length;
+    leftHalf.setAttribute('fill', colors[colorIndex][0]);
+    rightHalf.setAttribute('fill', colors[colorIndex][1]);
+  }, 1000);
+}
+
+function stopColorAnimation() {
+  if (colorInterval) {
+    clearInterval(colorInterval);
+    colorInterval = null;
+  }
+}
+
+
 import { createApp } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -597,27 +629,27 @@ createApp({
         // 導覽攝影機的設定 (保持不變)
         cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(-6.55, 0.65, -6.91);
+        cameraNav1.position.set(-6.55, 1.25, 1.06);
 
         cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
-        cameraNav2.position.set(-4.30,  0.65, -6.91);
+        cameraNav2.position.set(-4.30,  1.25, 1.06);
 
         cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav3.name = "NavCamera3";
-        cameraNav3.position.set(-2.03,  0.65, -6.91);
+        cameraNav3.position.set(-2.03,  1.25, 1.06);
 
         cameraNav4 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav4.name = "NavCamera4";
-        cameraNav4.position.set(-0.53,  0.65, -6.02);
+        cameraNav4.position.set(-0.53,  1.25, 1.95);
 
         cameraNav5 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav5.name = "NavCamera5";
-        cameraNav5.position.set(1.67,  0.65, -6.91);
+        cameraNav5.position.set(1.67,  1.25, 1.06);
 
         cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav6.name = "NavCamera6";
-        cameraNav6.position.set(3.93,  0.65, -6.05);
+        cameraNav6.position.set(3.93,  1.25, 1.92);
 
 
 
