@@ -1,318 +1,326 @@
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-        }
+ body {
+     font-family: 'Arial', sans-serif;
+     background-color: #f5f5f5;
+ }
 
-        .container {
-            
-            margin: 0 auto;
-            background-color: #d2d2d2;
-            min-height: 100vh;
-            position: relative;
-        }
+ .container {
+     margin: 0 auto;
+     background-color: #d2d2d2;
+     min-height: 100vh;
+     position: relative;
+ }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            z-index: 10;
-            position: fixed;
-            top: 0;
-            left: 0;
-            min-width: 100%;
-            background-color: black;
-        }
+ .header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 20px 40px;
+     z-index: 10;
+     position: fixed;
+     top: 0;
+     left: 0;
+     min-width: 100%;
+     background-color: black;
+ }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            background-color: black;
-            
-            /* 在logo和標題之間增加間距 */
-        }
+ .logo-section {
+     display: flex;
+     align-items: center;
+     background-color: black;
+ }
 
-        /* 新增logo樣式 */
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            /* 設定logo容器寬度 */
-            height: 60px;
-            /* 設定logo容器高度 */
-        }
+ .logo {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 60px;
+     height: 60px;
+ }
 
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            /* 保持圖片比例，適應容器大小 */
+ .logo img {
+     width: 100%;
+     height: 100%;
+     object-fit: contain;
+ }
 
-        }
+ .title {
+     font-size: 20px;
+     font-weight: bold;
+     color: #fff;
+     padding: 9px 12px;
+     font-family: MPingFang TC;
+     white-space: nowrap;
+ }
 
-        .title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #fff;
-            padding: 9px 12px;
-            font-family: MPingFang TC;
-            white-space: nowrap;
-            /* 防止標題換行 */
-        }
+ .nav-section {
+     display: flex;
+     align-items: center;
+     gap: 15px;
+ }
 
-        .nav-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+ .nav-button {
+     border: 2px solid white;
+     background-color: white;
+     color: black;
+     padding: 8px 25px;
+     border-radius: 20px;
+     cursor: pointer;
+     font-size: 14px;
+     transition: all 0.3s ease;
+ }
 
-        .nav-button {
-            border: 2px solid white;
-            background-color: white;
-            color: black;
-            padding: 8px 25px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
+ .nav-button:hover {
+     color: white;
+     background-color: transparent;
+     transform: translateY(-1px);
+ }
 
-        .nav-button:hover {
-            color: white;
-            background-color: transparent;
-            transform: translateY(-1px);
-        }
-        .content{
-            padding-top: 100px;
-            max-width: 95%;
-            margin: 0 auto;
-            background-color: #d2d2d2;
-        }
+ .content-wrapper {
+     transform-origin: top center;
+     transition: transform .2s ease;
+ }
 
-        .top-section {
-            display: flex;
-            min-height: 300px;
-        }
+ .content {
+     padding-top: 100px;
+     max-width: 95%;
+     margin: 0 auto;
+     background-color: #d2d2d2;
+ }
 
-        .red-section {
-            background: linear-gradient(135deg, #e85a5a, #d44545);
-            color: white;
-            padding: 40px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            line-height: 1.8;
-            font-size: 16px;
-            position: relative;
-        }
+ .top-section {
+     display: flex;
+     min-height: 300px;
+ }
 
-        .red-section::after {
-            content: '';
-            position: absolute;
-            right: -20px;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            background: linear-gradient(135deg, #e85a5a, #d44545);
-            transform: skewX(-10deg);
-        }
+ .red-section {
+     background: linear-gradient(135deg, #e85a5a, #d44545);
+     color: white;
+     padding: 40px;
+     flex: 1;
+     display: flex;
+     align-items: center;
+     line-height: 1.8;
+     font-size: 16px;
+     position: relative;
+     min-width: 300px;
+     word-break: break-word;
+ }
 
-        .era-label {
-            background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
-            color: white;
-            padding: 40px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 8px;
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-            min-width: 120px;
-        }
+ .red-section::after {
+     content: '';
+     position: absolute;
+     right: -20px;
+     top: 0;
+     bottom: 0;
+     width: 40px;
+     background: linear-gradient(135deg, #e85a5a, #d44545);
+     transform: skewX(-10deg);
+ }
 
-        .photo-placeholder {
-            background: linear-gradient(135deg, #9a9a9a, #7a7a7a);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex: 1.2;
-            position: relative;
-            overflow: hidden;
-        }
+ .era-label {
+     background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+     color: white;
+     padding: 40px 30px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 24px;
+     font-weight: bold;
+     letter-spacing: 8px;
+     writing-mode: vertical-rl;
+     text-orientation: upright;
+     min-width: 120px;
+ }
 
-        .photo-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
-        }
+ .photo-placeholder {
+     background: linear-gradient(135deg, #9a9a9a, #7a7a7a);
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 20px;
+     flex: 1.2;
+     position: relative;
+     overflow: hidden;
+ }
 
-        .bottom-section {
-            display: flex;
-            min-height: 300px;
-        }
+ .photo-placeholder::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+ }
 
-        .photo-left {
-            flex: 1;
-            background: linear-gradient(135deg, #9a9a9a, #7a7a7a);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            position: relative;
-            overflow: hidden;
-        }
+ .bottom-section {
+     display: flex;
+     min-height: 300px;
+ }
 
-        .photo-left::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
-        }
+ .photo-left {
+     flex: 1;
+     background: linear-gradient(135deg, #9a9a9a, #7a7a7a);
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 20px;
+     position: relative;
+     overflow: hidden;
+ }
 
-        .year-section {
-            background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
-            color: white;
-            padding: 40px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-            min-width: 120px;
-        }
+ .photo-left::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+ }
 
-        .blue-section {
-            background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
-            color: white;
-            padding: 40px;
-            flex: 1.5;
-            display: flex;
-            align-items: center;
-            line-height: 1.8;
-            font-size: 16px;
-            position: relative;
-        }
+ .year-section {
+     background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+     color: white;
+     padding: 40px 30px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 24px;
+     font-weight: bold;
+     letter-spacing: 2px;
+     writing-mode: vertical-rl;
+     text-orientation: upright;
+     min-width: 120px;
+ }
 
-        .blue-section::before {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
-            transform: skewX(10deg);
-        }
+ .blue-section {
+     background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
+     color: white;
+     padding: 40px;
+     flex: 1.5;
+     display: flex;
+     align-items: center;
+     line-height: 1.8;
+     font-size: 16px;
+     position: relative;
+ }
 
-        .text-highlight {
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
+ .blue-section::before {
+     content: '';
+     position: absolute;
+     left: -20px;
+     top: 0;
+     bottom: 0;
+     width: 40px;
+     background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
+     transform: skewX(10deg);
+ }
 
-        .photo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* 保持比例填滿 */
-            z-index: 1;
-        }
+ .text-highlight {
+     font-weight: bold;
+     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+ }
 
-        .photo-placeholder,
-        .photo-left {
-            height: 300px;
-            /* 或你想要的固定高度 */
-        }
+ .photo-placeholder img,
+ .photo-left img {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     /* 或 contain 依需求 */
+     object-position: center center;
+ }
 
-        @media (max-width: 768px) {
+ .photo-placeholder,
+ .photo-left {
+     width: 100%;
+     /* 只設寬度，高度由 aspect-ratio 自動維持 */
+     aspect-ratio: 6 / 3;
+     overflow: hidden;
+ }
 
-            .top-section,
-            .bottom-section {
-                display: flex;
-                flex-direction: column;
+ @media (max-width: 768px) {
 
-            }
-           .red-section::after{
-                display: none;
-            }
-            .blue-section::before{
-                display: none;
-            }
+     .top-section,
+     .bottom-section {
+         display: flex;
+         flex-direction: column;
+     }
 
+     .red-section::after {
+         display: none;
+     }
 
-            /* ✅ top-section 手機排序：era-label → photo → red */
-            .top-section .era-label {
-                order: 1;
-                writing-mode: horizontal-tb;
-                transform: rotate(0deg);
-                text-orientation: mixed;
-                /* 避免文字方向錯亂 */
-            }
+     .blue-section::before {
+         display: none;
+     }
 
-            .top-section .photo-placeholder {
-                order: 2;
-            }
+     /* 768px 以下增加照片高度 */
+     .photo-placeholder,
+     .photo-left {
+         height: 300px;
+     }
 
-            .top-section .red-section {
-                order: 3;
-            }
+     /* ✅ top-section 手機排序：era-label → photo → red */
+     .top-section .era-label {
+         order: 1;
+         writing-mode: horizontal-tb;
+         transform: rotate(0deg);
+         text-orientation: mixed;
+     }
 
-            /* ✅ bottom-section 手機排序：year → photo → blue */
-            .bottom-section .year-section {
-                order: 1;
-                writing-mode: horizontal-tb;
-                transform: rotate(0deg);
-                text-orientation: mixed;
-                /* 避免文字方向錯亂 */
-            }
+     .top-section .photo-placeholder {
+         order: 2;
+     }
 
-            .bottom-section .photo-left {
-                order: 2;
-            }
+     .top-section .red-section {
+         order: 3;
+     }
 
-            .bottom-section .blue-section {
-                order: 3;
-            }
-        }
+     /* ✅ bottom-section 手機排序：year → photo → blue */
+     .bottom-section .year-section {
+         order: 1;
+         writing-mode: horizontal-tb;
+         transform: rotate(0deg);
+         text-orientation: mixed;
+     }
 
-        @media (max-width: 480px) {
+     .bottom-section .photo-left {
+         order: 2;
+     }
 
-            /* 可以延用相同順序或進一步微調尺寸 */
-            .top-section .era-label,
-            .bottom-section .year-section {
-                font-size: 16px;
-                padding: 20px;
-            }
+     .bottom-section .blue-section {
+         order: 3;
+     }
+ }
 
-            .red-section,
-            .blue-section {
-                font-size: 14px;
-                padding: 20px;
-            }
+ @media (max-width: 480px) {
 
-            .photo-placeholder,
-            .photo-left {
-                height: 200px;
-            }
-        }
+     .top-section .era-label,
+     .bottom-section .year-section {
+         font-size: 16px;
+         padding: 20px;
+     }
+
+     .red-section,
+     .blue-section {
+         font-size: 14px;
+         padding: 20px;
+     }
+
+     .photo-placeholder,
+     .photo-left {
+         height: 250px;
+     }
+ }
