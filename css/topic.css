@@ -133,8 +133,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    margin-top: 16px;
 }
 
 .progress-bar {
@@ -148,8 +146,9 @@ body {
 
 .progress-percentage {
     color: #fff;
-    font-size: 18px;
     font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
     z-index: 1;
     position: relative;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
