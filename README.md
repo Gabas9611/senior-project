@@ -7,6 +7,8 @@ https://gabas9611.github.io/senior-project/
 1.topic 模型替換，攝影機位置替換
 2.ammunition-depot-history.css 更改.year-section font-size改成24px，.header 內容修正
 3..ammunition-depot-history img更改
+4.old-buildings.html 大門css修正
+5.topic.css .modal-button 與 .modal-button:hover 修正
 
 
 
