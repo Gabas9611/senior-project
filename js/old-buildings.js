@@ -1190,56 +1190,56 @@ createApp({
         // 導覽攝影機的設定 (保持不變)
         cameraNav1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav1.name = "NavCamera1";
-        cameraNav1.position.set(3.13, 0.1, -0.21);
+        cameraNav1.position.set(3.13, -0.45, -0.21);
 
         cameraNav2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav2.name = "NavCamera2";
-        cameraNav2.position.set(-2.49, 0.1, -0.21);
+        cameraNav2.position.set(-2.49, -0.45, -0.21);
 
         cameraNav3 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav3.name = "NavCamera3";
-        cameraNav3.position.set(3.38, 0.1, -0.21);
+        cameraNav3.position.set(3.38, -0.45, -0.21);
 
         cameraNav4 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav4.name = "NavCamera4";
-        cameraNav4.position.set(1.50, 0.1, -0.21);
+        cameraNav4.position.set(1.50, -0.45, -0.21);
 
         cameraNav5 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav5.name = "NavCamera5";
-        cameraNav5.position.set(-1.9, 0.1, -0.21);
+        cameraNav5.position.set(-1.9, -0.45, -0.21);
 
         cameraNav6 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav6.name = "NavCamera6";
-        cameraNav6.position.set(-2.8, 0.1, -0.21);
+        cameraNav6.position.set(-2.8, -0.45, -0.21);
 
 
         cameraNav7 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav7.name = "NavCamera7";
-        cameraNav7.position.set(3.13, 0.1, -0.21);
+        cameraNav7.position.set(3.13, -0.45, -0.21);
         cameraNav7.rotation.y = Math.PI; // 將攝影機繞 Y 軸旋轉 180 度 (π 弧度)
 
         cameraNav8 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav8.name = "NavCamera8";
-        cameraNav8.position.set(-2.49, 0.1, -0.21); // 調整位置
+        cameraNav8.position.set(-2.49, -0.45, -0.21); // 調整位置
 
 
         cameraNav9 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav9.name = "NavCamera9";
-        cameraNav9.position.set(-2.49, 0.1, -0.21);
+        cameraNav9.position.set(-2.49, -0.45, -0.21);
         cameraNav9.rotation.y = Math.PI;
 
         cameraNav10 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav10.name = "NavCamera10";
-        cameraNav10.position.set(-1.1, 0.1, -0.21);
+        cameraNav10.position.set(-1.1, -0.45, -0.21);
         cameraNav10.rotation.y = -Math.PI / 2;
 
         cameraNav11 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav11.name = "NavCamera11";
-        cameraNav11.position.set(-2.49, 0.1, -0.21);
+        cameraNav11.position.set(-2.49, -0.45, -0.21);
 
         cameraNav12 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         cameraNav12.name = "NavCamera12";
-        cameraNav12.position.set(3.13, 0.1, -0.21);
+        cameraNav12.position.set(3.13, -0.45, -0.21);
 
 
 
