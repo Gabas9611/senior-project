@@ -2,6 +2,14 @@
 
 https://gabas9611.github.io/senior-project/
 
+2027
+2025/07/12 更新項目：
+1.topic 模型替換，攝影機位置替換
+2.ammunition-depot-history.css 更改.year-section font-size改成24px，.header 內容修正
+3..ammunition-depot-history img更改
+
+
+
 2025/07/12 更新項目：
 1.全部網頁js中畫面跳轉路徑修正，現在統一不經由loading頁面
 2.topic與old-buildings 頁面中加入loading畫面，調整html/css/js
