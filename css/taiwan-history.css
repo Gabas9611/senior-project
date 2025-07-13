@@ -1,6 +1,5 @@
         * {
             margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
@@ -100,6 +99,25 @@
             min-height: 300px;
         }
 
+        .info-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .label {
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+
+        .push-right {
+            margin-left: auto;
+            flex: 0 0 auto;
+            min-width: 120px;
+        }
+
+
         .red-section {
             background: linear-gradient(135deg, #e85a5a, #d44545);
             color: white;
@@ -130,7 +148,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 36px;
             font-weight: bold;
             letter-spacing: 8px;
             writing-mode: vertical-rl;
@@ -238,13 +256,16 @@
             z-index: 2;
         }
 
+        .photo-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
         .photo-img {
             width: 100%;
             height: auto;
-            /* ✅ 高度由圖片本身決定 */
-            object-fit: contain;
-            /* 或可拿掉，預設就是完整顯示 */
-            display: block;
+            object-fit: cover;
         }
 
         .photo-placeholder,
@@ -267,10 +288,12 @@
                 flex-direction: column;
 
             }
-            .red-section::after{
+
+            .red-section::after {
                 display: none;
             }
-            .blue-section::before{
+
+            .blue-section::before {
                 display: none;
             }
 
@@ -309,12 +332,24 @@
             }
         }
 
+        @media (max-width: 550px) {
+            .info-line {
+                flex-wrap: wrap;
+            }
+
+            .push-right {
+                margin-left: 0;
+                margin-top: 4px;
+                width: 100%;
+            }
+        }
+
         @media (max-width: 480px) {
-            .header{
+            .header {
                 max-width: 100%;
             }
-            
-            .logo{
+
+            .logo {
                 width: 30px;
                 height: 30px;
             }
@@ -331,10 +366,12 @@
                 font-size: 14px;
                 padding: 20px;
             }
-            .red-section::after{
+
+            .red-section::after {
                 display: none;
             }
-            .blue-section::before{
+
+            .blue-section::before {
                 display: none;
             }
 
