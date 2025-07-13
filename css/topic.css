@@ -542,8 +542,8 @@ body {
 }
 
 .modal-button {
-    background-color: white;
-    color: black;
+    background-color: black;
+    color: white;
     padding: 10px 20px;
     border: 2px solid white;
     border-radius: 20px;
@@ -555,8 +555,8 @@ body {
 }
 
 .modal-button:hover {
-    background-color:transparent;
-    color:white;
+    background-color: white;
+    color:black;
 }
 
 /* Mobile Styles */
