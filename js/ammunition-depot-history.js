@@ -15,7 +15,11 @@ createApp({
                 console.log('Redirecting to loading.html with target topic.html');
                 window.location.href = 'topic.html';
                 this.actionMessage = '返回前頁已點擊';
+            } else if (action === 'goHome') {
+                window.location.href = 'index.html';
+                this.actionMessage = '返回首頁';
             }
+
         }
     }
 }).mount('#app');
