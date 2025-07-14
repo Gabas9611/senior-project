@@ -690,7 +690,7 @@ body {
         font-size: 14px;
         color: white;
         z-index: 10001;
-        width: 150px;
+        width: 120px;
         /* ✅ Updated width */
         text-align: left;
     }
@@ -715,7 +715,7 @@ body {
         right: 30px;
         text-align: left;
         font-size: 12px;
-        width: 150px;
+        width: 120px;
     }
 
     .menu-button-tip .arrow-down {
