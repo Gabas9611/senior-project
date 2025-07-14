@@ -94,6 +94,9 @@ createApp({
                 this.actionMessage = '進入導覽已點擊';
             } else if (action === 'backToMain') {
                 window.location.href = 'topic.html';
+            } else if (action === 'goHome') {
+                window.location.href = 'index.html';
+                this.actionMessage = '返回首頁';
             }
             if (this.isMenuOpen) {
                 this.isMenuOpen = false;
