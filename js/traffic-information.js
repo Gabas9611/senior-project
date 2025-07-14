@@ -1,5 +1,4 @@
-const { createApp, onMounted, nextTick } = Vue;
-
+ const { createApp, onMounted, nextTick } = Vue;
         createApp({
             setup() {
                 // 處理導航點擊事件
@@ -14,8 +13,21 @@ const { createApp, onMounted, nextTick } = Vue;
                     }
                 };
 
+
+                onMounted(async () => {
+                    await nextTick();
+                    new Swiper(".mySwiper", {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                    });
+                });
                 return {
                     handleNavClick,
                 };
+
             }
         }).mount("#app");
