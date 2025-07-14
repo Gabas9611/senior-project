@@ -121,7 +121,7 @@ createApp({
                 window.location.href = 'traffic-information.html';
                 this.actionMessage = '進入專案已點擊';
             } else if (action === 'goHome') {
-                window.location.href = 'index.html';
+                window.location.href = 'topic.html';
                 this.actionMessage = '返回首頁';
             } else if (action === 'navigation') {
                 this.actionMessage = '進入導覽已點擊';
