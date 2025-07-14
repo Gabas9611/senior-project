@@ -20,12 +20,12 @@
      align-items: center;
      justify-content: space-between;
      position: fixed;
-     top:0;
+     top: 0;
      left: 0;
      min-width: 100%;
      padding: 20px 40px 20px;
      background-color: black;
-     z-index: 200;
+     z-index: 10;
  }
 
  .logo-section {
@@ -33,7 +33,7 @@
      align-items: center;
      background-color: black;
      /* 在logo和標題之間增加間距 */
-      cursor: pointer;
+     cursor: pointer;
  }
 
  /* 新增logo樣式 */
@@ -92,13 +92,13 @@
 
  .main-content {
      padding-top: 80px;
-    
+
      min-height: calc(100vh - 80px);
      display: flex;
      flex-direction: column;
      align-items: center;
      background-color: #d2d2d2;
-     
+
  }
 
  .content-block {
@@ -112,8 +112,73 @@
      color: #333;
      font-size: 18px;
      position: relative;
+
  }
- 
+
+ .content-1 {
+            height: 80vh;
+            padding-top: 50px;
+        }
+
+ .swiper-slide {
+     text-align: center;
+     font-size: 18px;
+     background: white;
+     color: #000;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+     padding: 10px 30px;
+      overflow: auto; /* 出現滾動條 */
+ }
+
+ .swiper-slide img {
+     display: block;
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+ }
+
+ .swiper-title {
+     font-size: 24px;
+     font-weight: bold;
+     margin-bottom: 20px;
+     color: #333;
+     text-align: center;
+ }
+
+ .swiper-content {
+     background: #f8f8f8;
+     border-radius: 10px;
+     padding: 20px;
+     margin: 0 15px;
+     flex: 1;
+     display: flex;
+     justify-content: center;
+     text-align: left;
+     line-height: 1.6;
+ }
+
+ .swiper-pagination-bullet-active {
+     background: black;
+ }
+
+ .swiper-img {
+     width: 100%;
+     height: 200px;
+     margin-top: 15px;
+
+     overflow: hidden;
+ }
+
+ .swiper-img img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+
+ }
+
  .inner-rectangle {
      width: 80%;
      height: 90%;
@@ -180,102 +245,7 @@
      font-size: 18px;
  }
 
- .box {
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transition: all 0.3s ease;
-     color: white;
-     border-radius: 8px;
-     padding: 10px;
-     text-align: center;
-     cursor: pointer;
-     display: flex;
-     align-items: center;
 
-     font-weight: bold;
-     flex-direction: column;
- }
-
- .box-title {
-     font-size: 30px;
-     margin-bottom: 8px;
- }
-
- .box-text {
-     font-size: 20px;
-     opacity: 0;
-     visibility: hidden;
-     transition: opacity 0.3s ease, visibility 0.3s ease;
- }
-
- .box-img {
-     width: 60px;
-     height: 60px;
-     object-fit: cover;
-     border-radius: 8px;
-     margin: 10px 0;
-     opacity: 0;
-     visibility: hidden;
-     transition: opacity 0.3s ease, visibility 0.3s ease;
- }
-
- .small {
-     width: 270px;
-     height: 270px;
-     background: rgb(220, 219, 219);
-     font-size: 12px;
-     z-index: 1;
- }
-
- .medium {
-     width: 360px;
-     height: 360px;
-     background: rgb(175, 175, 175);
-     font-size: 14px;
-     z-index: 2;
- }
-
- .large {
-     width: 500px;
-     height: 500px;
-     background: gray;
-     font-size: 16px;
-     z-index: 3;
-     /* 修改為 flex-start 讓內容靠上排列 */
-     justify-content: flex-start;
-     /* 增加 padding-top 讓標題與頂部有適當距離 */
-     padding-top: 30px;
-     padding-left: 2%;
-     padding-right: 2%;
- }
-
- /* 只在large狀態下顯示圖片 */
- .large .box-img {
-     opacity: 1;
-     visibility: visible;
-     width: 80%;
-     height: 30%;
- }
-
- /* 只在large狀態下顯示文字 */
- .large .box-text {
-     opacity: 1;
-     visibility: visible;
-     text-align: left;
- }
-
- /* 確保標題在所有狀態下都顯示 */
- .box-title {
-     opacity: 1;
-     visibility: visible;
- }
-
- /* large狀態下的標題樣式 - 靠上水平置中 */
- .large .box-title {
-
-     text-align: center;
- }
 
  /* Tablet Styles - 768px */
  @media (max-width: 768px) {
@@ -304,8 +274,8 @@
      }
 
      .main-content {
-        padding-top: 80px;
-         
+         padding-top: 80px;
+
      }
 
      .content-block {
@@ -349,66 +319,24 @@
          height: 7px;
      }
 
-     /* Box響應式調整 */
-     .small {
-         width: 180px;
-         height: 180px;
-         font-size: 11px;
-     }
-
-     .medium {
-         width: 240px;
-         height: 240px;
-         font-size: 13px;
-     }
-
-     .large {
-         width: 300px;
-         height: 300px;
-         font-size: 15px;
-         padding-top: 20px;
-     }
-
-     .box-title {
-         font-size: 16px;
-         margin-bottom: 6px;
-     }
-
-     .box-text {
-         font-size: 13px;
-     }
-
-     .box-img {
-         width: 50px;
-         height: 50px;
-         margin: 8px 0;
-     }
-
-     .large .box-img {
-         width: 75%;
-         height: 45%;
-     }
-
-     .map-overlay {
-         border-radius: 15px;
-     }
  }
 
  /* Mobile Styles - 480px */
  @media (max-width: 480px) {
      .header {
          padding: 10px 12px;
-         
+
          gap: 10px;
      }
 
      .logo-section {
-        
+
          justify-content: center;
      }
-     .logo{
-        width: 30px;
-        height: 30px;
+
+     .logo {
+         width: 30px;
+         height: 30px;
      }
 
      .nav-section {
@@ -478,51 +406,5 @@
          height: 5px;
      }
 
-     /* Box小螢幕響應式調整 */
-     .small {
-         width: 80px;
-         height: 80px;
-         font-size: 10px;
-         padding: 8px;
-     }
 
-     .medium {
-         width: 130px;
-         height: 130px;
-         font-size: 12px;
-         padding: 8px;
-     }
-
-     .large {
-         width: 180px;
-         height: 180px;
-         font-size: 14px;
-         padding-top: 15px;
-         padding-left: 3%;
-         padding-right: 3%;
-     }
-
-     .box-title {
-         font-size: 14px;
-         margin-bottom: 5px;
-     }
-
-     .box-text {
-         font-size: 8px;
-     }
-
-     .box-img {
-         width: 40px;
-         height: 40px;
-         margin: 5px 0;
-     }
-
-     .large .box-img {
-         width: 70%;
-         height: 40%;
-     }
-
-     .map-overlay {
-         border-radius: 12px;
-     }
  }
