@@ -33,6 +33,7 @@
      display: flex;
      align-items: center;
      background-color: black;
+     cursor: pointer;
  }
 
  .logo {
