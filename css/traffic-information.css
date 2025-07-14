@@ -419,26 +419,34 @@
          font-size: 10px;
      }
 
-     .swiper-content {
-         font-size: 10px;
-         padding: 1px 5px;
-     }
+     .swiper-slide {
+        padding: 10px;
+        height: auto !important;
+        overflow: hidden !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
 
-     .swiper-img {
-         position: static !important;
-         /* ✅ 移除絕對定位 */
-         transform: none !important;
-         bottom: auto !important;
-         left: auto !important;
-         height: auto !important;
-         margin-top: 10px;
-     }
+    .swiper-content {
+        font-size: 10px;
+        padding: 5px;
+        flex: 1 0 auto; /* ✅ 佔滿剩餘空間但不撐開太高 */
+    }
 
-     .swiper-img img {
-         height: auto !important;
-         /* ✅ 讓圖片高度自適應 */
-         object-fit: contain !important;
-     }
+    .swiper-img {
+        width: 100%;
+        max-height: 160px; /* ✅ 限制最大高度避免太佔版面 */
+        margin-top: 10px;
+    }
+
+    .swiper-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* ✅ 保持圖片完整不變形 */
+        display: block;
+    }
 
      .inner-rectangle {
          width: 90%;
