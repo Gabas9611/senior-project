@@ -5,13 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>交通資訊-下一站，蛻變</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="./css/traffic-information.css">
-   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        .content-1 {
+            height: 80vh;
+        }
+
+        .swiper {
+            background: #000;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: white;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body>
-   <div id="app">
+    <div id="app">
         <div class="container">
             <header class="header">
                 <div class="logo-section" @click="handleNavClick('previous')">
@@ -25,33 +68,48 @@
                     <div class="nav-button" @click="handleNavClick('previous')">
                         回到首頁
                     </div>
-                   <!-- <button class="nav-button" @click="handleNavClick('home')">
+                    <!-- <button class="nav-button" @click="handleNavClick('home')">
                         回到首頁
                     </button>-->
                 </nav>
             </header>
-
-             <main class="main-content">
+            <main class="main-content">
                 <div class="content-block content-1">
-                    <div v-for="(box, index) in boxes" :key="index" class="box"
-                         :class="getSizeClass(index)" :style="getStyle(index)"
-                         @mouseenter="updateLayout(index)">
-                         <div class="title box-title">
-                              {{ getSizeClass(index) === 'large' ? box.title_name : box.title }}
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="swiper-title">單車(29min)</div>
+                                從大智北一街左轉至大智北路，右轉進新民街，右轉進入復興路四段，左轉進入復興東路，右轉進入樂業路，左轉進入祥順路一段，向右轉進入新平路一段，向左轉進入環太東路，向左轉進入大源路，向右轉進入中山路二段477巷186弄，向右轉進入明秀西路，向左轉進入明秀南路，右轉即可到達目的地。
                             </div>
-                        <div class="box-text"> {{ box.text }}</div>
-                         <img :src="box.img" :alt="box.title" class="box-img">
-                    </div> 
+                            <div class="swiper-slide">
+                                <div class="swiper-title">241公車(39min)</div>
+                                從台中火車站步行4min至台中車站C月台轉乘，經過31min至三中心站下車，再步行4min到達目的地。
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="swiper-title">汽車(22min)</div>
+                                從復興路四段到復興東路，向右轉進樂業路，左轉進入祥順路一段，右轉進入中山路二段，之後右轉進入明秀北路，左轉進入明秀東路，再左轉即可到達目的地。
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="swiper-title">51公車(32min)</div>
+                                從台中火車站步行3min到新時代購物中心站搭公車經過24min到三中心站下車，再步行5min到達目的地。
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="swiper-title">41公車(40min)</div>
+                                從台中火車站步行6min到第一廣場轉乘，經過29min後在三中心站下車，再步行5min後抵達。
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                 </div>
                 <div class="content-block content-2">
                     <div class="inner-rectangle">
-                        <!-- 平板樣式的白色圓形按鈕 - 添加點擊事件 -->
+                        <!-- 平板樣式的白色圓形按鈕  -->
                         <div class="tablet-button"></div>
                         <div class="screen">
                             <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3356.330570781723!2d120.72991547534814!3d24.144876878403352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346923aa5dc7fe5f%3A0xb4165c433f9df76b!2z5ZyL56uL5Yuk55uK56eR5oqA5aSn5a24IOWLpOWJteWfuuWcsA!5e1!3m2!1szh-TW!2stw!4v1750922315175!5m2!1szh-TW!2stw"
-                            width="100%" height="100%" style="border-radius: 10px;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3356.330570781723!2d120.72991547534814!3d24.144876878403352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346923aa5dc7fe5f%3A0xb4165c433f9df76b!2z5ZyL56uL5Yuk55uK56eR5oqA5aSn5a24IOWLpOWJteWfuuWcsA!5e1!3m2!1szh-TW!2stw!4v1750922315175!5m2!1szh-TW!2stw"
+                                width="100%" height="100%" style="border-radius: 10px;" allowfullscreen=""
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
@@ -60,8 +118,43 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script type="module" src="./js/traffic-information.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script>
+        const { createApp, onMounted, nextTick } = Vue;
+        createApp({
+            setup() {
+                // 處理導航點擊事件
+                const handleNavClick = (action) => {
+                    switch (action) {
+                        case 'previous':
+                            // 方法1: 導航到首頁
+                            window.location.href = 'topic.html';
+                            break;
+                        default:
+                            console.log('未知的導航動作:', action);
+                    }
+                };
 
+
+                onMounted(async () => {
+                    await nextTick();
+                    new Swiper(".mySwiper", {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                    });
+                });
+                return {
+                    handleNavClick,
+                };
+
+            }
+        }).mount("#app");
+    </script>
 </body>
 
 </html>
