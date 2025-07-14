@@ -165,21 +165,24 @@
      justify-content: center;
      text-align: left;
      line-height: 1.6;
-     
+
  }
- .swiper-content-1{
-    font-size: 14px;
+
+ .swiper-content-1 {
+     font-size: 14px;
  }
 
  .swiper-img {
      width: 95%;
      height: 300px;
      overflow: hidden;
-      /* 使用絕對定位固定在底部 */
-    position: absolute;
-    bottom: 80px; /* 距離底部 10px */
-    left: 50%;
-    transform: translateX(-50%); /* 水平居中 */
+     /* 使用絕對定位固定在底部 */
+     position: absolute;
+     bottom: 80px;
+     /* 距離底部 10px */
+     left: 50%;
+     transform: translateX(-50%);
+     /* 水平居中 */
  }
 
  .swiper-img img {
@@ -255,11 +258,11 @@
      font-size: 18px;
  }
 
-@media (max-width: 1200px) {
-    .tablet-button{
-        left: 1%;
-    }
-}
+ @media (max-width: 1200px) {
+     .tablet-button {
+         left: 1%;
+     }
+ }
 
  /* Tablet Styles - 768px */
  @media (max-width: 768px) {
@@ -394,7 +397,7 @@
          margin-right: 10px;
      }
 
-   
+
 
      .content-block {
          width: 98%;
@@ -422,8 +425,19 @@
      }
 
      .swiper-img {
-         width: 100%;
-         height: 50px;
+         position: static !important;
+         /* ✅ 移除絕對定位 */
+         transform: none !important;
+         bottom: auto !important;
+         left: auto !important;
+         height: auto !important;
+         margin-top: 10px;
+     }
+
+     .swiper-img img {
+         height: auto !important;
+         /* ✅ 讓圖片高度自適應 */
+         object-fit: contain !important;
      }
 
      .inner-rectangle {
