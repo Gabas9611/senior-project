@@ -7,7 +7,7 @@
     <title>老建築再生館-下一站，蛻變</title>
     <link rel="stylesheet" href="./css/old-buildings.css">
 
-    
+
 
     <script type="importmap">
         {
@@ -93,7 +93,7 @@
 
                 <nav class="nav-section">
                     <button class="nav-button" @click="handleNavClick('import')">回到首頁</button>
-                    
+
                 </nav>
             </header>
 
@@ -113,6 +113,10 @@
                         <div class="carousel-controls">
                             <button @click="prevImage">〈</button>
                             <button @click="nextImage">〉</button>
+                        </div>
+                        <div class="carousel-pagination">
+                            <span v-for="(img, index) in carouselImages" :key="index" class="pagination-dot"
+                                :class="{ active: index === currentImageIndex }" @click="goToImage(index)"></span>
                         </div>
                     </div>
                     <div class="modal-text-section">
