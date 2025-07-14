@@ -7,28 +7,7 @@
     <title>老建築再生館-下一站，蛻變</title>
     <link rel="stylesheet" href="./css/old-buildings.css">
 
-    <style>
-        /* ✅ 大門專屬視窗樣式 */
-        .info-modal-door {
-            background: black;
-            border: 3px solid black;
-        }
-
-        .info-modal-door .modal-title {
-            color: white;
-        }
-
-        .info-modal-door .modal-button {
-            background-color: black;
-            border: 2px solid white;
-            color: white;
-        }
-
-        .info-modal-door .modal-button:hover {
-            background-color: white;
-            color: black;
-        }
-    </style>
+    
 
     <script type="importmap">
         {
@@ -105,7 +84,7 @@
 
         <div class="container">
             <header class="header">
-                <div class="logo-section" @click="handleNavClick('import')">
+                <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
                     <div class="logo">
                         <img src="./img/logo/Logo-1.png" alt="logo">
                     </div>
