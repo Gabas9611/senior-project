@@ -16,10 +16,11 @@
 
         .content-1 {
             height: 80vh;
+            padding-top: 50px;
         }
 
         .swiper {
-            background: #000;
+            
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
             color: #fff;
@@ -40,8 +41,10 @@
             background: white;
             color: #000;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
+            padding: 10px 30px;
         }
 
         .swiper-slide img {
@@ -49,6 +52,29 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .swiper-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .swiper-content {
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 15px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .swiper-pagination-bullet-active {
+            background: black;
         }
     </style>
 </head>
@@ -79,23 +105,48 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="swiper-title">單車(29min)</div>
-                                從大智北一街左轉至大智北路，右轉進新民街，右轉進入復興路四段，左轉進入復興東路，右轉進入樂業路，左轉進入祥順路一段，向右轉進入新平路一段，向左轉進入環太東路，向左轉進入大源路，向右轉進入中山路二段477巷186弄，向右轉進入明秀西路，向左轉進入明秀南路，右轉即可到達目的地。
+                                <div class="swiper-content">
+                                    從大智北一街左轉至大智北路，右轉進新民街，右轉進入復興路四段，左轉進入復興東路，右轉進入樂業路，左轉進入祥順路一段，向右轉進入新平路一段，向左轉進入環太東路，向左轉進入大源路，向右轉進入中山路二段477巷186弄，向右轉進入明秀西路，向左轉進入明秀南路，右轉即可到達目的地。
+                                </div>
+                                <div class="swiper-img">
+                                    <img src="/img/traffic/bike.jpg" alt="img" height="40%">
+                                </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="swiper-title">241公車(39min)</div>
-                                從台中火車站步行4min至台中車站C月台轉乘，經過31min至三中心站下車，再步行4min到達目的地。
+                                <div class="swiper-content">
+                                    從台中火車站步行4min至台中車站C月台轉乘，經過31min至三中心站下車，再步行4min到達目的地。
+                                </div>
+                                <div class="swiper-img">
+                                    <img src="/img/traffic/241bus.jpg" alt="img">
+                                </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="swiper-title">汽車(22min)</div>
-                                從復興路四段到復興東路，向右轉進樂業路，左轉進入祥順路一段，右轉進入中山路二段，之後右轉進入明秀北路，左轉進入明秀東路，再左轉即可到達目的地。
+                                <div class="swiper-content">
+                                    從復興路四段到復興東路，向右轉進樂業路，左轉進入祥順路一段，右轉進入中山路二段，之後右轉進入明秀北路，左轉進入明秀東路，再左轉即可到達目的地。
+                                </div>
+                                <div class="swiper-img">
+                                    <img src="/img/traffic/car.jpg" alt="img">
+                                </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="swiper-title">51公車(32min)</div>
-                                從台中火車站步行3min到新時代購物中心站搭公車經過24min到三中心站下車，再步行5min到達目的地。
+                                <div class="swiper-content">
+                                    從台中火車站步行3min到新時代購物中心站搭公車經過24min到三中心站下車，再步行5min到達目的地。
+                                </div>
+                                 <div class="swiper-img">
+                                    <img src="/img/traffic/51bus.jpg" alt="img">
+                                </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="swiper-title">41公車(40min)</div>
-                                從台中火車站步行6min到第一廣場轉乘，經過29min後在三中心站下車，再步行5min後抵達。
+                                <div class="swiper-content">
+                                    從台中火車站步行6min到第一廣場轉乘，經過29min後在三中心站下車，再步行5min後抵達。
+                                </div>
+                                 <div class="swiper-img">
+                                    <img src="/img/traffic/41bus.jpg" alt="img">
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-pagination"></div>
@@ -119,7 +170,6 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
     <script>
         const { createApp, onMounted, nextTick } = Vue;
         createApp({
