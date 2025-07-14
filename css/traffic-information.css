@@ -166,6 +166,9 @@
      text-align: left;
      line-height: 1.6;
  }
+ .swiper-content-1{
+    font-size: 14px;
+ }
 
  .swiper-img {
      width: 100%;
