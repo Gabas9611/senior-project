@@ -24,7 +24,7 @@
      left: 0;
      min-width: 100%;
      padding: 20px 40px 20px;
-     background-color: #b8b8b8;
+     background-color: black;
      z-index: 200;
  }
 
@@ -116,11 +116,9 @@
 
  .content-1 {
      height: 600px;
-      background: linear-gradient(135deg, #e85a5a, #d44545);
+     
  }
- .content-2{
-    background: linear-gradient(135deg, #7a8bc4, #5a6ba4);
- }
+ 
 
  .inner-rectangle {
      width: 80%;
