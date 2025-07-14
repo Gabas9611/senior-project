@@ -161,10 +161,6 @@
      line-height: 1.6;
  }
 
- .swiper-pagination-bullet-active {
-     background: black;
- }
-
  .swiper-img {
      width: 100%;
      height: 200px;
