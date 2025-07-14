@@ -524,23 +524,26 @@ body {
 
 /* ✅ 大門專屬視窗樣式 */
 .info-modal-door {
-    background: linear-gradient(to right, #fff0f0, #ffdada);
-    border: 3px solid #ff4444;
+    background: black;
+    border: 3px solid black;
     width: 60%;
     max-width: 600px;
     max-height: 60vh;
 }
 
 .info-modal-door .modal-title {
-    color: #990000;
+    color: white;
 }
 
 .info-modal-door .modal-button {
-    background-color: #cc0000;
+    background-color: black;
+    border: 2px solid white;
+    color: white;
 }
 
 .info-modal-door .modal-button:hover {
-    background-color: #990000;
+    background-color: white;
+    color: black;
 }
 
 
