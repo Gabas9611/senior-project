@@ -42,10 +42,10 @@ body {
 }
 
 #loadingScreen .wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .wrapper {
@@ -589,8 +589,9 @@ body {
 }
 
 @media (max-width: 768px) {
+    
     .modal-content-wrapper {
-        flex-direction: row;
+        flex-direction: column;
     }
 
     .header {
@@ -614,19 +615,28 @@ body {
 
 /* Small Mobile Styles */
 @media (max-width: 480px) {
+
+    .modal-content-wrapper {
+        flex-direction: column;
+    }
+
     #instruction-mask-layer-1 h1 {
         font-size: 30px;
     }
-     #instruction-mask-layer-1 h2{
+
+    #instruction-mask-layer-1 h2 {
         font-size: 25px;
-     }
-      #instruction-mask-layer-1 p{
+    }
+
+    #instruction-mask-layer-1 p {
         font-size: 15px;
-      }
+    }
+
     .nav-section {
         gap: 10px;
     }
-    .logo{
+
+    .logo {
         width: 30px;
         height: 30px;
     }
