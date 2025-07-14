@@ -165,24 +165,21 @@
      justify-content: center;
      text-align: left;
      line-height: 1.6;
-
+     
  }
-
- .swiper-content-1 {
-     font-size: 14px;
+ .swiper-content-1{
+    font-size: 14px;
  }
 
  .swiper-img {
      width: 95%;
      height: 300px;
      overflow: hidden;
-     /* 使用絕對定位固定在底部 */
-     position: absolute;
-     bottom: 80px;
-     /* 距離底部 10px */
-     left: 50%;
-     transform: translateX(-50%);
-     /* 水平居中 */
+      /* 使用絕對定位固定在底部 */
+    position: absolute;
+    bottom: 80px; /* 距離底部 10px */
+    left: 50%;
+    transform: translateX(-50%); /* 水平居中 */
  }
 
  .swiper-img img {
@@ -258,11 +255,11 @@
      font-size: 18px;
  }
 
- @media (max-width: 1200px) {
-     .tablet-button {
-         left: 1%;
-     }
- }
+@media (max-width: 1200px) {
+    .tablet-button{
+        left: 1%;
+    }
+}
 
  /* Tablet Styles - 768px */
  @media (max-width: 768px) {
@@ -397,7 +394,7 @@
          margin-right: 10px;
      }
 
-
+   
 
      .content-block {
          width: 98%;
@@ -412,6 +409,7 @@
      }
 
      .swiper-slide {
+        min-height: 250px;
          padding: 1px;
      }
 
@@ -419,33 +417,16 @@
          font-size: 10px;
      }
 
-     .swiper-slide {
-        padding: 10px;
-        height: auto !important;
-        overflow: hidden !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* ✅ 文字在上，圖片在下 */
-    }
+     .swiper-content {
+         font-size: 10px;
+         padding: 1px 5px;
+     }
 
-    .swiper-content {
-        font-size: 10px;
-        padding: 5px;
-    }
-
-    .swiper-img {
-        position: relative !important; /* ✅ 改為自然流排，仍能占據底部空間 */
-        width: 100%;
-        height: auto !important;
-        margin-top: 10px;
-    }
-
-    .swiper-img img {
-        width: 100%;
-        height: auto !important;
-        object-fit: contain;
-        display: block;
-    }
+     .swiper-img {
+         width: 100%;
+         height: 50px;
+         margin-top: 20px;
+     }
 
      .inner-rectangle {
          width: 90%;
