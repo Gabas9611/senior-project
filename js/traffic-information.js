@@ -7,7 +7,7 @@ createApp({
                     window.location.href = 'topic.html';
                     break;
                 default:
-                    console.log('未知的導航動作:', action);
+                    // console.log('未知的導航動作:', action);
             }
         };
 
