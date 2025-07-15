@@ -9,10 +9,10 @@ createApp({
     },
     methods: {
         handleNavClick(action) {
-            
+            // console.log('Button clicked with action:', action);
             this.selectedAction = action;
             if (action === 'previous') {
-                
+                // console.log('Redirecting to loading.html with target topic.html');
                 window.location.href = 'topic.html';
                 this.actionMessage = '返回前頁已點擊';
             } else if (action === 'goHome') {
