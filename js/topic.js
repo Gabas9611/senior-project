@@ -828,8 +828,8 @@ createApp({
                             // console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '介紹欄3':
-                            // child.userData.customDisplayName = '彈藥庫歷史館';
-                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            child.userData.customDisplayName = '彈藥庫歷史館';
+                            //console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '出口':
                             child.userData.customDisplayName = '離開展廳';
