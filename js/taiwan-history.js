@@ -9,7 +9,7 @@ createApp({
     },
     methods: {
         handleNavClick(action) {
-            
+            // console.log('Button clicked with action:', action);
             this.selectedAction = action;
             if (action === 'previous') {
                 window.location.href = 'topic.html';
