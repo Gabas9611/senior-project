@@ -105,9 +105,9 @@ createApp({
             if (controls) {
                 controls.enabled = !this.isMenuOpen; // 選單開啟時禁用 controls，關閉時啟用
                 if (this.isMenuOpen) {
-                    console.log('選單已開啟，OrbitControls 已禁用。');
+                    // console.log('選單已開啟，OrbitControls 已禁用。');
                 } else {
-                    console.log('選單已關閉，OrbitControls 已重新啟用。');
+                    // console.log('選單已關閉，OrbitControls 已重新啟用。');
                 }
             }
             if (this.isMenuOpen) {
@@ -153,7 +153,7 @@ createApp({
 
                 currentCamera = targetCamera;
 
-                console.log(`切換目標攝影機 ${cameraName} 的宣告位置:`, targetCamera.position);
+                // console.log(`切換目標攝影機 ${cameraName} 的宣告位置:`, targetCamera.position);
 
                 controls.enabled = false;
                 isFirstPersonMode = targetIsFirstPersonMode;
@@ -167,8 +167,8 @@ createApp({
                     ease: "power2.inOut",
                     onComplete: function () {
                         if (!isTransitioning) return;
-                        console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
-                        console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
+                        // console.log(`攝影機已切換到 ${cameraName}，位置:`, currentCamera.position);
+                        // console.log(`攝影機已切換到 ${cameraName}，旋轉:`, currentCamera.rotation);
                     }
                 });
 
@@ -189,8 +189,8 @@ createApp({
                             firstPersonRotationY = targetRotationY;
                             isTransitioning = false;
                         }
-                        console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
-                        console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
+                        // console.log(`攝影機已切換到 ${cameraName}，最終旋轉: X=${currentCamera.rotation.x.toFixed(2)}, Y=${currentCamera.rotation.y.toFixed(2)}, Z=${currentCamera.rotation.z.toFixed(2)}`);
+                        // console.log(`使用的 initialRotationX: ${targetRotationX.toFixed(2)}, initialRotationY: ${targetRotationY.toFixed(2)}`);
                     }
                 });
             } else {
@@ -204,19 +204,19 @@ createApp({
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = true;
                 controls.update();
-                console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
+                // console.log('資訊彈出視窗已關閉，OrbitControls 已重新啟用。');
             }
         },
         // *** 修改開始：showFrameInfo 方法新增 clickedObject 參數 ***
         showFrameInfo(itemName, clickedObject = null) {
             if (isTransitioning) {
-                console.log('跳過 showFrameInfo，因為動畫尚未完成。');
+                // console.log('跳過 showFrameInfo，因為動畫尚未完成。');
                 return;
             }
             // 禁用 OrbitControls
             if (controls) { // 檢查 controls 是否已定義
                 controls.enabled = false;
-                console.log('OrbitControls 已禁用。');
+                // console.log('OrbitControls 已禁用。');
             }
 
             let displayTitle = itemName; // 預設使用傳入的 itemName
@@ -278,7 +278,7 @@ createApp({
                     break;
                 case 'viewArtwork':
                     // 這裡可以添加跳轉到畫作詳細頁面或執行其他操作的邏輯
-                    console.log('查看更多畫作');
+                    // console.log('查看更多畫作');
                     break;
                 case 'enterDesignDept':
                     window.location.href = 'old-buildings.html';
@@ -287,7 +287,7 @@ createApp({
                     window.location.href = 'ammunition-depot-history.html';
                     break;
                 case 'learnMore':
-                    console.log('了解更多');
+                    // console.log('了解更多');
                     break;
                 case 'close':
                 default:
@@ -349,9 +349,9 @@ createApp({
                         const targetCamera = cameraNav6;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄1". Target Camera (NavCamera6) position:', targetCamera.position);
-                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
-                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+                            // console.log('Clicked "介紹欄1". Target Camera (NavCamera6) position:', targetCamera.position);
+                            // console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            // console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
                             // 立即切換 currentCamera
                             currentCamera = targetCamera;
@@ -370,8 +370,8 @@ createApp({
                                 ease: "power2.inOut",
                                 onComplete: function () {
                                     if (!isTransitioning) return;
-                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera6，並進入第一人稱模式。');
+                                    // console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    // console.log('攝影機已切換到 NavCamera6，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
@@ -390,7 +390,7 @@ createApp({
                                 currentCamera.rotation.set(navCamera6Config.initialRotationX, navCamera6Config.initialRotationY, 0, 'YXZ');
                                 firstPersonRotationX = navCamera6Config.initialRotationX;
                                 firstPersonRotationY = navCamera6Config.initialRotationY;
-                                console.log('NavCamera6 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                                // console.log('NavCamera6 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
                                 console.warn('NavCamera6 config not found in navCameras.');
                             }
@@ -403,9 +403,9 @@ createApp({
                         const targetCamera = cameraNav3;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄2". Target Camera (NavCamera3) position:', targetCamera.position);
-                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
-                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+                            // console.log('Clicked "介紹欄2". Target Camera (NavCamera3) position:', targetCamera.position);
+                            // console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            // console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
                             // 立即切換 currentCamera
                             currentCamera = targetCamera;
@@ -424,8 +424,8 @@ createApp({
                                 ease: "power2.inOut",
                                 onComplete: function () {
                                     if (!isTransitioning) return;
-                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera3，並進入第一人稱模式。');
+                                    // console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    // console.log('攝影機已切換到 NavCamera3，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
@@ -444,7 +444,7 @@ createApp({
                                 currentCamera.rotation.set(navCamera3Config.initialRotationX, navCamera3Config.initialRotationY, 0, 'YXZ');
                                 firstPersonRotationX = navCamera3Config.initialRotationX;
                                 firstPersonRotationY = navCamera3Config.initialRotationY;
-                                console.log('NavCamera3 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                                // console.log('NavCamera3 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
                                 console.warn('NavCamera3 config not found in navCameras.');
                             }
@@ -457,9 +457,9 @@ createApp({
                         const targetCamera = cameraNav2;
 
                         if (targetCamera) {
-                            console.log('Clicked "介紹欄3". Target Camera (NavCamera2) position:', targetCamera.position);
-                            console.log('Current Camera position BEFORE switch:', currentCamera.position);
-                            console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
+                            // console.log('Clicked "介紹欄3". Target Camera (NavCamera2) position:', targetCamera.position);
+                            // console.log('Current Camera position BEFORE switch:', currentCamera.position);
+                            // console.log('Current Camera rotation BEFORE switch:', currentCamera.rotation);
 
                             // 立即切換 currentCamera
                             currentCamera = targetCamera;
@@ -478,8 +478,8 @@ createApp({
                                 ease: "power2.inOut",
                                 onComplete: function () {
                                     if (!isTransitioning) return;
-                                    console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
-                                    console.log('攝影機已切換到 NavCamera2，並進入第一人稱模式。');
+                                    // console.log('GSAP position animation complete. Current Camera position AFTER animation:', currentCamera.position);
+                                    // console.log('攝影機已切換到 NavCamera2，並進入第一人稱模式。');
                                     // 在第一人稱模式下，OrbitControls 應保持禁用
                                     // 並且不需要設定 controls.object 或 controls.target
                                     // 視角控制將由 handleMouseMove 處理
@@ -498,7 +498,7 @@ createApp({
                                 currentCamera.rotation.set(navCamera2Config.initialRotationX, navCamera2Config.initialRotationY, 0, 'YXZ');
                                 firstPersonRotationX = navCamera2Config.initialRotationX;
                                 firstPersonRotationY = navCamera2Config.initialRotationY;
-                                console.log('NavCamera2 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
+                                // console.log('NavCamera2 initial rotation applied: X=', firstPersonRotationX, 'Y=', firstPersonRotationY);
                             } else {
                                 console.warn('NavCamera2 config not found in navCameras.');
                             }
@@ -511,7 +511,7 @@ createApp({
 
                 // 如果點擊的是導覽點，執行攝影機切換
                 if (targetNavPointName) {
-                    console.log(`Clicked on: ${targetNavPointName}`); // Debug log
+                    // console.log(`Clicked on: ${targetNavPointName}`); // Debug log
                     // *** 關鍵修正：將 currentTargetCameraObj 和 targetIsFirstPersonMode 儲存為局部常數 ***
                     const currentTargetCameraObj = navCameras[targetNavPointName]; // navCameras 現在是全域變數
                     if (currentTargetCameraObj && currentTargetCameraObj.camera) {
@@ -521,17 +521,17 @@ createApp({
                         // *** 修正：在動畫開始前就切換 currentCamera ***
                         currentCamera = targetCamera;
 
-                        console.log(`點擊了 "${targetNavPointName}"，準備切換到攝影機 "${currentCamera.name}"`);
-                        console.log('Current isFirstPersonMode:', isFirstPersonMode); // Debug log
-                        console.log('Controls enabled before disable:', controls.enabled); // Debug log
+                        // console.log(`點擊了 "${targetNavPointName}"，準備切換到攝影機 "${currentCamera.name}"`);
+                        // console.log('Current isFirstPersonMode:', isFirstPersonMode); // Debug log
+                        // console.log('Controls enabled before disable:', controls.enabled); // Debug log
 
                         // 禁用 OrbitControls
                         controls.enabled = false;
-                        console.log('Controls enabled after disable:', controls.enabled);
+                        // console.log('Controls enabled after disable:', controls.enabled);
 
                         // 判斷是否為第一人稱模式 (這個是全域變數，會在動畫開始時設定)
                         isFirstPersonMode = targetIsFirstPersonMode; // 現在直接使用儲存的目標模式
-                        console.log('New isFirstPersonMode:', isFirstPersonMode);
+                        // console.log('New isFirstPersonMode:', isFirstPersonMode);
 
                         // 1. 先讀取目標攝影機預先宣告好的座標
                         const destinationPosition = targetCamera.position.clone(); // 使用 .clone() 確保我們得到一個獨立的向量，而不是參考
@@ -557,13 +557,13 @@ createApp({
                             },
                             onComplete: function () {
                                 if (!isTransitioning) return;
-                                console.log('GSAP position animation complete.'); // Debug log
+                                // console.log('GSAP position animation complete.'); // Debug log
                                 currentCamera = targetCamera; // 正式切換攝影機實例
-                                console.log('currentCamera after switch:', currentCamera.name); // Debug log
+                                // console.log('currentCamera after switch:', currentCamera.name); // Debug log
 
                                 // 這裡的 isFirstPersonMode 是動畫結束時的全域狀態
                                 if (isFirstPersonMode) {
-                                    console.log("進入第一人稱模式");
+                                    // console.log("進入第一人稱模式");
                                     // 確保第一人稱攝影機的初始旋轉與模型導覽點一致
                                     // 並且將當前攝影機的旋轉設定為這個初始旋轉
                                     // 這樣滑鼠拖曳可以從這個點開始
@@ -588,9 +588,9 @@ createApp({
                                     controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                                     controls.enabled = true; // 啟用 OrbitControls
                                     controls.update(); // 強制更新 controls
-                                    console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
+                                    // console.log('OrbitControls re-enabled for non-first-person mode.'); // Debug log
                                 }
-                                console.log('Controls enabled at end of position animation:', controls.enabled); // Debug log
+                                // console.log('Controls enabled at end of position animation:', controls.enabled); // Debug log
                             }
                         });
 
@@ -608,7 +608,7 @@ createApp({
                             ease: "power2.inOut",
                             onComplete: function () {
                                 if (!isTransitioning) return;
-                                console.log('GSAP rotation animation complete.'); // Debug log
+                                // console.log('GSAP rotation animation complete.'); // Debug log
                                 isTransitioning = false;
                             }
                         });
@@ -814,26 +814,26 @@ createApp({
                 box.getCenter(modelCenter);
                 box.getSize(modelSize);
                 loadedModel.position.sub(modelCenter);
-                console.log('模型已移到世界中心。');
+                // console.log('模型已移到世界中心。');
 
                 // *** 新增開始：為特定物件添加自訂顯示名稱到 userData ***
                 loadedModel.traverse((child) => {
                     switch (child.name) {
                         case '介紹欄1':
                             child.userData.customDisplayName = '台灣歷史館';
-                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            // console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '介紹欄2':
                             child.userData.customDisplayName = '老建築再生館';
-                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            // console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '介紹欄3':
-                            child.userData.customDisplayName = '彈藥庫歷史館';
+                            // child.userData.customDisplayName = '彈藥庫歷史館';
                             console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         case '出口':
                             child.userData.customDisplayName = '離開展廳';
-                            console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
+                            // console.log(`Set customDisplayName for ${child.name}:`, child.userData.customDisplayName);
                             break;
                         // 如果有其他物件需要自訂名稱，可以在這裡添加
                     }
@@ -847,7 +847,7 @@ createApp({
                     const object = loadedModel.getObjectByName(name);
                     if (object) {
                         highlightableObjects.push(object);
-                        console.log(`找到可互動物件：${name}`);
+                        // console.log(`找到可互動物件：${name}`);
                     } else {
                         console.warn(`互動物件警告：在模型中找不到名為 "${name}" 的物件。`);
                     }
@@ -863,7 +863,7 @@ createApp({
                     const foundConfig = Object.values(navCameras).find(config => config.camera.name === initialCameraName);
                     if (foundConfig) {
                         initialCameraConfig = foundConfig;
-                        console.log(`從 URL 參數讀取到初始攝影機：${initialCameraName}`);
+                        // console.log(`從 URL 參數讀取到初始攝影機：${initialCameraName}`);
                     } else {
                         console.warn(`URL 參數指定的攝影機 "${initialCameraName}" 未找到，使用預設攝影機。`);
                     }
@@ -879,7 +879,7 @@ createApp({
                         currentCamera.rotation.set(initialCameraConfig.initialRotationX, initialCameraConfig.initialRotationY, 0, 'YXZ');
                         firstPersonRotationX = initialCameraConfig.initialRotationX;
                         firstPersonRotationY = initialCameraConfig.initialRotationY;
-                        console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
+                        // console.log(`已設定初始視角為 "${targetCamera.name}" (第一人稱)。`);
                     } else {
                         controls.object = currentCamera;
                         controls.target.copy(initialCameraConfig.initialLookAt || new THREE.Vector3(0, 0, 0));
@@ -888,9 +888,9 @@ createApp({
                         controls.minPolarAngle = 0;
                         controls.maxPolarAngle = Math.PI;
                         controls.update();
-                        console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
+                        // console.log(`已設定初始視角為 "${targetCamera.name}" (第三人稱)。`);
                     }
-                    console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
+                    // console.log(`${targetCamera.name} 座標為: `, targetCamera.position);
                 } else {
                     console.warn('未找到初始攝影機配置。將使用預設的第三人稱視角。');
                     updateCameraForModel();
@@ -910,7 +910,7 @@ createApp({
                     if (marker) {
                         const worldPosition = new THREE.Vector3();
                         marker.getWorldPosition(worldPosition);
-                        console.log(`物件 "${name}" 的世界座標: X=${worldPosition.x.toFixed(2)}, Y=${worldPosition.y.toFixed(2)}, Z=${worldPosition.z.toFixed(2)}`);
+                        // console.log(`物件 "${name}" 的世界座標: X=${worldPosition.x.toFixed(2)}, Y=${worldPosition.y.toFixed(2)}, Z=${worldPosition.z.toFixed(2)}`);
                     } else {
                         console.warn(`警告：在模型中找不到名為 "${name}" 的標示點。`);
                     }
@@ -936,7 +936,7 @@ createApp({
                     percentageText.textContent = `${this.loadingProgress}%`;
                 }
 
-                console.log(`模型載入中... ${percent.toFixed(2)}%`);
+                // console.log(`模型載入中... ${percent.toFixed(2)}%`);
             }
         );
 
@@ -1074,21 +1074,21 @@ createApp({
         }
 
         function handleKeyDown(event) {
-            console.log('onKeyDown triggered.'); // Debug log
+            // console.log('onKeyDown triggered.'); // Debug log
             if (event.key === 'Escape') {
-                console.log('按下 ESC 鍵，切換回預設攝影機');
-                console.log('Current isFirstPersonMode before ESC:', isFirstPersonMode); // Debug log
-                console.log('Controls enabled before ESC:', controls.enabled); // Debug log
+                // console.log('按下 ESC 鍵，切換回預設攝影機');
+                // console.log('Current isFirstPersonMode before ESC:', isFirstPersonMode); // Debug log
+                // console.log('Controls enabled before ESC:', controls.enabled); // Debug log
 
                 // 停止第一人稱模式
                 isFirstPersonMode = false;
                 isDragging = false; // 確保拖曳狀態重置
-                console.log('isFirstPersonMode after ESC reset:', isFirstPersonMode); // Debug log
+                // console.log('isFirstPersonMode after ESC reset:', isFirstPersonMode); // Debug log
 
                 // 啟用 OrbitControls (會自動接管 currentCamera)
                 if (controls) { // 檢查 controls 是否已定義
                     controls.enabled = true;
-                    console.log('Controls enabled after ESC re-enable:', controls.enabled); // Debug log
+                    // console.log('Controls enabled after ESC re-enable:', controls.enabled); // Debug log
                 }
 
 
@@ -1106,7 +1106,7 @@ createApp({
                     },
                     onComplete: function () {
                         if (!isTransitioning) return;
-                        console.log('GSAP ESC position animation complete.'); // Debug log
+                        // console.log('GSAP ESC position animation complete.'); // Debug log
                         currentCamera = defaultCamera; // 正式切換攝影機實例
                         if (controls) { // 檢查 controls 是否已定義
                             controls.object = currentCamera; // 更新 OrbitControls 所控制的攝影機
@@ -1116,7 +1116,7 @@ createApp({
                             controls.minPolarAngle = 0; // 解除垂直旋轉限制
                             controls.maxPolarAngle = Math.PI; // 解除垂直旋轉限制
                             controls.update(); // 強制更新 controls
-                            console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
+                            // console.log('Controls enabled at end of ESC animation:', controls.enabled); // Debug log
                             isTransitioning = false;
                         }
                     }
@@ -1132,7 +1132,7 @@ createApp({
                     ease: "power2.inOut",
                     onComplete: function () {
                         if (!isTransitioning) return;
-                        console.log('GSAP rotation animation complete.'); // Debug log
+                        // console.log('GSAP rotation animation complete.'); // Debug log
                         isTransitioning = false;
                     }
                 });
