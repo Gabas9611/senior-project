@@ -19,7 +19,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 10px 40px;
     z-index: 10;
     position: fixed;
     top: 0;
@@ -83,7 +83,7 @@ body {
 }
 
 .content {
-    padding-top: 100px;
+    padding-top: 80px;
     max-width: 95%;
     margin: 0 auto;
     background-color: #d2d2d2;
