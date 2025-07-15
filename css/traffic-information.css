@@ -164,21 +164,19 @@
      flex: 1;
      display: flex;
      justify-content: center;
-     text-align: left;
+     text-align: justify;
      line-height: 1.6;
      
  }
- .swiper-content-1{
-    font-size: 14px;
- }
+ 
 
  .swiper-img {
      width: 95%;
-     height: 300px;
+     height: 45%;
      overflow: hidden;
       /* 使用絕對定位固定在底部 */
     position: absolute;
-    bottom: 80px; /* 距離底部 10px */
+    bottom: 10%; /* 距離底部 10px */
     left: 50%;
     transform: translateX(-50%); /* 水平居中 */
  }
